@@ -198,19 +198,20 @@ do {
 <tr><td>2</td><td><i>preempted</i></td><td>rv = lock → false</td><td>false</td></tr>
 <tr><td>3</td><td></td><td>lock = true; returns false → <b>enters CS</b></td><td>true</td></tr>
 <tr><td>4</td><td>lock = true; returns false → <b>enters CS</b></td><td></td><td>true</td></tr></table>
-<p>Both processes saw the lock as free, so <b>both are in the critical section: mutual exclusion is violated.</b></p></div></div><div class='item'><div class='qbox'><span class='yr'>2013</span><span class='qnum'>Q5.3</span> <span class='pts'>(5 pt)</span> Write to demonstrate how to use the atomic instruction Swap for critical section problem.</div><div class='ans'><span class='lbl'>ANSWER</span><pre class="long">void swap(boolean *a, boolean *b) {   /* executed ATOMICALLY by hardware */
+<p>Both processes saw the lock as free, so <b>both are in the critical section: mutual exclusion is violated.</b></p></div></div><div class='item'><div class='qbox'><span class='yr'>2013</span><span class='qnum'>Q5.3</span> <span class='pts'>(5 pt)</span> Write to demonstrate how to use the atomic instruction Swap for critical section problem.</div><div class='ans'><span class='lbl'>ANSWER</span><pre class="long">/* swap: executed ATOMICALLY by hardware */
+void swap(boolean *a, boolean *b) {
     boolean temp = *a;
     *a = *b;
     *b = temp;
 }
 
-boolean lock = false;                 /* shared */
-boolean key;                          /* local to each process */
+boolean lock = false;           /* shared */
+boolean key;                    /* local to each process */
 
 do {
     key = true;
     while (key == true)
-        swap(&amp;lock, &amp;key);            /* key gets old lock; lock becomes true */
+        swap(&amp;lock, &amp;key);  /* key=old lock; lock=true */
     /* critical section */
     lock = false;
     /* remainder section */
@@ -342,30 +343,30 @@ fork();</pre>a) How many unique processes are created?<br>b) How many unique thr
 <p>Compared with Hoare: in Hoare's version A runs immediately and the signaler B waits in the signal queue. In signal-and-continue, A may find the condition changed by the time it runs, so waiters should re-check it with <code>while (!cond) q.wait();</code>. There are fewer context switches, and this is what Java and Pthreads use.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2019</span><span class='qnum'>Q6</span> <span class='pts'>(20 pt)</span> In class, we have illustrated the solution for dining-philosopher problem using monitor. However, as I mentioned, the solution is conceptual only since there is no monitor mechanism. We also discussed how to implement a monitor mechanism with <b>signal and wait</b> via semaphores, and thus the dining-philosopher problem solution together with the monitor mechanism with <b>signal and wait</b> via semaphores is a complete solution. Please modify the monitor mechanism with <b>signal and wait</b> via semaphores to <b>signal and continue</b> and integrate them into dining-philosopher problem solution. That is, I would like you to present a complete code for dining-philosopher problem solution which uses a monitor mechanism with <b>signal and continue</b> via semaphores.</div><div class='ans'><span class='lbl'>ANSWER</span>
 <p>Combine the dining-philosopher monitor with the signal-and-continue implementation above. <code>self[i]</code> becomes semaphore <code>self_sem[i]</code> plus counter <code>self_count[i]</code>.</p><pre class="long">enum {THINKING, HUNGRY, EATING} state[5];
 semaphore mutex = 1;             // monitor lock
-semaphore next  = 0;             // signaled philosophers waiting to re-enter
+semaphore next  = 0;      // signaled, waiting to re-enter
 int next_count  = 0;
-semaphore self_sem[5]   = {0,0,0,0,0};   // condition self[i]
+semaphore self_sem[5]   = {0,0,0,0,0};  // cond. self[i]
 int       self_count[5] = {0,0,0,0,0};
 
-void leave() {                   // exit / release the monitor
+void leave() {                // release the monitor
     if (next_count &gt; 0) signal(next);
     else                signal(mutex);
 }
 void self_wait(int i) {          // self[i].wait()
     self_count[i]++;
-    leave();                     // release monitor while waiting
+    leave();                  // release monitor
     wait(self_sem[i]);           // sleep until signaled
-    wait(next);                  // re-enter after signaler leaves
+    wait(next);               // re-enter after signaler
     next_count--;
 }
-void self_signal(int i) {        // self[i].signal()  signal-and-continue
+void self_signal(int i) {     // self[i].signal(), S&amp;C
     if (self_count[i] &gt; 0) {
         self_count[i]--;
         next_count++;
-        signal(self_sem[i]);     // wake i, caller continues
+        signal(self_sem[i]);  // wake i; caller continues
     }
 }
-void test(int i) {               // called only inside the monitor
+void test(int i) {            // only inside the monitor
     if (state[(i+4)%5] != EATING &amp;&amp; state[i] == HUNGRY &amp;&amp;
         state[(i+1)%5] != EATING) {
         state[i] = EATING;
@@ -376,21 +377,25 @@ void pickup(int i) {
     wait(mutex);                 // enter monitor
     state[i] = HUNGRY;
     test(i);
-    while (state[i] != EATING)   // &#x27;while&#x27;: re-check after waking (S&amp;C)
+    while (state[i] != EATING)  // re-check after waking
         self_wait(i);
     leave();
 }
 void putdown(int i) {
     wait(mutex);                 // enter monitor
     state[i] = THINKING;
-    test((i+4)%5);               // left neighbor may now eat
-    test((i+1)%5);               // right neighbor may now eat
+    test((i+4)%5);            // left neighbor may eat
+    test((i+1)%5);            // right neighbor may eat
     leave();
 }
-void init() { for (int i = 0; i &lt; 5; i++) state[i] = THINKING; }
+void init() {
+    for (int i = 0; i &lt; 5; i++) state[i] = THINKING;
+}
 
 void philosopher(int i) {
-    while (true) { think(); pickup(i); eat(); putdown(i); }
+    while (true) {
+        think(); pickup(i); eat(); putdown(i);
+    }
 }</pre><p>It is correct under signal-and-continue because test() sets state[i] = EATING <b>before</b> signaling, and only philosopher i can change it back. So when i resumes, its condition still holds. A philosopher eats only when neither neighbor eats, so there is no deadlock (starvation is still possible).</p></div></div><div class='hdr'>7. Multilevel queue scheduling</div><div class='item'><div class='qbox'><span class='yr'>2019</span><span class='qnum'>Q7.1</span> <span class='pts'>(5 pt)</span> List two possible scheduling among queues, which we discussed in class.</div><div class='ans'><span class='lbl'>ANSWER</span>
 <p>Two ways to schedule <b>among</b> the queues of a multilevel queue:</p>
 <ol>
@@ -427,7 +432,7 @@ void philosopher(int i) {
 }
 
 int main() {
-    pthread_t t1[100];                    /* declare a thread */
+    pthread_t t1[100];          /* declare a thread */
     int param1, i;
 
     param1 = 1;
@@ -452,14 +457,14 @@ int main() {
 
 int main() {
     pthread_t t1[100];            /* declare threads */
-    int param[100], i;            /* one argument per thread */
+    int param[100], i;      /* one argument per thread */
 
     for (i = 0; i &lt; 100; i++) {
         param[i] = i + 1;         /* 1, 2, ..., 100 */
         pthread_create(&amp;(t1[i]), NULL, doSomething, &amp;param[i]);
     }
     for (i = 0; i &lt; 100; i++)
-        pthread_join(t1[i], NULL);  /* wait for all threads */
+        pthread_join(t1[i], NULL);  /* wait for all */
     return 0;
 }</pre><p>(If the numbers must also be printed <i>in order</i>, the threads must additionally be synchronized, e.g. by joining each thread right after creating it.)</p></div></div></section><section class='exam'><h2>2020 · CS5730 Operating Systems (2020/12/1; the paper is titled "Final")</h2><div class='meta'>Only the photographed pages are available (Q1–Q8).</div><div class='hdr'>1. Short Answer: Your answers should be as concise as possible; aim for three or four sentences.</div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q1.1</span> <span class='pts'>(5 pt)</span> Ordinarily the <code>exec()</code> system call follows the <code>fork()</code>. Explain what would happen if a programmer were to inadvertently place the call to <code>exec()</code> before the call to <code>fork()</code>.</div><div class='ans'><span class='lbl'>ANSWER</span>
 <p>exec() <b>replaces the calling process's entire memory image</b> (code, data, heap, stack) with the program named in its parameters. On success, <b>it never returns</b>.</p>
@@ -512,7 +517,7 @@ fork();</pre>a) How many unique processes are created?<br>b) How many unique thr
 }
 
 int main() {
-    pthread_t t1[100];                    /* declare a thread */
+    pthread_t t1[100];          /* declare a thread */
     int param1, i;
 
     param1 = 1;
@@ -537,14 +542,14 @@ int main() {
 
 int main() {
     pthread_t t1[100];            /* declare threads */
-    int param[100], i;            /* one argument per thread */
+    int param[100], i;      /* one argument per thread */
 
     for (i = 0; i &lt; 100; i++) {
         param[i] = i + 1;         /* 1, 2, ..., 100 */
         pthread_create(&amp;(t1[i]), NULL, doSomething, &amp;param[i]);
     }
     for (i = 0; i &lt; 100; i++)
-        pthread_join(t1[i], NULL);  /* wait for all threads */
+        pthread_join(t1[i], NULL);  /* wait for all */
     return 0;
 }</pre><p>(If the numbers must also be printed <i>in order</i>, the threads must additionally be synchronized, e.g. by joining each thread right after creating it.)</p></div></div><div class='hdr'>7. Consider the Intel address translation scheme shown in the following.<div class="mlq" style="display:flex;gap:4px;align-items:center;justify-content:center"><span class="box">CPU</span>→<i>logical address</i>→<span class="box">segmentation unit</span>→<i>linear address</i>→<span class="box">paging unit</span>→<i>physical address</i>→<span class="box">physical memory</span></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q7.1</span> <span class='pts'>(10 pt)</span> Illustrate all the steps that the Intel 80386 takes in translating a logical address into a physical address.</div><div class='ans'><span class='lbl'>ANSWER</span><svg viewBox="0 0 680 235" width="640" class="fig" font-size="10.5" font-family="Arial"><defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#222"/></marker></defs>
 <rect x="5" y="25" width="45" height="30" fill="#eef3fa" stroke="#222"/><text x="27" y="44" text-anchor="middle">CPU</text>
@@ -643,7 +648,7 @@ int main() {
 <p><b>Degraded performance:</b> the waiting process <b>wastes CPU cycles</b> doing no useful work, and other ready processes could have used them. On a single CPU, the spinner uses its entire time slice while the lock holder cannot run to release the lock, so everyone waits longer. If the spinner has higher priority than the lock holder, the holder may never run, and the system can even <b>deadlock</b> (priority inversion). Busy waiting is acceptable only for very short waits on multiprocessors, where it avoids a context switch.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q7.2</span> <span class='pts'>(10 pt)</span> How to implement semaphore without <b>busy-waiting</b> using <code>block</code> and <code>wakeup</code>? You need to write down the definition of data structure <code>semaphore</code> and <code>wait</code> and <code>signal</code> operations.</div><div class='ans'><span class='lbl'>ANSWER</span>
 <p>Each semaphore has an integer value and a <b>queue of waiting processes</b>. Instead of spinning, a process that must wait is <b>blocked</b> (moved to the waiting state and placed on the semaphore's queue). <code>signal</code> <b>wakes up</b> one waiting process (moves it to the ready queue).</p><pre class="long">typedef struct {
     int value;
-    struct process *list;      /* queue of waiting PCBs */
+    struct process *list;  /* queue of waiting PCBs */
 } semaphore;
 
 void wait(semaphore *S) {
@@ -854,7 +859,7 @@ x.signal                  // signal-and-continue
 <p><b>Degraded performance:</b> the waiting process <b>wastes CPU cycles</b> doing no useful work, and other ready processes could have used them. On a single CPU, the spinner uses its entire time slice while the lock holder cannot run to release the lock, so everyone waits longer. If the spinner has higher priority than the lock holder, the holder may never run, and the system can even <b>deadlock</b> (priority inversion). Busy waiting is acceptable only for very short waits on multiprocessors, where it avoids a context switch.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2022</span><span class='qnum'>Q6.2</span> <span class='pts'>(5 pt)</span> How to implement semaphore without <b>busy-waiting</b> using <code>block</code> and <code>wakeup</code>? You need to write down the definition of data structure <code>semaphore</code> and <code>wait</code> and <code>signal</code> operations.</div><div class='ans'><span class='lbl'>ANSWER</span>
 <p>Each semaphore has an integer value and a <b>queue of waiting processes</b>. Instead of spinning, a process that must wait is <b>blocked</b> (moved to the waiting state and placed on the semaphore's queue). <code>signal</code> <b>wakes up</b> one waiting process (moves it to the ready queue).</p><pre class="long">typedef struct {
     int value;
-    struct process *list;      /* queue of waiting PCBs */
+    struct process *list;  /* queue of waiting PCBs */
 } semaphore;
 
 void wait(semaphore *S) {

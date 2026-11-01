@@ -1,0 +1,135 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Past Exam Solutions</title><style>
+:root{ --acc:#0b4f8a; --rule:#bbb; --box:#f3f5f8; --qbg:#f6f7f9; }
+@page{ size: Letter; margin: 0.55in 0.6in; }
+*{ box-sizing:border-box; }
+html,body{ background:#fff; color:#111; }
+body{ font: 10pt/1.38 "Helvetica Neue", Arial, sans-serif; margin:0; padding:16px; max-width:8in; }
+@media print{ body{ padding:0; max-width:none; } }
+h1{ font-size:17pt; margin:0 0 4px; }
+.lead{ color:#444; margin-bottom:10px; }
+.toc td{ padding:2px 8px; }
+.exam{ break-before:page; }
+.exam h2{ font-size:14pt; color:#fff; background:var(--acc); padding:5px 8px; margin:0 0 4px; }
+.exam .meta{ font-size:9pt; color:#555; margin-bottom:8px; }
+.hdr{ font-weight:bold; margin:12px 0 4px; padding:4px 8px; border-left:4px solid var(--acc); background:var(--qbg); break-after:avoid; }
+.item{ margin:8px 0 12px; }
+.qbox{ background:var(--qbg); border:1px solid #d6dbe2; border-left:4px solid var(--acc); padding:6px 9px; break-inside:avoid; break-after:avoid; }
+.qnum{ font-weight:bold; color:var(--acc); margin-right:4px; }
+.pts{ font-size:8.5pt; color:#555; }
+.yr{ float:right; font-size:8pt; color:#fff; background:#555; padding:0 5px; border-radius:2px; }
+.ans{ padding:4px 2px 0 12px; border-left:2px solid #cfe0f2; margin-left:2px; }
+.ans .lbl{ font-weight:bold; color:#0a6b2d; font-size:9pt; letter-spacing:.03em; }
+p{ margin:3px 0 5px; } ul,ol{ margin:3px 0 5px; padding-left:20px; } li{ margin:1px 0 2px; }
+pre{ font: 8.4pt/1.3 "DejaVu Sans Mono", Menlo, Consolas, monospace; background:var(--box); border:1px solid #dde; padding:5px 7px; margin:4px 0 6px; white-space:pre-wrap; }
+code{ font: 8.8pt "DejaVu Sans Mono", Menlo, Consolas, monospace; background:var(--box); padding:0 2px; }
+.qbox pre{ background:#fff; }
+table{ border-collapse:collapse; margin:4px 0 6px; font-size:9pt; break-inside:avoid; }
+th,td{ border:1px solid var(--rule); padding:2px 6px; text-align:left; vertical-align:top; }
+th{ background:var(--box); }
+.gantt{ display:flex; width:100%; margin:6px 0 0; border:1px solid #333; font-size:8.5pt; break-inside:avoid; }
+.gantt div{ border-right:1px solid #333; text-align:center; padding:3px 0; overflow:hidden; white-space:nowrap; }
+.gantt div:last-child{ border-right:0; }
+.g1{ background:#cfe3ff; } .g2{ background:#ffd9b3; } .gi{ background:#eee; color:#777; } .gx{ background:#ffb3b3; }
+.ticks{ display:flex; width:100%; font-size:8pt; color:#444; margin-bottom:6px; }
+.ticks span{ white-space:nowrap; }
+.fig{ display:block; margin:6px auto; max-width:100%; height:auto; break-inside:avoid; }
+.scan{ display:block; width:70%; margin:6px auto 2px; border:1px solid #ccc; }
+.mlq{ margin:6px auto; width:60%; text-align:center; font-size:9pt; }
+.mlq div{ border:1px solid #888; margin:3px 0; padding:2px; background:#fff; }
+.mlq .box{ border:1px solid #888; padding:2px 5px; background:#fff; }
+.note{ color:#555; font-size:9pt; }
+
+@page{ size: Letter; margin: 0.38in 0.42in; }
+body{ font-size:8.6pt; line-height:1.27; }
+h1{ font-size:12pt; margin:0 0 2px; }
+.lead, .toc{ display:none; }
+.exam{ break-before:auto; }
+.exam h2{ font-size:10.5pt; padding:2px 6px; margin:0 0 2px; }
+.hdr{ margin:5px 0 2px; padding:2px 6px; }
+.item{ margin:4px 0 6px; }
+.qbox{ padding:3px 6px; }
+.ans{ padding:2px 0 0 8px; }
+p{ margin:1px 0 3px; } ul,ol{ margin:1px 0 3px; padding-left:16px; } li{ margin:0 0 1px; }
+pre{ font-size:7.1pt; line-height:1.17; padding:3px 5px; margin:2px 0 3px; }
+code{ font-size:7.6pt; }
+table{ font-size:7.8pt; margin:2px 0 3px; } th,td{ padding:1px 4px; }
+.fig{ max-height:2.3in; width:auto; margin:3px auto; }
+.scan{ width:52%; margin:3px auto 1px; }
+.mlq{ width:48%; margin:3px auto; font-size:7.8pt; } .mlq div{ margin:1px 0; padding:1px; }
+.gantt{ font-size:7.5pt; margin-top:3px; } .gantt div{ padding:1px 0; }
+.note{ font-size:7.8pt; }
+pre.long{ column-count:2; column-gap:12px; column-rule:1px solid #dde; font-size:6.9pt; }
+</style></head><body><h1>CS5730 Operating Systems: 2011 Midterm Solutions</h1><p class='lead'>The 2011 paper only, in order. Each entry gives the year, the full question as printed, then a model answer sized to fit the space on the exam paper (prose kept to about 250 words; code, tables and diagrams added where the question needs them). Repeated questions use the same answer every time.</p><table class='toc'><tr><th>Year</th><th>Paper</th><th>Questions</th></tr><tr><td>2011</td><td>CS5730 Operating Systems Midterm (2011/11/14)</td><td>20 answers</td></tr></table><section class='exam'><h2>2011 · CS5730 Operating Systems Midterm (2011/11/14)</h2><div class='hdr'>1. Short Answer: Your answers should be as concise as possible; aim for three or four sentences.</div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Q1.1</span> <span class='pts'>(5 pt)</span> Explain why implementing synchronization primitives by disabling interrupts is not appropriate in a single-processor system if the synchronization primitives are to be used in user-level programs.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Disabling interrupts works on a uniprocessor only for <b>trusted kernel code</b>. It is the wrong tool for <b>user-level</b> synchronization because:</p>
+<ol>
+<li><b>It is a privileged instruction.</b> Letting user programs execute it breaks dual-mode protection; the hardware traps if user mode tries.</li>
+<li><b>The OS loses control of the CPU.</b> While interrupts are off, the <b>timer interrupt</b> cannot fire, so no preemption or context switch can happen. A buggy or malicious program could disable interrupts and never re-enable them (e.g. an infinite loop in its critical section). It would then <b>monopolize the CPU</b> and hang the whole system.</li>
+<li><b>Other events are delayed or lost.</b> I/O-completion interrupts and clock ticks are postponed, so devices sit idle, the system clock drifts and response time suffers. User critical sections can be long, which makes this worse.</li>
+</ol>
+<p>(It also does not scale: on a multiprocessor it only stops the local CPU.) User programs should instead use OS-provided semaphores/mutexes or atomic hardware instructions such as test_and_set or swap.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Q1.2</span> <span class='pts'>(5 pt)</span> Provide an example in which multithreading does not provide better performance than a single-threaded solution.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Multithreading helps only if there is work that can overlap. Two examples where it does not help:</p>
+<ul>
+<li>A <b>strictly sequential computation</b>, where each step depends on the previous result. Examples are computing a tax return or a recurrence such as Fibonacci with an iterative loop. There is nothing to run in parallel, and threads only add creation, context-switch and synchronization overhead.</li>
+<li>A <b>CPU-bound program on a single processor</b> with no I/O (e.g. a matrix multiply). The threads just take turns on the same CPU, so the total time is the same or worse because of switching overhead.</li>
+</ul>
+<p>Another standard example is a shell or interactive program that only waits for one user's input. It spends its time blocked anyway.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Q1.3</span> <span class='pts'>(5 pt)</span> Show that, if the <code>wait()</code> and <code>signal()</code> semaphore operations are not executed atomically, then mutual exclusion may be violated.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Busy-waiting definitions: <code>wait(S){ while (S &lt;= 0); S--; }</code> and <code>signal(S){ S++; }</code>, with S = 1 (unlocked).</p>
+<p>If wait() is not atomic, the test and the decrement can be interleaved:</p>
+<table><tr><th>Step</th><th>P0</th><th>P1</th><th>S</th></tr>
+<tr><td>1</td><td>tests S&lt;=0 → false (S=1)</td><td></td><td>1</td></tr>
+<tr><td>2</td><td><i>preempted</i></td><td>tests S&lt;=0 → false (S=1)</td><td>1</td></tr>
+<tr><td>3</td><td></td><td>S-- ; enters critical section</td><td>0</td></tr>
+<tr><td>4</td><td>S-- ; enters critical section</td><td></td><td>−1</td></tr></table>
+<p><b>Both P0 and P1 are in the critical section, so mutual exclusion is violated.</b> Likewise, S-- and S++ are each load, modify, store at machine level. If two processes run them concurrently, an update can be lost, e.g. two signal() calls increment S only once. A lost signal can block a process forever, and an extra count lets two processes in. So wait() and signal() must be indivisible.</p></div></div><div class='hdr'>2. Consider a multiprocessor system and a multithreaded program written using the many-to-many threading model. Let the number of user-level threads in the program be more than the number of processors in the system. Discuss the performance implications of the following scenarios.</div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Q2.1</span> <span class='pts'>(5 pt)</span> The number of kernel threads allocated to the program is less than the number of processors.</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>Fewer kernel threads than processors.</b> The kernel can schedule only that many of the program's threads at once. Some processors are left <b>idle</b> as far as this program is concerned, and the available parallelism is wasted. Also, if a kernel thread blocks (e.g. on I/O), even fewer user threads can run.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Q2.2</span> <span class='pts'>(5 pt)</span> The number of kernel threads allocated to the program is equal to the number of processors.</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>Equal to the number of processors.</b> All processors can run the program's threads simultaneously, giving the best case while no thread blocks. However, when a kernel thread <b>blocks</b> (I/O, page fault, system call), its processor becomes <b>idle</b>. No spare kernel thread exists to run another ready user thread on it, so performance drops during blocking.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Q2.3</span> <span class='pts'>(5 pt)</span> The number of kernel threads allocated to the program is greater than the number of processors but less than the number of userlevel threads.</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>More kernel threads than processors, but fewer than user threads.</b> This gives the best utilization. When one kernel thread blocks, the kernel can schedule <b>another ready kernel thread</b> (carrying another user thread) on that processor, so CPUs stay busy. The cost is some extra kernel overhead: more kernel threads to create, schedule and context-switch.</p></div></div><div class='hdr'>3. Multilevel queue scheduling</div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Q3.1</span> <span class='pts'>(2 pt)</span> List two possible scheduling among queues, which we discussed in class.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Two ways to schedule <b>among</b> the queues of a multilevel queue:</p>
+<ol>
+<li><b>Fixed-priority (preemptive) scheduling.</b> Serve all processes in a higher-priority queue (e.g. foreground/interactive) before any process in a lower queue (background/batch). A process arriving in a higher queue preempts a lower one. Lower queues may <b>starve</b>.</li>
+<li><b>Time slicing among queues.</b> Each queue gets a fixed share of CPU time, which it schedules among its own processes. Example: 80% to the foreground queue (RR) and 20% to the background queue (FCFS).</li>
+</ol></div></div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Q3.2</span> <span class='pts'>(8 pt)</span> Describe how Linux support the above two possible inter-queue scheduling.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p><b>Fixed priority between classes.</b> Linux has two priority ranges mapped onto one global scale (lower number = higher priority). <b>Real-time</b> tasks are 0–99 and use POSIX SCHED_FIFO / SCHED_RR with static priorities. <b>Normal (time-sharing)</b> tasks are 100–139, from nice −20…+19. A runnable real-time task always runs before any normal task, which is fixed-priority scheduling between the two "queues". With CFS, the scheduler likewise picks the highest-priority <b>scheduling class</b> first (real-time class before the default class).</p>
+<p><b>Time slicing.</b> In the O(1) scheduler (2.5) each task gets a time slice based on priority, and higher priority gets a longer quantum. Each CPU's runqueue has an <b>active</b> and an <b>expired</b> priority array. A task runs while it has slice left, then moves to expired. When the active array is empty, the arrays are <b>swapped</b>, so every task gets its share. In CFS (2.6.23+), instead of fixed quanta each task gets a <b>proportion</b> of CPU time within a <b>target latency</b>, weighted by nice value. The task with the smallest <b>virtual runtime (vruntime)</b> runs next. This is proportional sharing of time.</p></div></div><div class='hdr'>4. Consider a logical address space of 64 pages of 1024 words each, mapped onto a physical memory of 32 frames.</div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Q4.1</span> <span class='pts'>(5 pt)</span> How many bits are there in the logical address?</div><div class='ans'><span class='lbl'>ANSWER</span><p>Pages: 64 = 2<sup>6</sup> gives a 6-bit page number. Page size: 1024 = 2<sup>10</sup> words gives a 10-bit offset.<br><b>Logical address = 6 + 10 = 16 bits.</b></p></div></div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Q4.2</span> <span class='pts'>(5 pt)</span> How many bits are there in the physical address?</div><div class='ans'><span class='lbl'>ANSWER</span><p>Frames: 32 = 2<sup>5</sup> gives a 5-bit frame number. The frame size equals the page size (2<sup>10</sup>), so the offset is 10 bits.<br><b>Physical address = 5 + 10 = 15 bits.</b></p></div></div><div class='hdr'>5. A monitor <code>M</code> has processes <code>P1</code> and <code>P2</code> waiting in entry queue and process <code>P3</code> waiting in signal queue. Process <code>P0</code> is active in <code>M</code>. <code>M</code> also has two condition variables <code>x</code>, <code>y</code>. <code>x</code> has processes <code>P4</code> and <code>P5</code> waiting in its corresponding queue, and <code>y</code> has process <code>P6</code> waiting in its corresponding queue. Suppose <code>M</code> implements the signal and wait semantic. List the contents of each queue and the active process after the following events happen. (Note that each event happens right after the above state; that is, these events are independent to each other.)</div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Q5.1</span> <span class='pts'>(5 pt)</span> New process <code>P7</code> accesses <code>M</code>.</div><div class='ans'><span class='lbl'>ANSWER</span><p>P7 just joins the end of the entry queue. Nothing else changes.</p>
+<table><tr><th>Active in M</th><th>Entry queue</th><th>Signal queue</th><th>x queue</th><th>y queue</th></tr><tr><td>P0</td><td>P1, P2, <b>P7</b></td><td>P3</td><td>P4, P5</td><td>P6</td></tr></table></div></div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Q5.2</span> <span class='pts'>(5 pt)</span> <code>P0</code> executes <code>x.signal()</code>.</div><div class='ans'><span class='lbl'>ANSWER</span><p>Signal-and-wait (Hoare): the first waiter on x, <b>P4, resumes immediately</b>. The signaler <b>P0 is suspended in the signal queue</b>.</p>
+<table><tr><th>Active in M</th><th>Entry queue</th><th>Signal queue</th><th>x queue</th><th>y queue</th></tr><tr><td><b>P4</b></td><td>P1, P2</td><td>P3, <b>P0</b></td><td>P5</td><td>P6</td></tr></table></div></div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Q5.3</span> <span class='pts'>(5 pt)</span> <code>P0</code> executes <code>y.wait()</code>.</div><div class='ans'><span class='lbl'>ANSWER</span><p>P0 joins y's queue and releases the monitor. The signal queue has priority over the entry queue, so <b>P3 becomes active</b>.</p>
+<table><tr><th>Active in M</th><th>Entry queue</th><th>Signal queue</th><th>x queue</th><th>y queue</th></tr><tr><td><b>P3</b></td><td>P1, P2</td><td>(empty)</td><td>P4, P5</td><td>P6, <b>P0</b></td></tr></table></div></div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Q6</span> <span class='pts'>(15 pt)</span> Discuss how the following pairs of scheduling criteria conflict in certain settings.</div></div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Qa)</span> CPU utilization and response time</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>CPU utilization vs. response time.</b> CPU utilization is highest when context switches are rare, as with FCFS or a long quantum, because each switch is pure overhead. Good response time for interactive users needs <b>frequent preemption</b> (a short RR quantum) so every user gets the CPU quickly. That causes many context switches, so the CPU spends more time switching and less doing useful work, which lowers utilization.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Qb)</span> Average turnaround time and maximum waiting time</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>Average turnaround time vs. maximum waiting time.</b> Average turnaround is minimized by running the <b>shortest jobs first</b> (SJF/SRTF). But a long job can be postponed again and again as short jobs keep arriving, so it may <b>starve</b>. Its waiting time, the <b>maximum</b> waiting time, becomes very large (unbounded). Bounding the maximum wait (e.g. with FCFS or aging) raises the average turnaround.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Qc)</span> I/O device utilization and CPU utilization</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>I/O device utilization vs. CPU utilization.</b> Keeping devices busy means running <b>I/O-bound</b> processes as soon as their I/O completes, so they can issue the next request quickly. This means frequently preempting CPU-bound processes, and the context-switch overhead lowers CPU utilization. Maximizing CPU utilization means letting CPU-bound jobs run long without switching, which leaves the I/O devices <b>idle</b> while I/O-bound jobs wait for the CPU.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Qd)</span> Deadline and fairness</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>Deadline vs. fairness.</b> To meet deadlines, the scheduler must always give the CPU to the most urgent process (earliest deadline or real-time priority), regardless of how much CPU it has already had. Other processes may wait a long time or <b>starve</b>, which is unfair. A <b>fair</b> scheduler gives everyone an equal share, so urgent tasks may not get enough CPU in time and <b>miss their deadlines</b>.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Qe)</span> Throughput and context switch overhead</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>Throughput vs. context-switch overhead.</b> Throughput (jobs completed per unit time) is improved by finishing short jobs quickly, which needs preemption: SJF/SRTF or a small RR quantum. Every preemption adds <b>context-switch overhead</b>, during which no useful work is done. Minimizing switches (FCFS, large quantum) traps short jobs behind long ones (<b>convoy effect</b>), so fewer jobs complete per unit time. If the quantum is too small, overhead itself eats the throughput.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Q7</span> <span class='pts'>(20 pt)</span> Consider the following Peterson's solution for the critical region problem:<pre>shared int turn;              /* set to i or j */
+shared boolean flag[2];       /* set to T or F */
+
+while (TRUE) {
+    ...
+    flag[i] = TRUE;
+    turn = j;
+    while (turn == j &amp;&amp; flag[j] == TRUE) { /* no-op */ }
+    ...
+    /* critical region */
+    ...
+    flag[i] = FALSE;
+    ...
+    /* remainder region */
+    ...
+}</pre>Prove Peterson's solution satisfy the three required critical region conditions.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Pi enters its critical region only when <code>flag[j] == FALSE</code> or <code>turn == i</code>.</p>
+<p><b>1. Mutual exclusion.</b> Suppose P0 and P1 were both in their critical regions. Then flag[0] = flag[1] = TRUE, so each must have passed the while because turn equalled its own index. That would require turn == 0 and turn == 1 at the same time, which is impossible. More precisely, turn is a single shared variable holding the value written <b>last</b>. The process that wrote turn last set it to the other process's index, so it must wait while the other is interested. Hence at most one is inside.</p>
+<p><b>2. Progress.</b> If Pj is not trying to enter (flag[j] == FALSE, i.e. it is in its remainder region), Pi passes the while at once. If both are trying, turn is either i or j, so exactly one of them passes, and the decision is made in finite time. Only processes in their entry sections take part; a process in its remainder section cannot block anyone.</p>
+<p><b>3. Bounded waiting.</b> Suppose Pi is waiting (turn == j and flag[j] == TRUE). When Pj leaves, it sets flag[j] = FALSE, so Pi can enter. If Pj immediately tries again, it sets turn = i, so Pj now waits and Pi enters. Pi therefore waits for at most <b>one</b> entry of Pj into its critical region.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Q8</span> <span class='pts'>(Bonus: 20 pt)</span> Consider the code below as a variation of Peterson's solution above:<pre class="long">shared int turn;              /* set to i or j */
+shared boolean flag[2];       /* set to T or F */
+
+while (TRUE) {
+    ...
+    flag[i] = TRUE;
+    turn = i;     /* traditionally set to j */
+    while (turn == j &amp;&amp; flag[j] == TRUE) { /* no-op */ }
+    ...
+    /* critical region */
+    ...
+    flag[i] = FALSE;
+    turn = j;     /* not usually done */
+    ...
+    /* remainder region */
+    ...
+}</pre>Does the above solution satisfy the three required critical region conditions? If not, which property or properties is violated?</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p><b>No. Mutual exclusion is violated.</b> In the entry code each process now sets turn to <b>its own</b> index, so a process that has just written turn never waits (its test <code>turn == j</code> is false). Counter-example:</p>
+<table><tr><th>Step</th><th>P0</th><th>P1</th></tr>
+<tr><td>1</td><td>flag[0] = TRUE; turn = 0</td><td></td></tr>
+<tr><td>2</td><td>test turn==1? false → <b>enters CR</b></td><td></td></tr>
+<tr><td>3</td><td>(in critical region)</td><td>flag[1] = TRUE; turn = 1</td></tr>
+<tr><td>4</td><td>(in critical region)</td><td>test turn==0? false → <b>enters CR</b></td></tr></table>
+<p>Both are in the critical region. In general a newly arriving process always gets in, even while the other is inside. (Progress and bounded waiting still hold: a waiting Pi enters as soon as Pj exits, because the exit sets turn = i. But without mutual exclusion the solution is incorrect.)</p></div></div></section></body></html>

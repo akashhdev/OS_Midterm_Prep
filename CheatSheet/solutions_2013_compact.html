@@ -1,0 +1,209 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Past Exam Solutions</title><style>
+:root{ --acc:#0b4f8a; --rule:#bbb; --box:#f3f5f8; --qbg:#f6f7f9; }
+@page{ size: Letter; margin: 0.55in 0.6in; }
+*{ box-sizing:border-box; }
+html,body{ background:#fff; color:#111; }
+body{ font: 10pt/1.38 "Helvetica Neue", Arial, sans-serif; margin:0; padding:16px; max-width:8in; }
+@media print{ body{ padding:0; max-width:none; } }
+h1{ font-size:17pt; margin:0 0 4px; }
+.lead{ color:#444; margin-bottom:10px; }
+.toc td{ padding:2px 8px; }
+.exam{ break-before:page; }
+.exam h2{ font-size:14pt; color:#fff; background:var(--acc); padding:5px 8px; margin:0 0 4px; }
+.exam .meta{ font-size:9pt; color:#555; margin-bottom:8px; }
+.hdr{ font-weight:bold; margin:12px 0 4px; padding:4px 8px; border-left:4px solid var(--acc); background:var(--qbg); break-after:avoid; }
+.item{ margin:8px 0 12px; }
+.qbox{ background:var(--qbg); border:1px solid #d6dbe2; border-left:4px solid var(--acc); padding:6px 9px; break-inside:avoid; break-after:avoid; }
+.qnum{ font-weight:bold; color:var(--acc); margin-right:4px; }
+.pts{ font-size:8.5pt; color:#555; }
+.yr{ float:right; font-size:8pt; color:#fff; background:#555; padding:0 5px; border-radius:2px; }
+.ans{ padding:4px 2px 0 12px; border-left:2px solid #cfe0f2; margin-left:2px; }
+.ans .lbl{ font-weight:bold; color:#0a6b2d; font-size:9pt; letter-spacing:.03em; }
+p{ margin:3px 0 5px; } ul,ol{ margin:3px 0 5px; padding-left:20px; } li{ margin:1px 0 2px; }
+pre{ font: 8.4pt/1.3 "DejaVu Sans Mono", Menlo, Consolas, monospace; background:var(--box); border:1px solid #dde; padding:5px 7px; margin:4px 0 6px; white-space:pre-wrap; }
+code{ font: 8.8pt "DejaVu Sans Mono", Menlo, Consolas, monospace; background:var(--box); padding:0 2px; }
+.qbox pre{ background:#fff; }
+table{ border-collapse:collapse; margin:4px 0 6px; font-size:9pt; break-inside:avoid; }
+th,td{ border:1px solid var(--rule); padding:2px 6px; text-align:left; vertical-align:top; }
+th{ background:var(--box); }
+.gantt{ display:flex; width:100%; margin:6px 0 0; border:1px solid #333; font-size:8.5pt; break-inside:avoid; }
+.gantt div{ border-right:1px solid #333; text-align:center; padding:3px 0; overflow:hidden; white-space:nowrap; }
+.gantt div:last-child{ border-right:0; }
+.g1{ background:#cfe3ff; } .g2{ background:#ffd9b3; } .gi{ background:#eee; color:#777; } .gx{ background:#ffb3b3; }
+.ticks{ display:flex; width:100%; font-size:8pt; color:#444; margin-bottom:6px; }
+.ticks span{ white-space:nowrap; }
+.fig{ display:block; margin:6px auto; max-width:100%; height:auto; break-inside:avoid; }
+.scan{ display:block; width:70%; margin:6px auto 2px; border:1px solid #ccc; }
+.mlq{ margin:6px auto; width:60%; text-align:center; font-size:9pt; }
+.mlq div{ border:1px solid #888; margin:3px 0; padding:2px; background:#fff; }
+.mlq .box{ border:1px solid #888; padding:2px 5px; background:#fff; }
+.note{ color:#555; font-size:9pt; }
+
+@page{ size: Letter; margin: 0.38in 0.42in; }
+body{ font-size:8.6pt; line-height:1.27; }
+h1{ font-size:12pt; margin:0 0 2px; }
+.lead, .toc{ display:none; }
+.exam{ break-before:auto; }
+.exam h2{ font-size:10.5pt; padding:2px 6px; margin:0 0 2px; }
+.hdr{ margin:5px 0 2px; padding:2px 6px; }
+.item{ margin:4px 0 6px; }
+.qbox{ padding:3px 6px; }
+.ans{ padding:2px 0 0 8px; }
+p{ margin:1px 0 3px; } ul,ol{ margin:1px 0 3px; padding-left:16px; } li{ margin:0 0 1px; }
+pre{ font-size:7.1pt; line-height:1.17; padding:3px 5px; margin:2px 0 3px; }
+code{ font-size:7.6pt; }
+table{ font-size:7.8pt; margin:2px 0 3px; } th,td{ padding:1px 4px; }
+.fig{ max-height:2.3in; width:auto; margin:3px auto; }
+.scan{ width:52%; margin:3px auto 1px; }
+.mlq{ width:48%; margin:3px auto; font-size:7.8pt; } .mlq div{ margin:1px 0; padding:1px; }
+.gantt{ font-size:7.5pt; margin-top:3px; } .gantt div{ padding:1px 0; }
+.note{ font-size:7.8pt; }
+pre.long{ column-count:2; column-gap:12px; column-rule:1px solid #dde; font-size:6.9pt; }
+</style></head><body><h1>CS5730 Operating Systems: 2013 Midterm Solutions</h1><p class='lead'>The 2013 paper only, in order. Each entry gives the year, the full question as printed, then a model answer sized to fit the space on the exam paper (prose kept to about 250 words; code, tables and diagrams added where the question needs them). Repeated questions use the same answer every time.</p><table class='toc'><tr><th>Year</th><th>Paper</th><th>Questions</th></tr><tr><td>2013</td><td>CS5730 Operating Systems Midterm (2013/11/11)</td><td>16 answers</td></tr></table><section class='exam'><h2>2013 · CS5730 Operating Systems Midterm (2013/11/11)</h2><div class='hdr'>1. Short Answer: Your answers should be as concise as possible; aim for three or four sentences.</div><div class='item'><div class='qbox'><span class='yr'>2013</span><span class='qnum'>Q1.1</span> <span class='pts'>(6 pt)</span> Explain why implementing synchronization primitives by disabling interrupts is not appropriate in a single-processor system if the synchronization primitives are to be used in user-level programs.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Disabling interrupts works on a uniprocessor only for <b>trusted kernel code</b>. It is the wrong tool for <b>user-level</b> synchronization because:</p>
+<ol>
+<li><b>It is a privileged instruction.</b> Letting user programs execute it breaks dual-mode protection; the hardware traps if user mode tries.</li>
+<li><b>The OS loses control of the CPU.</b> While interrupts are off, the <b>timer interrupt</b> cannot fire, so no preemption or context switch can happen. A buggy or malicious program could disable interrupts and never re-enable them (e.g. an infinite loop in its critical section). It would then <b>monopolize the CPU</b> and hang the whole system.</li>
+<li><b>Other events are delayed or lost.</b> I/O-completion interrupts and clock ticks are postponed, so devices sit idle, the system clock drifts and response time suffers. User critical sections can be long, which makes this worse.</li>
+</ol>
+<p>(It also does not scale: on a multiprocessor it only stops the local CPU.) User programs should instead use OS-provided semaphores/mutexes or atomic hardware instructions such as test_and_set or swap.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2013</span><span class='qnum'>Q1.2</span> <span class='pts'>(6 pt)</span> What is busy-waiting in the discussion of critical section problem? Explain how busy-waiting may degrade the system performance, or even deadlock?</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p><b>Busy waiting</b> (spinning) means a process waiting to enter its critical section repeatedly executes a loop that tests a condition, e.g. <code>while (test_and_set(&amp;lock));</code> or <code>while (S &lt;= 0);</code>. It never gives up the CPU while waiting.</p>
+<p><b>Performance:</b> the spinning process <b>wastes CPU cycles</b> that other processes could use. On a uniprocessor this is even worse: the spinner burns its whole time slice, and the lock holder cannot run during that time to finish and release the lock. So waiting gets longer and throughput drops.</p>
+<p><b>Deadlock:</b> with priority scheduling, suppose a high-priority process H spins on a lock held by a low-priority process L. H is always runnable, so the scheduler never runs L. L can never release the lock, and H spins forever. Both are stuck (a priority-inversion deadlock).</p>
+<p>Fix: a blocking semaphore, where a waiting process sleeps on a queue instead of spinning.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2013</span><span class='qnum'>Q1.3</span> <span class='pts'>(6 pt)</span> In class, we discuss the bounded buffer problem which uses two semaphore, empty and full. Explain the usage of these two semaphores.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Three semaphores protect a buffer of <i>n</i> slots: <b>mutex = 1</b> (mutual exclusion on the buffer), <b>empty = n</b> and <b>full = 0</b>.</p>
+<ul>
+<li><b>empty</b> counts <b>empty slots</b>. The producer calls <code>wait(empty)</code> before inserting, so it blocks when the buffer is full. The consumer calls <code>signal(empty)</code> after removing an item.</li>
+<li><b>full</b> counts <b>filled slots</b>. The consumer calls <code>wait(full)</code> before removing, so it blocks when the buffer is empty. The producer calls <code>signal(full)</code> after inserting.</li>
+</ul><pre>Producer:                        Consumer:
+do {                             do {
+    /* produce item */               wait(full);
+    wait(empty);                     wait(mutex);
+    wait(mutex);                     /* remove item */
+    /* add item to buffer */         signal(mutex);
+    signal(mutex);                   signal(empty);
+    signal(full);                    /* consume item */
+} while (true);                  } while (true);</pre><p>Together they replace busy-wait loops, so all n slots can be used. Order matters: calling wait(mutex) before wait(empty) can deadlock.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2013</span><span class='qnum'>Q1.4</span> <span class='pts'>(5 pt)</span> Illustrate how the two process scheduling criteria, CPU utilization and throughput, may conflict with each other?</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>CPU utilization measures how busy the CPU is; throughput measures how many processes <b>complete</b> per unit time. Maximizing one can hurt the other:</p>
+<ul>
+<li>Running <b>long CPU-bound jobs</b> keeps the CPU near 100% busy (high utilization). But each job takes a long time, so <b>few jobs finish</b> per unit time (low throughput). Short jobs stuck behind them also delay completion (convoy effect).</li>
+<li>Favoring <b>many short jobs</b> (SJF, short quantum) completes more jobs per unit time (high throughput). But it causes more context switches, whose overhead is not useful work, and short I/O-bound jobs leave the CPU idle while they wait on I/O. So utilization drops.</li>
+</ul></div></div><div class='item'><div class='qbox'><span class='yr'>2013</span><span class='qnum'>Q1.5</span> <span class='pts'>(6 pt)</span> What happens if one thread of a multi-threaded process call <code>fork()</code>? What happens if one thread of a multi-threaded process call <code>exec()</code>?</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p><b>fork():</b> this depends on the system. Some UNIX systems provide <b>two versions</b> of fork(). One <b>duplicates all threads</b> of the process. The other (the POSIX behaviour) <b>duplicates only the thread that called fork()</b>, so the child is single-threaded. If exec() is called right after fork(), duplicating only the calling thread is enough, because exec replaces everything anyway. If the child does not call exec, duplicating all threads may be needed.</p>
+<p><b>exec():</b> exec works as usual. The program named in its parameter <b>replaces the entire process, including all of its threads</b>. The other threads are destroyed, and the new program starts with a single thread.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2013</span><span class='qnum'>Q2</span> <span class='pts'>(10 pt)</span> A variation of the round-robin scheduler is the regressive round-robin scheduler. This scheduler assigns each process a time quantum and a priority. The initial value of a time quantum is 50 milliseconds. However, every time a process has been allocated the CPU and uses its entire time quantum (does not block for I/O), 10 milliseconds is added to its time quantum, and its priority level is boosted. (The time quantum for a process can be increased to a maximum of 100 milliseconds.) When a process blocks before using its entire time quantum, its time quantum is reduced by 5 milliseconds, but its priority remains the same. What type of process (CPU-bound or I/O-bound) does the regressive round-robin scheduler favor? Explain.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p><b>It favors CPU-bound processes.</b></p>
+<ul>
+<li>A process that <b>uses its entire quantum</b> (does not block for I/O) is CPU-bound behaviour. It is <b>rewarded</b>: +10 ms of quantum, up to 100 ms, <b>and</b> a priority boost.</li>
+<li>A process that <b>blocks before using its quantum</b> is I/O-bound / interactive behaviour. It is <b>penalized</b>: −5 ms of quantum, and its priority is <b>not</b> raised.</li>
+</ul>
+<p>So over time CPU-bound (batch) processes get longer time slices and higher priority, and I/O-bound processes get shorter slices and stay at lower priority. This is the opposite of the usual goal of favoring interactive processes.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2013</span><span class='qnum'>Q3</span> <span class='pts'>(10 pt)</span> Can a multi-threaded solution using multiple user-level threads achieve better performance on a multiprocessor system, which uses the many-to-one threading model, than on a single processor system? Explain.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p><b>No, not significantly.</b> In the many-to-one model, all user-level threads of the process are mapped onto <b>one kernel thread</b>. The kernel schedules only kernel threads, so it sees the process as a single schedulable entity. It can run on only <b>one processor at a time</b>, which means only one user thread executes at any moment even if other CPUs are idle. The program gets <b>no parallelism</b>, and its performance is essentially the same as on a single processor. Also, if any thread makes a blocking system call, the whole process (all threads) blocks.</p>
+<p>(The only gain is indirect: other processes can use the other CPUs, so the program may face less competition.) To benefit from multiple processors you need one-to-one or many-to-many threading.</p></div></div><div class='hdr'>4. Multilevel queue scheduling</div><div class='item'><div class='qbox'><span class='yr'>2013</span><span class='qnum'>Q4.1</span> <span class='pts'>(4 pt)</span> List two possible scheduling among queues, which we discussed in class.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Two ways to schedule <b>among</b> the queues of a multilevel queue:</p>
+<ol>
+<li><b>Fixed-priority (preemptive) scheduling.</b> Serve all processes in a higher-priority queue (e.g. foreground/interactive) before any process in a lower queue (background/batch). A process arriving in a higher queue preempts a lower one. Lower queues may <b>starve</b>.</li>
+<li><b>Time slicing among queues.</b> Each queue gets a fixed share of CPU time, which it schedules among its own processes. Example: 80% to the foreground queue (RR) and 20% to the background queue (FCFS).</li>
+</ol></div></div><div class='item'><div class='qbox'><span class='yr'>2013</span><span class='qnum'>Q4.2</span> <span class='pts'>(5 pt)</span> Why is it important for the scheduler to distinguish I/O-bound programs from CPU-bound programs?</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>I/O-bound and CPU-bound processes behave very differently. <b>I/O-bound</b> processes have many short CPU bursts. <b>CPU-bound</b> processes have few, long bursts.</p>
+<ul>
+<li>If an I/O-bound process gets the CPU quickly, it issues its next I/O request soon and then gets out of the way. The <b>devices stay busy</b> while CPU-bound processes use the CPU, so <b>both CPU and I/O utilization</b> improve.</li>
+<li>I/O-bound processes are usually <b>interactive</b>, so serving them first gives good <b>response time</b>.</li>
+<li>If they wait behind long CPU bursts (convoy effect), devices go idle and users see poor response.</li>
+</ul>
+<p>So the scheduler should give I/O-bound processes higher priority and short quanta, and give CPU-bound processes lower priority with longer quanta (fewer switches).</p></div></div><div class='item'><div class='qbox'><span class='yr'>2013</span><span class='qnum'>Q4.3</span> <span class='pts'>(6 pt)</span> Modify multilevel queue scheduling so it can distinguish I/O-bound programs from CPU-bound programs.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Change it into a <b>multilevel feedback queue</b>, where a process can <b>move between queues</b> based on its observed CPU bursts:</p><svg viewBox="0 0 560 170" width="520" class="fig" font-size="11" font-family="Arial"><defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#222"/></marker></defs>
+<g stroke="#222" fill="#eef3fa"><rect x="150" y="15" width="240" height="28"/><rect x="150" y="65" width="240" height="28"/><rect x="150" y="115" width="240" height="28"/></g>
+<g text-anchor="middle"><text x="270" y="33">Q0 interactive: RR q = 8 ms</text><text x="270" y="83">Q1: RR q = 16 ms</text><text x="270" y="133">Q2 batch: FCFS</text></g>
+<g stroke="#222" fill="none" marker-end="url(#ar)"><path d="M40,29 H148"/></g><text x="40" y="22" font-size="10">new process</text>
+<g stroke="#a40000" fill="none" marker-end="url(#ar)"><path d="M390,29 H420 V79 H392"/><path d="M390,79 H420 V129 H392"/></g>
+<g stroke="#0a6b2d" fill="none" marker-end="url(#ar)"><path d="M150,129 H120 V79 H148"/><path d="M150,79 H120 V35 H148"/></g>
+<text x="428" y="60" font-size="10" fill="#a40000">used full quantum</text><text x="428" y="73" font-size="10" fill="#a40000">(CPU-bound) → demote</text>
+<text x="2" y="100" font-size="10" fill="#0a6b2d">blocks before quantum</text><text x="2" y="113" font-size="10" fill="#0a6b2d">ends (I/O-bound) or</text><text x="2" y="126" font-size="10" fill="#0a6b2d">aging → promote</text>
+<text x="270" y="162" text-anchor="middle" font-size="10">Q0 served first, then Q1, then Q2 (preemptive priority between queues)</text></svg>
+<ul>
+<li>A new process enters <b>Q0</b> (small quantum). If it <b>uses the full quantum</b>, it is behaving CPU-bound and is <b>demoted</b> to Q1, then to Q2.</li>
+<li>If it <b>blocks for I/O before its quantum expires</b>, it is I/O-bound and stays in, or is <b>promoted</b> to, a higher queue.</li>
+<li><b>Aging:</b> a process that waits too long in a low queue is moved up, which prevents starvation.</li>
+</ul>
+<p>So I/O-bound processes end up in high-priority, short-quantum queues and CPU-bound processes in low-priority, long-quantum queues. Parameters: number of queues, algorithm per queue, promotion rule, demotion rule, entry queue.</p></div></div><div class='hdr'>5.</div><div class='item'><div class='qbox'><span class='yr'>2013</span><span class='qnum'>Q5.1</span> <span class='pts'>(5 pt)</span> Write to demonstrate how to use the atomic instruction TestAndSet for critical section problem.</div><div class='ans'><span class='lbl'>ANSWER</span><pre>boolean test_and_set(boolean *target) {   /* executed ATOMICALLY by hardware */
+    boolean rv = *target;
+    *target = true;
+    return rv;
+}
+
+boolean lock = false;                     /* shared */
+
+do {
+    while (test_and_set(&amp;lock))
+        ;                                 /* spin while lock was already true */
+    /* critical section */
+    lock = false;                         /* release */
+    /* remainder section */
+} while (true);</pre><p>The first process to call test_and_set gets back <b>false</b> (the lock was free) and has atomically set lock to true, so it enters. Every other caller gets <b>true</b> and keeps looping until the holder sets lock = false. This gives mutual exclusion. (Bounded waiting needs an extra <code>waiting[]</code> array.)</p></div></div><div class='item'><div class='qbox'><span class='yr'>2013</span><span class='qnum'>Q5.2</span> <span class='pts'>(5 pt)</span> Illustrate how your solution will fail if TestAndSet is not atomic.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>If test_and_set is not atomic, its read (<code>rv = *target</code>) and write (<code>*target = true</code>) can be interleaved. Start with lock = false:</p>
+<table><tr><th>Step</th><th>P0</th><th>P1</th><th>lock</th></tr>
+<tr><td>1</td><td>rv = lock → false</td><td></td><td>false</td></tr>
+<tr><td>2</td><td><i>preempted</i></td><td>rv = lock → false</td><td>false</td></tr>
+<tr><td>3</td><td></td><td>lock = true; returns false → <b>enters CS</b></td><td>true</td></tr>
+<tr><td>4</td><td>lock = true; returns false → <b>enters CS</b></td><td></td><td>true</td></tr></table>
+<p>Both processes saw the lock as free, so <b>both are in the critical section: mutual exclusion is violated.</b></p></div></div><div class='item'><div class='qbox'><span class='yr'>2013</span><span class='qnum'>Q5.3</span> <span class='pts'>(5 pt)</span> Write to demonstrate how to use the atomic instruction Swap for critical section problem.</div><div class='ans'><span class='lbl'>ANSWER</span><pre class="long">/* swap: executed ATOMICALLY by hardware */
+void swap(boolean *a, boolean *b) {
+    boolean temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+boolean lock = false;           /* shared */
+boolean key;                    /* local to each process */
+
+do {
+    key = true;
+    while (key == true)
+        swap(&amp;lock, &amp;key);  /* key=old lock; lock=true */
+    /* critical section */
+    lock = false;
+    /* remainder section */
+} while (true);</pre><p>A process loops until a swap returns <b>key = false</b>, meaning the lock was free. That same swap atomically set lock = true, so only one process gets out of the loop. The others keep getting key = true until lock is reset to false.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2013</span><span class='qnum'>Q5.4</span> <span class='pts'>(5 pt)</span> Illustrate how your solution will fail if Swap is not atomic.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>If swap is not atomic, the three steps (<code>temp=*a; *a=*b; *b=temp</code>) of two processes can interleave. Start with lock = false, and each process has key = true:</p>
+<table><tr><th>Step</th><th>P0</th><th>P1</th><th>lock</th></tr>
+<tr><td>1</td><td>temp0 = lock → false</td><td></td><td>false</td></tr>
+<tr><td>2</td><td><i>preempted</i></td><td>temp1 = lock → false</td><td>false</td></tr>
+<tr><td>3</td><td></td><td>lock = key1 (true); key1 = temp1 = false → <b>enters CS</b></td><td>true</td></tr>
+<tr><td>4</td><td>lock = key0 (true); key0 = temp0 = false → <b>enters CS</b></td><td></td><td>true</td></tr></table>
+<p>Both read the old value false before either wrote true, so both leave the loop. <b>Mutual exclusion is violated.</b></p></div></div><div class='item'><div class='qbox'><span class='yr'>2013</span><span class='qnum'>Q6</span> <span class='pts'>(10 pt)</span> Race conditions are possible in many computer systems. Consider a banking system with two methods: <code>deposit(amount)</code> and <code>withdraw(amount)</code>. These two methods are passed the amount that is to be deposited or withdrawn from a bank account. Assume that a husband and wife share a bank account and that concurrently the husband calls the <code>withdraw()</code> method and the wife calls <code>deposit()</code>.<br><i class='note'>(The question stops here on the paper. The textbook version asks: describe how a race condition is possible and what might be done to prevent it.)</i></div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>deposit() does <code>balance = balance + amount</code> and withdraw() does <code>balance = balance - amount</code>. At machine level each is <b>load balance → modify in a register → store balance</b>, which is not atomic. Suppose balance = 100, the husband withdraws 50 and the wife deposits 50 (the correct result is 100):</p>
+<table><tr><th>Step</th><th>Husband: withdraw(50)</th><th>Wife: deposit(50)</th><th>balance</th></tr>
+<tr><td>1</td><td>reg1 = balance (100)</td><td></td><td>100</td></tr>
+<tr><td>2</td><td></td><td>reg2 = balance (100)</td><td>100</td></tr>
+<tr><td>3</td><td>reg1 = 100 − 50; balance = 50</td><td></td><td>50</td></tr>
+<tr><td>4</td><td></td><td>reg2 = 100 + 50; balance = 150</td><td><b>150</b></td></tr></table>
+<p>The withdrawal is lost, and the result would be 50 if steps 3 and 4 were swapped. The outcome depends on the order of execution, which is a <b>race condition</b>.</p>
+<p><b>Prevention:</b> make the update a critical section, so only one method can touch balance at a time. Use a lock or semaphore (<code>wait(mutex); balance ±= amount; signal(mutex);</code>), a monitor, or synchronized methods.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2013</span><span class='qnum'>Q7</span> <span class='pts'>(6 pt)</span> Consider the following code segment:<pre>pid_t pid;
+
+pid = fork();
+if (pid == 0) { /* child process */
+    fork();
+    thread_create( . . .);
+}
+fork();</pre>a) How many unique processes are created?<br>b) How many unique threads are created?</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Trace each fork (the original process is P0):</p>
+<ul>
+<li>fork ① gives P0 and child C1. Only C1 has pid == 0.</li>
+<li>Inside the if, C1 calls fork ②, creating C2. <b>C1 and C2 each call thread_create()</b>, so 2 threads are created.</li>
+<li>The final fork ③ is executed by P0, C1 and C2, creating C3, C4 and C5.</li>
+</ul><svg viewBox="0 0 420 215" width="400" class="fig" font-size="11" font-family="Arial"><defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#222"/></marker></defs>
+<g stroke="#222" fill="none">
+<line x1="200" y1="30" x2="110" y2="80"/><line x1="200" y1="30" x2="300" y2="80"/>
+<line x1="110" y1="80" x2="55" y2="135"/><line x1="110" y1="80" x2="165" y2="135"/>
+<line x1="55" y1="135" x2="55" y2="185"/></g>
+<g font-size="10" fill="#0b4f8a"><text x="125" y="50">fork ①</text><text x="255" y="50">fork ③</text>
+<text x="40" y="108">fork ②</text><text x="140" y="108">fork ③</text><text x="60" y="165">fork ③</text></g>
+<g fill="#fff" stroke="#222"><circle cx="200" cy="25" r="15"/><circle cx="110" cy="80" r="15" fill="#ffe7b0"/><circle cx="300" cy="80" r="15"/>
+<circle cx="55" cy="135" r="15" fill="#ffe7b0"/><circle cx="165" cy="135" r="15"/><circle cx="55" cy="190" r="15"/></g>
+<g text-anchor="middle"><text x="200" y="29">P0</text><text x="110" y="84">C1</text><text x="300" y="84">C3</text>
+<text x="55" y="139">C2</text><text x="165" y="139">C4</text><text x="55" y="194">C5</text></g>
+<g font-size="10"><text x="128" y="78">+1 thread</text><text x="73" y="133">+1 thread</text></g>
+<text x="235" y="160" font-size="10">shaded = runs thread_create()</text>
+<text x="235" y="175" font-size="10">6 processes, 2 created threads</text></svg>
+<p><b>(a) 6 unique processes</b> (P0, C1–C5; 5 newly created if the original is not counted).<br>
+<b>(b) 2 unique threads</b> created by thread_create(), one in C1 and one in C2. The last fork() duplicates only the calling thread (POSIX), so it creates no extra threads.</p></div></div></section></body></html>

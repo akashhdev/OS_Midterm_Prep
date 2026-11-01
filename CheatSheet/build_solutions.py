@@ -204,7 +204,7 @@ A["sem_block"] = """
 <p>Each semaphore has an integer value and a <b>queue of waiting processes</b>. Instead of spinning, a process that must wait is <b>blocked</b> (moved to the waiting state and placed on the semaphore's queue). <code>signal</code> <b>wakes up</b> one waiting process (moves it to the ready queue).</p>""" + code("""
 typedef struct {
     int value;
-    struct process *list;      /* queue of waiting PCBs */
+    struct process *list;  /* queue of waiting PCBs */
 } semaphore;
 
 void wait(semaphore *S) {
@@ -320,19 +320,20 @@ A["tas_fail"] = """
 <p>Both processes saw the lock as free, so <b>both are in the critical section: mutual exclusion is violated.</b></p>"""
 
 A["swap"] = code("""
-void swap(boolean *a, boolean *b) {   /* executed ATOMICALLY by hardware */
+/* swap: executed ATOMICALLY by hardware */
+void swap(boolean *a, boolean *b) {
     boolean temp = *a;
     *a = *b;
     *b = temp;
 }
 
-boolean lock = false;                 /* shared */
-boolean key;                          /* local to each process */
+boolean lock = false;           /* shared */
+boolean key;                    /* local to each process */
 
 do {
     key = true;
     while (key == true)
-        swap(&lock, &key);            /* key gets old lock; lock becomes true */
+        swap(&lock, &key);  /* key=old lock; lock=true */
     /* critical section */
     lock = false;
     /* remainder section */
@@ -435,30 +436,30 @@ A["dp_sc"] = """
 <p>Combine the dining-philosopher monitor with the signal-and-continue implementation above. <code>self[i]</code> becomes semaphore <code>self_sem[i]</code> plus counter <code>self_count[i]</code>.</p>""" + code("""
 enum {THINKING, HUNGRY, EATING} state[5];
 semaphore mutex = 1;             // monitor lock
-semaphore next  = 0;             // signaled philosophers waiting to re-enter
+semaphore next  = 0;      // signaled, waiting to re-enter
 int next_count  = 0;
-semaphore self_sem[5]   = {0,0,0,0,0};   // condition self[i]
+semaphore self_sem[5]   = {0,0,0,0,0};  // cond. self[i]
 int       self_count[5] = {0,0,0,0,0};
 
-void leave() {                   // exit / release the monitor
+void leave() {                // release the monitor
     if (next_count > 0) signal(next);
     else                signal(mutex);
 }
 void self_wait(int i) {          // self[i].wait()
     self_count[i]++;
-    leave();                     // release monitor while waiting
+    leave();                  // release monitor
     wait(self_sem[i]);           // sleep until signaled
-    wait(next);                  // re-enter after signaler leaves
+    wait(next);               // re-enter after signaler
     next_count--;
 }
-void self_signal(int i) {        // self[i].signal()  signal-and-continue
+void self_signal(int i) {     // self[i].signal(), S&C
     if (self_count[i] > 0) {
         self_count[i]--;
         next_count++;
-        signal(self_sem[i]);     // wake i, caller continues
+        signal(self_sem[i]);  // wake i; caller continues
     }
 }
-void test(int i) {               // called only inside the monitor
+void test(int i) {            // only inside the monitor
     if (state[(i+4)%5] != EATING && state[i] == HUNGRY &&
         state[(i+1)%5] != EATING) {
         state[i] = EATING;
@@ -469,21 +470,25 @@ void pickup(int i) {
     wait(mutex);                 // enter monitor
     state[i] = HUNGRY;
     test(i);
-    while (state[i] != EATING)   // 'while': re-check after waking (S&C)
+    while (state[i] != EATING)  // re-check after waking
         self_wait(i);
     leave();
 }
 void putdown(int i) {
     wait(mutex);                 // enter monitor
     state[i] = THINKING;
-    test((i+4)%5);               // left neighbor may now eat
-    test((i+1)%5);               // right neighbor may now eat
+    test((i+4)%5);            // left neighbor may eat
+    test((i+1)%5);            // right neighbor may eat
     leave();
 }
-void init() { for (int i = 0; i < 5; i++) state[i] = THINKING; }
+void init() {
+    for (int i = 0; i < 5; i++) state[i] = THINKING;
+}
 
 void philosopher(int i) {
-    while (true) { think(); pickup(i); eat(); putdown(i); }
+    while (true) {
+        think(); pickup(i); eat(); putdown(i);
+    }
 }
 """) + """<p>It is correct under signal-and-continue because test() sets state[i] = EATING <b>before</b> signaling, and only philosopher i can change it back. So when i resumes, its condition still holds. A philosopher eats only when neither neighbor eats, so there is no deadlock (starvation is still possible).</p>"""
 
@@ -504,14 +509,14 @@ void *doSomething(void *y) {
 
 int main() {
     pthread_t t1[100];            /* declare threads */
-    int param[100], i;            /* one argument per thread */
+    int param[100], i;      /* one argument per thread */
 
     for (i = 0; i < 100; i++) {
         param[i] = i + 1;         /* 1, 2, ..., 100 */
         pthread_create(&(t1[i]), NULL, doSomething, &param[i]);
     }
     for (i = 0; i < 100; i++)
-        pthread_join(t1[i], NULL);  /* wait for all threads */
+        pthread_join(t1[i], NULL);  /* wait for all */
     return 0;
 }
 """) + """<p>(If the numbers must also be printed <i>in order</i>, the threads must additionally be synchronized, e.g. by joining each thread right after creating it.)</p>"""
@@ -647,7 +652,7 @@ void *doSomething(void *y) {
 }
 
 int main() {
-    pthread_t t1[100];                    /* declare a thread */
+    pthread_t t1[100];          /* declare a thread */
     int param1, i;
 
     param1 = 1;
@@ -928,6 +933,7 @@ body{ font-size:8.6pt; line-height:1.27; }
 h1{ font-size:12pt; margin:0 0 2px; }
 .lead, .toc{ display:none; }
 .exam{ break-before:auto; }
+.exam ~ .exam{ break-before:page; }
 .exam h2{ font-size:10.5pt; padding:2px 6px; margin:0 0 2px; }
 .hdr{ margin:5px 0 2px; padding:2px 6px; }
 .item{ margin:4px 0 6px; }
@@ -942,7 +948,7 @@ table{ font-size:7.8pt; margin:2px 0 3px; } th,td{ padding:1px 4px; }
 .mlq{ width:48%; margin:3px auto; font-size:7.8pt; } .mlq div{ margin:1px 0; padding:1px; }
 .gantt{ font-size:7.5pt; margin-top:3px; } .gantt div{ padding:1px 0; }
 .note{ font-size:7.8pt; }
-pre.long{ column-count:2; column-gap:14px; column-rule:1px solid #dde; }
+pre.long{ column-count:2; column-gap:12px; column-rule:1px solid #dde; font-size:6.9pt; }
 """
 
 def wc(h):

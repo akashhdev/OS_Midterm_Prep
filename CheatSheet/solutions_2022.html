@@ -197,7 +197,7 @@ x.signal                  // signal-and-continue
 <p><b>Degraded performance:</b> the waiting process <b>wastes CPU cycles</b> doing no useful work, and other ready processes could have used them. On a single CPU, the spinner uses its entire time slice while the lock holder cannot run to release the lock, so everyone waits longer. If the spinner has higher priority than the lock holder, the holder may never run, and the system can even <b>deadlock</b> (priority inversion). Busy waiting is acceptable only for very short waits on multiprocessors, where it avoids a context switch.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2022</span><span class='qnum'>Q6.2</span> <span class='pts'>(5 pt)</span> How to implement semaphore without <b>busy-waiting</b> using <code>block</code> and <code>wakeup</code>? You need to write down the definition of data structure <code>semaphore</code> and <code>wait</code> and <code>signal</code> operations.</div><div class='ans'><span class='lbl'>ANSWER</span>
 <p>Each semaphore has an integer value and a <b>queue of waiting processes</b>. Instead of spinning, a process that must wait is <b>blocked</b> (moved to the waiting state and placed on the semaphore's queue). <code>signal</code> <b>wakes up</b> one waiting process (moves it to the ready queue).</p><pre class="long">typedef struct {
     int value;
-    struct process *list;      /* queue of waiting PCBs */
+    struct process *list;  /* queue of waiting PCBs */
 } semaphore;
 
 void wait(semaphore *S) {

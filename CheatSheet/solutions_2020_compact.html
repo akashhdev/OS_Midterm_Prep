@@ -1,0 +1,192 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Past Exam Solutions</title><style>
+:root{ --acc:#0b4f8a; --rule:#bbb; --box:#f3f5f8; --qbg:#f6f7f9; }
+@page{ size: Letter; margin: 0.55in 0.6in; }
+*{ box-sizing:border-box; }
+html,body{ background:#fff; color:#111; }
+body{ font: 10pt/1.38 "Helvetica Neue", Arial, sans-serif; margin:0; padding:16px; max-width:8in; }
+@media print{ body{ padding:0; max-width:none; } }
+h1{ font-size:17pt; margin:0 0 4px; }
+.lead{ color:#444; margin-bottom:10px; }
+.toc td{ padding:2px 8px; }
+.exam{ break-before:page; }
+.exam h2{ font-size:14pt; color:#fff; background:var(--acc); padding:5px 8px; margin:0 0 4px; }
+.exam .meta{ font-size:9pt; color:#555; margin-bottom:8px; }
+.hdr{ font-weight:bold; margin:12px 0 4px; padding:4px 8px; border-left:4px solid var(--acc); background:var(--qbg); break-after:avoid; }
+.item{ margin:8px 0 12px; }
+.qbox{ background:var(--qbg); border:1px solid #d6dbe2; border-left:4px solid var(--acc); padding:6px 9px; break-inside:avoid; break-after:avoid; }
+.qnum{ font-weight:bold; color:var(--acc); margin-right:4px; }
+.pts{ font-size:8.5pt; color:#555; }
+.yr{ float:right; font-size:8pt; color:#fff; background:#555; padding:0 5px; border-radius:2px; }
+.ans{ padding:4px 2px 0 12px; border-left:2px solid #cfe0f2; margin-left:2px; }
+.ans .lbl{ font-weight:bold; color:#0a6b2d; font-size:9pt; letter-spacing:.03em; }
+p{ margin:3px 0 5px; } ul,ol{ margin:3px 0 5px; padding-left:20px; } li{ margin:1px 0 2px; }
+pre{ font: 8.4pt/1.3 "DejaVu Sans Mono", Menlo, Consolas, monospace; background:var(--box); border:1px solid #dde; padding:5px 7px; margin:4px 0 6px; white-space:pre-wrap; }
+code{ font: 8.8pt "DejaVu Sans Mono", Menlo, Consolas, monospace; background:var(--box); padding:0 2px; }
+.qbox pre{ background:#fff; }
+table{ border-collapse:collapse; margin:4px 0 6px; font-size:9pt; break-inside:avoid; }
+th,td{ border:1px solid var(--rule); padding:2px 6px; text-align:left; vertical-align:top; }
+th{ background:var(--box); }
+.gantt{ display:flex; width:100%; margin:6px 0 0; border:1px solid #333; font-size:8.5pt; break-inside:avoid; }
+.gantt div{ border-right:1px solid #333; text-align:center; padding:3px 0; overflow:hidden; white-space:nowrap; }
+.gantt div:last-child{ border-right:0; }
+.g1{ background:#cfe3ff; } .g2{ background:#ffd9b3; } .gi{ background:#eee; color:#777; } .gx{ background:#ffb3b3; }
+.ticks{ display:flex; width:100%; font-size:8pt; color:#444; margin-bottom:6px; }
+.ticks span{ white-space:nowrap; }
+.fig{ display:block; margin:6px auto; max-width:100%; height:auto; break-inside:avoid; }
+.scan{ display:block; width:70%; margin:6px auto 2px; border:1px solid #ccc; }
+.mlq{ margin:6px auto; width:60%; text-align:center; font-size:9pt; }
+.mlq div{ border:1px solid #888; margin:3px 0; padding:2px; background:#fff; }
+.mlq .box{ border:1px solid #888; padding:2px 5px; background:#fff; }
+.note{ color:#555; font-size:9pt; }
+
+@page{ size: Letter; margin: 0.38in 0.42in; }
+body{ font-size:8.6pt; line-height:1.27; }
+h1{ font-size:12pt; margin:0 0 2px; }
+.lead, .toc{ display:none; }
+.exam{ break-before:auto; }
+.exam h2{ font-size:10.5pt; padding:2px 6px; margin:0 0 2px; }
+.hdr{ margin:5px 0 2px; padding:2px 6px; }
+.item{ margin:4px 0 6px; }
+.qbox{ padding:3px 6px; }
+.ans{ padding:2px 0 0 8px; }
+p{ margin:1px 0 3px; } ul,ol{ margin:1px 0 3px; padding-left:16px; } li{ margin:0 0 1px; }
+pre{ font-size:7.1pt; line-height:1.17; padding:3px 5px; margin:2px 0 3px; }
+code{ font-size:7.6pt; }
+table{ font-size:7.8pt; margin:2px 0 3px; } th,td{ padding:1px 4px; }
+.fig{ max-height:2.3in; width:auto; margin:3px auto; }
+.scan{ width:52%; margin:3px auto 1px; }
+.mlq{ width:48%; margin:3px auto; font-size:7.8pt; } .mlq div{ margin:1px 0; padding:1px; }
+.gantt{ font-size:7.5pt; margin-top:3px; } .gantt div{ padding:1px 0; }
+.note{ font-size:7.8pt; }
+pre.long{ column-count:2; column-gap:12px; column-rule:1px solid #dde; font-size:6.9pt; }
+</style></head><body><h1>CS5730 Operating Systems: 2020 Midterm Solutions</h1><p class='lead'>The 2020 paper only, in order. Each entry gives the year, the full question as printed, then a model answer sized to fit the space on the exam paper (prose kept to about 250 words; code, tables and diagrams added where the question needs them). Repeated questions use the same answer every time.</p><table class='toc'><tr><th>Year</th><th>Paper</th><th>Questions</th></tr><tr><td>2020</td><td>CS5730 Operating Systems (2020/12/1; the paper is titled "Final")</td><td>16 answers</td></tr></table><section class='exam'><h2>2020 · CS5730 Operating Systems (2020/12/1; the paper is titled "Final")</h2><div class='meta'>Only the photographed pages are available (Q1–Q8).</div><div class='hdr'>1. Short Answer: Your answers should be as concise as possible; aim for three or four sentences.</div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q1.1</span> <span class='pts'>(5 pt)</span> Ordinarily the <code>exec()</code> system call follows the <code>fork()</code>. Explain what would happen if a programmer were to inadvertently place the call to <code>exec()</code> before the call to <code>fork()</code>.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>exec() <b>replaces the calling process's entire memory image</b> (code, data, heap, stack) with the program named in its parameters. On success, <b>it never returns</b>.</p>
+<p>So if exec() is placed before fork(), the new program starts running in place of the original one, under the <b>same process ID</b>. The rest of the original code, <b>including the fork() call, is gone and never executed</b>. <b>No child process is created</b>, and the original program's remaining work is not done.</p>
+<p>Only if exec() <b>fails</b> (returns −1) does execution continue to the fork().</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q1.2</span> <span class='pts'>(5 pt)</span> What happens if one thread of a multi-threaded process call <code>fork()</code>? What happens if one thread of a multi-threaded process call <code>exec()</code>?</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p><b>fork():</b> this depends on the system. Some UNIX systems provide <b>two versions</b> of fork(). One <b>duplicates all threads</b> of the process. The other (the POSIX behaviour) <b>duplicates only the thread that called fork()</b>, so the child is single-threaded. If exec() is called right after fork(), duplicating only the calling thread is enough, because exec replaces everything anyway. If the child does not call exec, duplicating all threads may be needed.</p>
+<p><b>exec():</b> exec works as usual. The program named in its parameter <b>replaces the entire process, including all of its threads</b>. The other threads are destroyed, and the new program starts with a single thread.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q1.3</span> <span class='pts'>(5 pt)</span> What is processor affinity? Explain why it needed to be considered during process scheduling on multiple CPU systems.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p><b>Processor affinity:</b> a process has an affinity for the processor it is currently running on. It is kept on (or restricted to) that same CPU rather than migrated to another one.</p>
+<p><b>Why it matters on multiple-CPU systems:</b> while a process runs, its recently used data fills that processor's <b>cache</b>. If the scheduler migrates it to another CPU, the old cache contents must be <b>invalidated</b> and the new processor's cache must be <b>repopulated</b>. That causes many cache misses and memory stalls, which is expensive. Keeping the process on the same CPU reuses the "warm" cache. On NUMA systems it also keeps the process close to its local memory.</p>
+<p><b>Soft affinity:</b> the OS tries to keep the process on the same CPU but may migrate it. <b>Hard affinity:</b> the process specifies the set of CPUs it may run on. The scheduler must balance affinity against <b>load balancing</b> (push/pull migration), which moves processes from busy to idle CPUs.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q2</span> <span class='pts'>(10 pt)</span> One technique for implementing lottery scheduling works by assigning processes lottery tickets, which are used for allocating CPU time. Whenever a scheduling decision has to be made, a lottery ticket is chosen at random, and the process holding that ticket gets the CPU. The BTV operating system implements lottery scheduling by holding a lottery 50 times each second, with each lottery winner getting 20 milliseconds of CPU time (20 milliseconds × 50 = 1 second). Describe how the BTV scheduler can ensure that higher-priority threads receive more attention from the CPU than lower-priority threads.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Give <b>higher-priority threads more lottery tickets</b>. At each of the 50 drawings per second, the winning ticket is chosen uniformly at random. A thread holding <i>k</i> of the <i>T</i> tickets therefore wins with probability k/T, and on average receives about <b>k/T of the CPU time</b> (k/T × 50 × 20 ms per second).</p>
+<p>Example: high-priority thread H has 30 tickets and low-priority L has 10. H wins about 75% of the drawings (≈ 750 ms per second) and L about 25% (≈ 250 ms). The scheduler can also adjust priority dynamically by giving or taking away tickets, e.g. extra tickets to a thread that has waited long. Every thread with at least one ticket eventually wins, so there is no starvation.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q3</span> <span class='pts'>(10 pt)</span> A variation of the round-robin scheduler is the <b>regressive round-robin scheduler</b>. This scheduler assigns each process a time quantum and a priority. The initial value of a time quantum is 50 milliseconds. However, every time a process has been allocated the CPU and uses its entire time quantum (does not block for I/O), 10 milliseconds is added to its time quantum, and its priority level is boosted. (The time quantum for a process can be increased to a maximum of 100 milliseconds.) When a process blocks before using its entire time quantum, its time quantum is reduced by 5 milliseconds, but its priority remains the same. What type of process, namely CPU-bound (such as batch processes) or I/O-bound (such as interactive processes), does the regressive round-robin scheduler favor? Explain.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p><b>It favors CPU-bound processes.</b></p>
+<ul>
+<li>A process that <b>uses its entire quantum</b> (does not block for I/O) is CPU-bound behaviour. It is <b>rewarded</b>: +10 ms of quantum, up to 100 ms, <b>and</b> a priority boost.</li>
+<li>A process that <b>blocks before using its quantum</b> is I/O-bound / interactive behaviour. It is <b>penalized</b>: −5 ms of quantum, and its priority is <b>not</b> raised.</li>
+</ul>
+<p>So over time CPU-bound (batch) processes get longer time slices and higher priority, and I/O-bound processes get shorter slices and stay at lower priority. This is the opposite of the usual goal of favoring interactive processes.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q4</span> <span class='pts'>(10 pt)</span> Consider the following code segment:<pre>pid_t pid;
+
+pid = fork();
+if (pid == 0) { /* child process */
+    fork();
+    thread_create( . . .);
+}
+fork();</pre>a) How many unique processes are created?<br>b) How many unique threads are created?</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Trace each fork (the original process is P0):</p>
+<ul>
+<li>fork ① gives P0 and child C1. Only C1 has pid == 0.</li>
+<li>Inside the if, C1 calls fork ②, creating C2. <b>C1 and C2 each call thread_create()</b>, so 2 threads are created.</li>
+<li>The final fork ③ is executed by P0, C1 and C2, creating C3, C4 and C5.</li>
+</ul><svg viewBox="0 0 420 215" width="400" class="fig" font-size="11" font-family="Arial"><defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#222"/></marker></defs>
+<g stroke="#222" fill="none">
+<line x1="200" y1="30" x2="110" y2="80"/><line x1="200" y1="30" x2="300" y2="80"/>
+<line x1="110" y1="80" x2="55" y2="135"/><line x1="110" y1="80" x2="165" y2="135"/>
+<line x1="55" y1="135" x2="55" y2="185"/></g>
+<g font-size="10" fill="#0b4f8a"><text x="125" y="50">fork ①</text><text x="255" y="50">fork ③</text>
+<text x="40" y="108">fork ②</text><text x="140" y="108">fork ③</text><text x="60" y="165">fork ③</text></g>
+<g fill="#fff" stroke="#222"><circle cx="200" cy="25" r="15"/><circle cx="110" cy="80" r="15" fill="#ffe7b0"/><circle cx="300" cy="80" r="15"/>
+<circle cx="55" cy="135" r="15" fill="#ffe7b0"/><circle cx="165" cy="135" r="15"/><circle cx="55" cy="190" r="15"/></g>
+<g text-anchor="middle"><text x="200" y="29">P0</text><text x="110" y="84">C1</text><text x="300" y="84">C3</text>
+<text x="55" y="139">C2</text><text x="165" y="139">C4</text><text x="55" y="194">C5</text></g>
+<g font-size="10"><text x="128" y="78">+1 thread</text><text x="73" y="133">+1 thread</text></g>
+<text x="235" y="160" font-size="10">shaded = runs thread_create()</text>
+<text x="235" y="175" font-size="10">6 processes, 2 created threads</text></svg>
+<p><b>(a) 6 unique processes</b> (P0, C1–C5; 5 newly created if the original is not counted).<br>
+<b>(b) 2 unique threads</b> created by thread_create(), one in C1 and one in C2. The last fork() duplicates only the calling thread (POSIX), so it creates no extra threads.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q5</span> <span class='pts'>(15 pt)</span> Discuss how the following pairs of scheduling criteria conflict in certain settings.</div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q5.1</span> CPU utilization and response time</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>CPU utilization vs. response time.</b> CPU utilization is highest when context switches are rare, as with FCFS or a long quantum, because each switch is pure overhead. Good response time for interactive users needs <b>frequent preemption</b> (a short RR quantum) so every user gets the CPU quickly. That causes many context switches, so the CPU spends more time switching and less doing useful work, which lowers utilization.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q5.2</span> Average turnaround time and maximum waiting time</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>Average turnaround time vs. maximum waiting time.</b> Average turnaround is minimized by running the <b>shortest jobs first</b> (SJF/SRTF). But a long job can be postponed again and again as short jobs keep arriving, so it may <b>starve</b>. Its waiting time, the <b>maximum</b> waiting time, becomes very large (unbounded). Bounding the maximum wait (e.g. with FCFS or aging) raises the average turnaround.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q5.3</span> I/O device utilization and CPU utilization</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>I/O device utilization vs. CPU utilization.</b> Keeping devices busy means running <b>I/O-bound</b> processes as soon as their I/O completes, so they can issue the next request quickly. This means frequently preempting CPU-bound processes, and the context-switch overhead lowers CPU utilization. Maximizing CPU utilization means letting CPU-bound jobs run long without switching, which leaves the I/O devices <b>idle</b> while I/O-bound jobs wait for the CPU.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q5.4</span> Deadline and fairness</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>Deadline vs. fairness.</b> To meet deadlines, the scheduler must always give the CPU to the most urgent process (earliest deadline or real-time priority), regardless of how much CPU it has already had. Other processes may wait a long time or <b>starve</b>, which is unfair. A <b>fair</b> scheduler gives everyone an equal share, so urgent tasks may not get enough CPU in time and <b>miss their deadlines</b>.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q5.5</span> Throughput and context switch overhead</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>Throughput vs. context-switch overhead.</b> Throughput (jobs completed per unit time) is improved by finishing short jobs quickly, which needs preemption: SJF/SRTF or a small RR quantum. Every preemption adds <b>context-switch overhead</b>, during which no useful work is done. Minimizing switches (FCFS, large quantum) traps short jobs behind long ones (<b>convoy effect</b>), so fewer jobs complete per unit time. If the quantum is too small, overhead itself eats the throughput.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q6</span> <span class='pts'>(10 pt)</span> A student is asked to write a program which will create a hundred POSIX threads. Each thread will print out the value of the parameter passed from <code>main()</code> which are 1, 2, 3, up to 100 respectively. Consider the following code fragment he wrote, please verify its correctness. If incorrect, please correct the error.<pre class="long">void *doSomething(void *y) {
+    ...
+    printf(&quot;%d\n&quot;, *y);
+    ...
+}
+
+int main() {
+    pthread_t t1[100];          /* declare a thread */
+    int param1, i;
+
+    param1 = 1;
+    for (i = 0; i &lt; 100; i++) {
+        param1++;
+        pthread_create(&amp;(t1[i]), NULL, doSomething, &amp;param1);
+    }
+    ...
+}</pre></div><div class='ans'><span class='lbl'>ANSWER</span>
+<p><b>Incorrect.</b> Problems:</p>
+<ol>
+<li><b>All 100 threads receive the same address <code>&amp;param1</code>.</b> main keeps incrementing param1 while the threads run, so each thread prints whatever value param1 holds when that thread happens to run. The output has duplicates and missing numbers (often many 100s), not 1…100.</li>
+<li>main never calls <b>pthread_join</b>, so it may return (ending the process and all its threads) before the threads print.</li>
+<li><code>*y</code> dereferences a <code>void *</code>, so it needs a cast to <code>int *</code>.</li>
+</ol>
+<p><b>Corrected:</b> give every thread its own argument and join all threads.</p><pre class="long">void *doSomething(void *y) {
+    ...
+    printf(&quot;%d\n&quot;, *(int *)y);
+    ...
+    pthread_exit(0);
+}
+
+int main() {
+    pthread_t t1[100];            /* declare threads */
+    int param[100], i;      /* one argument per thread */
+
+    for (i = 0; i &lt; 100; i++) {
+        param[i] = i + 1;         /* 1, 2, ..., 100 */
+        pthread_create(&amp;(t1[i]), NULL, doSomething, &amp;param[i]);
+    }
+    for (i = 0; i &lt; 100; i++)
+        pthread_join(t1[i], NULL);  /* wait for all */
+    return 0;
+}</pre><p>(If the numbers must also be printed <i>in order</i>, the threads must additionally be synchronized, e.g. by joining each thread right after creating it.)</p></div></div><div class='hdr'>7. Consider the Intel address translation scheme shown in the following.<div class="mlq" style="display:flex;gap:4px;align-items:center;justify-content:center"><span class="box">CPU</span>→<i>logical address</i>→<span class="box">segmentation unit</span>→<i>linear address</i>→<span class="box">paging unit</span>→<i>physical address</i>→<span class="box">physical memory</span></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q7.1</span> <span class='pts'>(10 pt)</span> Illustrate all the steps that the Intel 80386 takes in translating a logical address into a physical address.</div><div class='ans'><span class='lbl'>ANSWER</span><svg viewBox="0 0 680 235" width="640" class="fig" font-size="10.5" font-family="Arial"><defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#222"/></marker></defs>
+<rect x="5" y="25" width="45" height="30" fill="#eef3fa" stroke="#222"/><text x="27" y="44" text-anchor="middle">CPU</text>
+<text x="70" y="18">logical address</text>
+<rect x="65" y="25" width="70" height="30" fill="#fff" stroke="#222"/><rect x="135" y="25" width="60" height="30" fill="#fff" stroke="#222"/>
+<text x="100" y="38" text-anchor="middle" font-size="9">selector</text><text x="100" y="50" text-anchor="middle" font-size="8">s(13) g(1) p(2)</text><text x="165" y="44" text-anchor="middle">offset 32</text>
+<rect x="65" y="80" width="130" height="50" fill="#fffbe6" stroke="#222"/><text x="130" y="98" text-anchor="middle">descriptor table</text><text x="130" y="111" text-anchor="middle" font-size="9">(LDT if g=0, GDT if g=1)</text><text x="130" y="123" text-anchor="middle" font-size="9">entry = base, limit, rights</text>
+<circle cx="250" cy="105" r="13" fill="#fff" stroke="#222"/><text x="250" y="110" text-anchor="middle" font-size="14">+</text>
+<text x="215" y="148" font-size="9">offset ≤ limit? else trap</text>
+<rect x="300" y="90" width="60" height="30" fill="#fff" stroke="#222"/><rect x="360" y="90" width="60" height="30" fill="#fff" stroke="#222"/><rect x="420" y="90" width="70" height="30" fill="#fff" stroke="#222"/>
+<text x="330" y="109" text-anchor="middle">p1 (10)</text><text x="390" y="109" text-anchor="middle">p2 (10)</text><text x="455" y="109" text-anchor="middle">d (12)</text>
+<text x="330" y="83">32-bit linear address</text>
+<rect x="290" y="165" width="80" height="45" fill="#fffbe6" stroke="#222"/><text x="330" y="185" text-anchor="middle">page</text><text x="330" y="198" text-anchor="middle">directory</text>
+<rect x="400" y="165" width="80" height="45" fill="#fffbe6" stroke="#222"/><text x="440" y="185" text-anchor="middle">page</text><text x="440" y="198" text-anchor="middle">table</text>
+<rect x="520" y="165" width="50" height="30" fill="#fff" stroke="#222"/><rect x="570" y="165" width="50" height="30" fill="#fff" stroke="#222"/>
+<text x="545" y="184" text-anchor="middle">frame f</text><text x="595" y="184" text-anchor="middle">d</text><text x="530" y="158">physical address</text>
+<rect x="630" y="160" width="45" height="40" fill="#eef3fa" stroke="#222"/><text x="652" y="178" text-anchor="middle" font-size="9">physical</text><text x="652" y="190" text-anchor="middle" font-size="9">memory</text>
+<text x="240" y="230">CR3 → page directory</text>
+<g stroke="#222" fill="none" marker-end="url(#ar)">
+<path d="M50,40 H63"/><path d="M100,55 V78"/><path d="M195,105 H235"/><path d="M165,55 V70 H250 V90"/>
+<path d="M263,105 H298"/><path d="M330,120 V163"/><path d="M390,120 V140 H440 V163"/><path d="M370,188 H398"/>
+<path d="M480,188 H518"/><path d="M455,120 V135 H595 V163"/><path d="M620,180 H628"/><path d="M270,222 H300 V212"/></g>
+<text x="200" y="125" font-size="9">base</text></svg>
+<ol>
+<li>The CPU generates a <b>logical address = (selector, offset)</b>. The 16-bit selector has <b>s</b> = 13-bit segment number, <b>g</b> = 1 bit choosing GDT or LDT, and <b>p</b> = 2 protection bits.</li>
+<li>The <b>segmentation unit</b> uses s and g to fetch the 8-byte <b>segment descriptor</b> from the <b>LDT</b> (private segments) or <b>GDT</b> (shared segments). Descriptors are cached in segment registers. It checks the offset against the segment <b>limit</b> and the access rights, trapping on a violation, then computes the <b>linear address = base + offset</b> (32 bits).</li>
+<li>The <b>paging unit</b> splits the linear address into <b>p1 (10 bits) | p2 (10 bits) | d (12 bits)</b>. Register <b>CR3</b> points to the current <b>page directory</b>. p1 selects a directory entry, which points to a <b>page table</b>. p2 selects the page-table entry, which gives <b>frame f</b>.</li>
+<li><b>Physical address = f concatenated with d</b>, which is sent to memory. (For 4 MB pages the directory entry points straight at the frame, with a 22-bit offset. The TLB caches recent translations.)</li>
+</ol></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q7.2</span> <span class='pts'>(5 pt)</span> What are the advantages to the operating system of hardware that provides such complicated memory translation hardware?</div><div class='ans'><span class='lbl'>ANSWER</span>
+<ul>
+<li><b>Segmentation</b> matches the programmer's view (code, data and stack as separate logical units). It gives <b>per-segment protection</b> (e.g. read-only, execute-only code, privilege levels) and easy <b>sharing</b> of whole segments between processes.</li>
+<li><b>Paging</b> on top removes <b>external fragmentation</b>. Segments need not be contiguous in physical memory; they are allocated in fixed-size frames, so allocation is simple.</li>
+<li>The OS gets <b>flexibility</b>: pages can be swapped or loaded on demand (virtual memory), shared at page level, and protected with page bits. The hardware does the work at memory speed, so the OS does not translate in software.</li>
+</ul></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q7.3</span> <span class='pts'>(5 pt)</span> Are there any disadvantages to this address-translation system? If so, what are they? If not, why is it not used by every manufacturer?</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p><b>Yes.</b></p>
+<ul>
+<li><b>Slower access:</b> without TLB hits, each reference needs a segment-descriptor lookup plus <b>two page-table memory accesses</b> (directory and table) before the data access itself.</li>
+<li><b>Complexity and cost:</b> more hardware (segment registers, descriptor tables, MMU, TLB), more chip area and power. The OS must manage both segment tables and page tables.</li>
+<li><b>Memory overhead</b> for the tables, and paging still has internal fragmentation.</li>
+</ul>
+<p>Because of this cost and complexity, many manufacturers (most RISC designs, ARM, and x86-64 in practice with a flat segment model) use <b>paging only</b>. It delivers most of the benefit with simpler, faster hardware.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q8</span> <span class='pts'>(10 pt)</span> Assume we have a demand-paged memory. The page table is held in registers. It takes 8 milliseconds to service a page fault if an empty page is available or the replaced page is not modified, and 20 milliseconds if the replaced page is modified. Memory access time is 100 nanoseconds. Assume that the page to be replaced is modified 70 percent of the time. What is the maximum acceptable page-fault rate for an effective access time of no more than 200 nanoseconds?</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Let p = page-fault rate. Memory access = 100 ns. A page-fault service averages:</p>
+<p>0.3 × 8 ms + 0.7 × 20 ms = 2.4 + 14 = <b>16.4 ms = 16,400,000 ns</b></p>
+<p>Effective access time: EAT = (1 − p) × 100 + p × 16,400,000 ≤ 200</p>
+<p>100 + 16,399,900 p ≤ 200 → p ≤ 100 / 16,399,900</p>
+<p><b>p ≤ 6.1 × 10<sup>−6</sup></b> (about 1 fault per 164,000 memory accesses).</p>
+<p class="note">Keep units consistent (ms → ns). Since the page table is in registers, a non-faulting access costs just one memory access (100 ns).</p></div></div></section></body></html>

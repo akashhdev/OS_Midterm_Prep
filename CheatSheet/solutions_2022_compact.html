@@ -58,7 +58,7 @@ table{ font-size:7.8pt; margin:2px 0 3px; } th,td{ padding:1px 4px; }
 .mlq{ width:48%; margin:3px auto; font-size:7.8pt; } .mlq div{ margin:1px 0; padding:1px; }
 .gantt{ font-size:7.5pt; margin-top:3px; } .gantt div{ padding:1px 0; }
 .note{ font-size:7.8pt; }
-pre.long{ column-count:2; column-gap:14px; column-rule:1px solid #dde; }
+pre.long{ column-count:2; column-gap:12px; column-rule:1px solid #dde; font-size:6.9pt; }
 </style></head><body><h1>CS5730 Operating Systems: 2022 Midterm Solutions</h1><p class='lead'>The 2022 paper only, in order. Each entry gives the year, the full question as printed, then a model answer sized to fit the space on the exam paper (prose kept to about 250 words; code, tables and diagrams added where the question needs them). Repeated questions use the same answer every time.</p><table class='toc'><tr><th>Year</th><th>Paper</th><th>Questions</th></tr><tr><td>2022</td><td>CS5730 Operating Systems Midterm (2022/11/22)</td><td>11 answers</td></tr></table><section class='exam'><h2>2022 · CS5730 Operating Systems Midterm (2022/11/22)</h2><div class='hdr'>Essay Questions: Your answers should be as concise and clear as possible</div><div class='item'><div class='qbox'><span class='yr'>2022</span><span class='qnum'>Q1</span> <span class='pts'>(5 pt)</span> Explain why implementing synchronization primitives by disabling interrupts is not appropriate in a single-processor system if the synchronization primitives are to be used in user-level programs.</div><div class='ans'><span class='lbl'>ANSWER</span>
 <p>Disabling interrupts works on a uniprocessor only for <b>trusted kernel code</b>. It is the wrong tool for <b>user-level</b> synchronization because:</p>
 <ol>
@@ -218,7 +218,7 @@ x.signal                  // signal-and-continue
 <p><b>Degraded performance:</b> the waiting process <b>wastes CPU cycles</b> doing no useful work, and other ready processes could have used them. On a single CPU, the spinner uses its entire time slice while the lock holder cannot run to release the lock, so everyone waits longer. If the spinner has higher priority than the lock holder, the holder may never run, and the system can even <b>deadlock</b> (priority inversion). Busy waiting is acceptable only for very short waits on multiprocessors, where it avoids a context switch.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2022</span><span class='qnum'>Q6.2</span> <span class='pts'>(5 pt)</span> How to implement semaphore without <b>busy-waiting</b> using <code>block</code> and <code>wakeup</code>? You need to write down the definition of data structure <code>semaphore</code> and <code>wait</code> and <code>signal</code> operations.</div><div class='ans'><span class='lbl'>ANSWER</span>
 <p>Each semaphore has an integer value and a <b>queue of waiting processes</b>. Instead of spinning, a process that must wait is <b>blocked</b> (moved to the waiting state and placed on the semaphore's queue). <code>signal</code> <b>wakes up</b> one waiting process (moves it to the ready queue).</p><pre class="long">typedef struct {
     int value;
-    struct process *list;      /* queue of waiting PCBs */
+    struct process *list;  /* queue of waiting PCBs */
 } semaphore;
 
 void wait(semaphore *S) {

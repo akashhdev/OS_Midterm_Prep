@@ -1,0 +1,270 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Past Exam Solutions</title><style>
+:root{ --acc:#0b4f8a; --rule:#bbb; --box:#f3f5f8; --qbg:#f6f7f9; }
+@page{ size: Letter; margin: 0.55in 0.6in; }
+*{ box-sizing:border-box; }
+html,body{ background:#fff; color:#111; }
+body{ font: 10pt/1.38 "Helvetica Neue", Arial, sans-serif; margin:0; padding:16px; max-width:8in; }
+@media print{ body{ padding:0; max-width:none; } }
+h1{ font-size:17pt; margin:0 0 4px; }
+.lead{ color:#444; margin-bottom:10px; }
+.toc td{ padding:2px 8px; }
+.exam{ break-before:page; }
+.exam h2{ font-size:14pt; color:#fff; background:var(--acc); padding:5px 8px; margin:0 0 4px; }
+.exam .meta{ font-size:9pt; color:#555; margin-bottom:8px; }
+.hdr{ font-weight:bold; margin:12px 0 4px; padding:4px 8px; border-left:4px solid var(--acc); background:var(--qbg); break-after:avoid; }
+.item{ margin:8px 0 12px; }
+.qbox{ background:var(--qbg); border:1px solid #d6dbe2; border-left:4px solid var(--acc); padding:6px 9px; break-inside:avoid; break-after:avoid; }
+.qnum{ font-weight:bold; color:var(--acc); margin-right:4px; }
+.pts{ font-size:8.5pt; color:#555; }
+.yr{ float:right; font-size:8pt; color:#fff; background:#555; padding:0 5px; border-radius:2px; }
+.ans{ padding:4px 2px 0 12px; border-left:2px solid #cfe0f2; margin-left:2px; }
+.ans .lbl{ font-weight:bold; color:#0a6b2d; font-size:9pt; letter-spacing:.03em; }
+p{ margin:3px 0 5px; } ul,ol{ margin:3px 0 5px; padding-left:20px; } li{ margin:1px 0 2px; }
+pre{ font: 8.4pt/1.3 "DejaVu Sans Mono", Menlo, Consolas, monospace; background:var(--box); border:1px solid #dde; padding:5px 7px; margin:4px 0 6px; white-space:pre-wrap; }
+code{ font: 8.8pt "DejaVu Sans Mono", Menlo, Consolas, monospace; background:var(--box); padding:0 2px; }
+.qbox pre{ background:#fff; }
+table{ border-collapse:collapse; margin:4px 0 6px; font-size:9pt; break-inside:avoid; }
+th,td{ border:1px solid var(--rule); padding:2px 6px; text-align:left; vertical-align:top; }
+th{ background:var(--box); }
+.gantt{ display:flex; width:100%; margin:6px 0 0; border:1px solid #333; font-size:8.5pt; break-inside:avoid; }
+.gantt div{ border-right:1px solid #333; text-align:center; padding:3px 0; overflow:hidden; white-space:nowrap; }
+.gantt div:last-child{ border-right:0; }
+.g1{ background:#cfe3ff; } .g2{ background:#ffd9b3; } .gi{ background:#eee; color:#777; } .gx{ background:#ffb3b3; }
+.ticks{ display:flex; width:100%; font-size:8pt; color:#444; margin-bottom:6px; }
+.ticks span{ white-space:nowrap; }
+.fig{ display:block; margin:6px auto; max-width:100%; height:auto; break-inside:avoid; }
+.scan{ display:block; width:70%; margin:6px auto 2px; border:1px solid #ccc; }
+.mlq{ margin:6px auto; width:60%; text-align:center; font-size:9pt; }
+.mlq div{ border:1px solid #888; margin:3px 0; padding:2px; background:#fff; }
+.mlq .box{ border:1px solid #888; padding:2px 5px; background:#fff; }
+.note{ color:#555; font-size:9pt; }
+
+@page{ size: Letter; margin: 0.38in 0.42in; }
+body{ font-size:8.6pt; line-height:1.27; }
+h1{ font-size:12pt; margin:0 0 2px; }
+.lead, .toc{ display:none; }
+.exam{ break-before:auto; }
+.exam h2{ font-size:10.5pt; padding:2px 6px; margin:0 0 2px; }
+.hdr{ margin:5px 0 2px; padding:2px 6px; }
+.item{ margin:4px 0 6px; }
+.qbox{ padding:3px 6px; }
+.ans{ padding:2px 0 0 8px; }
+p{ margin:1px 0 3px; } ul,ol{ margin:1px 0 3px; padding-left:16px; } li{ margin:0 0 1px; }
+pre{ font-size:7.1pt; line-height:1.17; padding:3px 5px; margin:2px 0 3px; }
+code{ font-size:7.6pt; }
+table{ font-size:7.8pt; margin:2px 0 3px; } th,td{ padding:1px 4px; }
+.fig{ max-height:2.3in; width:auto; margin:3px auto; }
+.scan{ width:52%; margin:3px auto 1px; }
+.mlq{ width:48%; margin:3px auto; font-size:7.8pt; } .mlq div{ margin:1px 0; padding:1px; }
+.gantt{ font-size:7.5pt; margin-top:3px; } .gantt div{ padding:1px 0; }
+.note{ font-size:7.8pt; }
+pre.long{ column-count:2; column-gap:12px; column-rule:1px solid #dde; font-size:6.9pt; }
+</style></head><body><h1>CS5730 Operating Systems: 2019 Midterm Solutions</h1><p class='lead'>The 2019 paper only, in order. Each entry gives the year, the full question as printed, then a model answer sized to fit the space on the exam paper (prose kept to about 250 words; code, tables and diagrams added where the question needs them). Repeated questions use the same answer every time.</p><table class='toc'><tr><th>Year</th><th>Paper</th><th>Questions</th></tr><tr><td>2019</td><td>CS5730 Operating Systems Midterm (2019/12/12)</td><td>11 answers</td></tr></table><section class='exam'><h2>2019 · CS5730 Operating Systems Midterm (2019/12/12)</h2><div class='hdr'>1. Short Answer: Your answers should be as concise as possible; aim for three or four sentences.</div><div class='item'><div class='qbox'><span class='yr'>2019</span><span class='qnum'>Q1.1</span> <span class='pts'>(5 pt)</span> Ordinarily the <code>exec()</code> system call follows the <code>fork()</code>. Explain what would happen if a programmer were to inadvertently place the call to <code>exec()</code> before the call to <code>fork()</code>.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>exec() <b>replaces the calling process's entire memory image</b> (code, data, heap, stack) with the program named in its parameters. On success, <b>it never returns</b>.</p>
+<p>So if exec() is placed before fork(), the new program starts running in place of the original one, under the <b>same process ID</b>. The rest of the original code, <b>including the fork() call, is gone and never executed</b>. <b>No child process is created</b>, and the original program's remaining work is not done.</p>
+<p>Only if exec() <b>fails</b> (returns −1) does execution continue to the fork().</p></div></div><div class='item'><div class='qbox'><span class='yr'>2019</span><span class='qnum'>Q1.2</span> <span class='pts'>(5 pt)</span> What happens if one thread of a multi-threaded process call <code>fork()</code>? What happens if one thread of a multi-threaded process call <code>exec()</code>?</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p><b>fork():</b> this depends on the system. Some UNIX systems provide <b>two versions</b> of fork(). One <b>duplicates all threads</b> of the process. The other (the POSIX behaviour) <b>duplicates only the thread that called fork()</b>, so the child is single-threaded. If exec() is called right after fork(), duplicating only the calling thread is enough, because exec replaces everything anyway. If the child does not call exec, duplicating all threads may be needed.</p>
+<p><b>exec():</b> exec works as usual. The program named in its parameter <b>replaces the entire process, including all of its threads</b>. The other threads are destroyed, and the new program starts with a single thread.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2019</span><span class='qnum'>Q1.3</span> <span class='pts'>(5 pt)</span> What is processor affinity? Explain why it needed to be considered during process scheduling on multiple CPU systems.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p><b>Processor affinity:</b> a process has an affinity for the processor it is currently running on. It is kept on (or restricted to) that same CPU rather than migrated to another one.</p>
+<p><b>Why it matters on multiple-CPU systems:</b> while a process runs, its recently used data fills that processor's <b>cache</b>. If the scheduler migrates it to another CPU, the old cache contents must be <b>invalidated</b> and the new processor's cache must be <b>repopulated</b>. That causes many cache misses and memory stalls, which is expensive. Keeping the process on the same CPU reuses the "warm" cache. On NUMA systems it also keeps the process close to its local memory.</p>
+<p><b>Soft affinity:</b> the OS tries to keep the process on the same CPU but may migrate it. <b>Hard affinity:</b> the process specifies the set of CPUs it may run on. The scheduler must balance affinity against <b>load balancing</b> (push/pull migration), which moves processes from busy to idle CPUs.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2019</span><span class='qnum'>Q2</span> <span class='pts'>(10 pt)</span> One technique for implementing lottery scheduling works by assigning processes lottery tickets, which are used for allocating CPU time. Whenever a scheduling decision has to be made, a lottery ticket is chosen at random, and the process holding that ticket gets the CPU. The BTV operating system implements lottery scheduling by holding a lottery 50 times each second, with each lottery winner getting 20 milliseconds of CPU time (20 milliseconds × 50 = 1 second). Describe how the BTV scheduler can ensure that higher-priority threads receive more attention from the CPU than lower-priority threads.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Give <b>higher-priority threads more lottery tickets</b>. At each of the 50 drawings per second, the winning ticket is chosen uniformly at random. A thread holding <i>k</i> of the <i>T</i> tickets therefore wins with probability k/T, and on average receives about <b>k/T of the CPU time</b> (k/T × 50 × 20 ms per second).</p>
+<p>Example: high-priority thread H has 30 tickets and low-priority L has 10. H wins about 75% of the drawings (≈ 750 ms per second) and L about 25% (≈ 250 ms). The scheduler can also adjust priority dynamically by giving or taking away tickets, e.g. extra tickets to a thread that has waited long. Every thread with at least one ticket eventually wins, so there is no starvation.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2019</span><span class='qnum'>Q3</span> <span class='pts'>(15 pt)</span> A variation of the round-robin scheduler is the <b>regressive round-robin scheduler</b>. This scheduler assigns each process a time quantum and a priority. The initial value of a time quantum is 50 milliseconds. However, every time a process has been allocated the CPU and uses its entire time quantum (does not block for I/O), 10 milliseconds is added to its time quantum, and its priority level is boosted. (The time quantum for a process can be increased to a maximum of 100 milliseconds.) When a process blocks before using its entire time quantum, its time quantum is reduced by 5 milliseconds, but its priority remains the same. What type of process, namely CPU-bound (such as batch processes) or I/O-bound (such as interactive processes), does the regressive round-robin scheduler favor? Explain.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p><b>It favors CPU-bound processes.</b></p>
+<ul>
+<li>A process that <b>uses its entire quantum</b> (does not block for I/O) is CPU-bound behaviour. It is <b>rewarded</b>: +10 ms of quantum, up to 100 ms, <b>and</b> a priority boost.</li>
+<li>A process that <b>blocks before using its quantum</b> is I/O-bound / interactive behaviour. It is <b>penalized</b>: −5 ms of quantum, and its priority is <b>not</b> raised.</li>
+</ul>
+<p>So over time CPU-bound (batch) processes get longer time slices and higher priority, and I/O-bound processes get shorter slices and stay at lower priority. This is the opposite of the usual goal of favoring interactive processes.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2019</span><span class='qnum'>Q4</span> <span class='pts'>(10 pt)</span> Consider the following code segment:<pre>pid_t pid;
+
+pid = fork();
+if (pid == 0) { /* child process */
+    fork();
+    thread_create( . . .);
+}
+fork();</pre>a) How many unique processes are created?<br>b) How many unique threads are created?</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Trace each fork (the original process is P0):</p>
+<ul>
+<li>fork ① gives P0 and child C1. Only C1 has pid == 0.</li>
+<li>Inside the if, C1 calls fork ②, creating C2. <b>C1 and C2 each call thread_create()</b>, so 2 threads are created.</li>
+<li>The final fork ③ is executed by P0, C1 and C2, creating C3, C4 and C5.</li>
+</ul><svg viewBox="0 0 420 215" width="400" class="fig" font-size="11" font-family="Arial"><defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#222"/></marker></defs>
+<g stroke="#222" fill="none">
+<line x1="200" y1="30" x2="110" y2="80"/><line x1="200" y1="30" x2="300" y2="80"/>
+<line x1="110" y1="80" x2="55" y2="135"/><line x1="110" y1="80" x2="165" y2="135"/>
+<line x1="55" y1="135" x2="55" y2="185"/></g>
+<g font-size="10" fill="#0b4f8a"><text x="125" y="50">fork ①</text><text x="255" y="50">fork ③</text>
+<text x="40" y="108">fork ②</text><text x="140" y="108">fork ③</text><text x="60" y="165">fork ③</text></g>
+<g fill="#fff" stroke="#222"><circle cx="200" cy="25" r="15"/><circle cx="110" cy="80" r="15" fill="#ffe7b0"/><circle cx="300" cy="80" r="15"/>
+<circle cx="55" cy="135" r="15" fill="#ffe7b0"/><circle cx="165" cy="135" r="15"/><circle cx="55" cy="190" r="15"/></g>
+<g text-anchor="middle"><text x="200" y="29">P0</text><text x="110" y="84">C1</text><text x="300" y="84">C3</text>
+<text x="55" y="139">C2</text><text x="165" y="139">C4</text><text x="55" y="194">C5</text></g>
+<g font-size="10"><text x="128" y="78">+1 thread</text><text x="73" y="133">+1 thread</text></g>
+<text x="235" y="160" font-size="10">shaded = runs thread_create()</text>
+<text x="235" y="175" font-size="10">6 processes, 2 created threads</text></svg>
+<p><b>(a) 6 unique processes</b> (P0, C1–C5; 5 newly created if the original is not counted).<br>
+<b>(b) 2 unique threads</b> created by thread_create(), one in C1 and one in C2. The last fork() duplicates only the calling thread (POSIX), so it creates no extra threads.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2019</span><span class='qnum'>Q5</span> <span class='pts'>(10 pt)</span> Note that only one process is active within the monitor. Suppose <code>A</code> associated with the condition variable <code>q</code> is resumed when <code>B</code> invokes <code>q.signal()</code>. We discussed two possibile solutions in class. One is <b>signal and wait</b>, and the flow is illustrated in the following (Hoare semantics). Please modify the Hoare semantics and depict the other solution (i.e., <b>signal and continue</b>).<img src="img/hoare_2022.png" class="scan" alt="Hoare semantics figure from the exam"></div><div class='ans'><span class='lbl'>ANSWER</span>
+<p><b>Signal-and-continue:</b> when B executes <code>q.signal()</code>, <b>B keeps running</b> in the monitor. The waiting process A is only moved from q's wait queue to a ready/re-entry queue (the "signal queue" now holds the <i>signaled</i> process). A resumes after B leaves the monitor or waits.</p><svg viewBox="0 0 640 300" width="600" class="fig" font-size="11" font-family="Arial"><defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#222"/></marker></defs>
+<rect x="60" y="10" width="330" height="280" fill="none" stroke="#222"/>
+<rect x="145" y="22" width="160" height="30" fill="#fff" stroke="#222"/><text x="225" y="42" text-anchor="middle">Entry Queue</text>
+<rect x="115" y="70" width="220" height="190" fill="#fafafa" stroke="#222"/>
+<rect x="135" y="80" width="180" height="40" fill="#fff" stroke="#222"/><text x="225" y="104" text-anchor="middle">Shared Data</text>
+<rect x="135" y="135" width="180" height="28" fill="#fff" stroke="#222"/><text x="225" y="154" text-anchor="middle">Procedure A (q.wait)</text>
+<rect x="135" y="175" width="180" height="28" fill="#fff" stroke="#222"/><text x="225" y="194" text-anchor="middle">Procedure B (q.signal)</text>
+<rect x="135" y="215" width="180" height="28" fill="#fff" stroke="#222"/><text x="225" y="234" text-anchor="middle">Procedure C</text>
+<rect x="68" y="120" width="40" height="110" fill="#fff" stroke="#222"/><text x="88" y="168" text-anchor="middle" font-size="9">Wait</text><text x="88" y="180" text-anchor="middle" font-size="9">Queue</text><text x="88" y="192" text-anchor="middle" font-size="9">(q)</text>
+<rect x="342" y="120" width="44" height="110" fill="#fff" stroke="#222"/><text x="364" y="162" text-anchor="middle" font-size="9">Signal</text><text x="364" y="174" text-anchor="middle" font-size="9">Queue</text><text x="364" y="186" text-anchor="middle" font-size="9">(signaled,</text><text x="364" y="198" text-anchor="middle" font-size="9">re-entry)</text>
+<g stroke="#222" fill="none" marker-end="url(#ar)">
+<path d="M160,52 V133"/><path d="M290,52 V173"/>
+<path d="M135,145 H110"/>
+<path d="M88,230 V275 H364 V232"/>
+<path d="M342,150 H317"/>
+<path d="M250,260 V298"/><path d="M200,260 V298"/>
+</g>
+<g font-weight="bold" fill="#a40000" font-size="12">
+<text x="148" y="66">1</text><text x="295" y="66">3</text><text x="117" y="140">2</text>
+<text x="220" y="272">4</text><text x="325" y="145">6</text><text x="255" y="292">5</text><text x="186" y="292">7</text></g>
+<g font-size="10.5">
+<text x="400" y="30">1. Thread A enters the monitor</text>
+<text x="400" y="47">2. A waits on q → q's wait queue</text>
+<text x="415" y="60">(monitor released)</text>
+<text x="400" y="77">3. Thread B enters the monitor</text>
+<text x="400" y="94">4. B signals q: A is moved from</text>
+<text x="415" y="107">wait queue → signal queue;</text>
+<text x="415" y="120" font-weight="bold">B CONTINUES running</text>
+<text x="400" y="137">5. B leaves the monitor</text>
+<text x="400" y="154">6. A re-enters the monitor (signal</text>
+<text x="415" y="167">queue has priority over entry queue)</text>
+<text x="400" y="184">7. A leaves the monitor</text>
+<text x="400" y="201">8. Another process can be admitted</text>
+<text x="415" y="214">from the entry queue</text>
+<text x="400" y="240" fill="#0b4f8a">Difference from Hoare: signal queue</text>
+<text x="400" y="253" fill="#0b4f8a">now holds the SIGNALED process, not</text>
+<text x="400" y="266" fill="#0b4f8a">the signaler; 8 steps instead of 9.</text></g></svg>
+<p>Compared with Hoare: in Hoare's version A runs immediately and the signaler B waits in the signal queue. In signal-and-continue, A may find the condition changed by the time it runs, so waiters should re-check it with <code>while (!cond) q.wait();</code>. There are fewer context switches, and this is what Java and Pthreads use.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2019</span><span class='qnum'>Q6</span> <span class='pts'>(20 pt)</span> In class, we have illustrated the solution for dining-philosopher problem using monitor. However, as I mentioned, the solution is conceptual only since there is no monitor mechanism. We also discussed how to implement a monitor mechanism with <b>signal and wait</b> via semaphores, and thus the dining-philosopher problem solution together with the monitor mechanism with <b>signal and wait</b> via semaphores is a complete solution. Please modify the monitor mechanism with <b>signal and wait</b> via semaphores to <b>signal and continue</b> and integrate them into dining-philosopher problem solution. That is, I would like you to present a complete code for dining-philosopher problem solution which uses a monitor mechanism with <b>signal and continue</b> via semaphores.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Combine the dining-philosopher monitor with the signal-and-continue implementation above. <code>self[i]</code> becomes semaphore <code>self_sem[i]</code> plus counter <code>self_count[i]</code>.</p><pre class="long">enum {THINKING, HUNGRY, EATING} state[5];
+semaphore mutex = 1;             // monitor lock
+semaphore next  = 0;      // signaled, waiting to re-enter
+int next_count  = 0;
+semaphore self_sem[5]   = {0,0,0,0,0};  // cond. self[i]
+int       self_count[5] = {0,0,0,0,0};
+
+void leave() {                // release the monitor
+    if (next_count &gt; 0) signal(next);
+    else                signal(mutex);
+}
+void self_wait(int i) {          // self[i].wait()
+    self_count[i]++;
+    leave();                  // release monitor
+    wait(self_sem[i]);           // sleep until signaled
+    wait(next);               // re-enter after signaler
+    next_count--;
+}
+void self_signal(int i) {     // self[i].signal(), S&amp;C
+    if (self_count[i] &gt; 0) {
+        self_count[i]--;
+        next_count++;
+        signal(self_sem[i]);  // wake i; caller continues
+    }
+}
+void test(int i) {            // only inside the monitor
+    if (state[(i+4)%5] != EATING &amp;&amp; state[i] == HUNGRY &amp;&amp;
+        state[(i+1)%5] != EATING) {
+        state[i] = EATING;
+        self_signal(i);
+    }
+}
+void pickup(int i) {
+    wait(mutex);                 // enter monitor
+    state[i] = HUNGRY;
+    test(i);
+    while (state[i] != EATING)  // re-check after waking
+        self_wait(i);
+    leave();
+}
+void putdown(int i) {
+    wait(mutex);                 // enter monitor
+    state[i] = THINKING;
+    test((i+4)%5);            // left neighbor may eat
+    test((i+1)%5);            // right neighbor may eat
+    leave();
+}
+void init() {
+    for (int i = 0; i &lt; 5; i++) state[i] = THINKING;
+}
+
+void philosopher(int i) {
+    while (true) {
+        think(); pickup(i); eat(); putdown(i);
+    }
+}</pre><p>It is correct under signal-and-continue because test() sets state[i] = EATING <b>before</b> signaling, and only philosopher i can change it back. So when i resumes, its condition still holds. A philosopher eats only when neither neighbor eats, so there is no deadlock (starvation is still possible).</p></div></div><div class='hdr'>7. Multilevel queue scheduling</div><div class='item'><div class='qbox'><span class='yr'>2019</span><span class='qnum'>Q7.1</span> <span class='pts'>(5 pt)</span> List two possible scheduling among queues, which we discussed in class.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Two ways to schedule <b>among</b> the queues of a multilevel queue:</p>
+<ol>
+<li><b>Fixed-priority (preemptive) scheduling.</b> Serve all processes in a higher-priority queue (e.g. foreground/interactive) before any process in a lower queue (background/batch). A process arriving in a higher queue preempts a lower one. Lower queues may <b>starve</b>.</li>
+<li><b>Time slicing among queues.</b> Each queue gets a fixed share of CPU time, which it schedules among its own processes. Example: 80% to the foreground queue (RR) and 20% to the background queue (FCFS).</li>
+</ol></div></div><div class='item'><div class='qbox'><span class='yr'>2019</span><span class='qnum'>Q7.2</span> <span class='pts'>(5 pt)</span> Modify the following multilevel queue scheduling system such that a new process will automatically enter the appropriate queue after a few runs.<div class="mlq"><div>system process</div><div>faculty interactive process</div><div>student interactive process</div><div>faculty batch process</div><div>student batch process</div></div></div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Turn it into a <b>multilevel feedback queue</b>: a process may <b>move between queues</b> according to its observed behaviour, so it reaches the right queue automatically after a few runs.</p><svg viewBox="0 0 600 250" width="560" class="fig" font-size="11" font-family="Arial"><defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#222"/></marker></defs>
+<g stroke="#222" fill="#eef3fa">
+<rect x="170" y="15"  width="250" height="28"/><rect x="170" y="60"  width="250" height="28"/>
+<rect x="170" y="105" width="250" height="28"/><rect x="170" y="150" width="250" height="28"/>
+<rect x="170" y="195" width="250" height="28"/></g>
+<g text-anchor="middle"><text x="295" y="33">Q0 system process (fixed, priority/FCFS)</text>
+<text x="295" y="78">Q1 faculty interactive  (RR q = 8 ms)</text><text x="295" y="123">Q2 student interactive (RR q = 8 ms)</text>
+<text x="295" y="168">Q3 faculty batch  (RR q = 16 ms)</text><text x="295" y="213">Q4 student batch  (FCFS)</text></g>
+<g stroke="#a40000" fill="none" marker-end="url(#ar)">
+<path d="M420,74 H450 V164 H422"/><path d="M420,119 H480 V209 H422"/></g>
+<g stroke="#0a6b2d" fill="none" marker-end="url(#ar)">
+<path d="M170,164 H140 V74 H168"/><path d="M170,209 H110 V119 H168"/></g>
+<g stroke="#222" fill="none" marker-end="url(#ar)"><path d="M20,68 H168"/><path d="M20,113 H168"/></g>
+<text x="2" y="60" font-size="10">new faculty</text><text x="2" y="105" font-size="10">new student</text>
+<text x="486" y="140" font-size="10" fill="#a40000">used whole</text><text x="486" y="153" font-size="10" fill="#a40000">quantum →</text><text x="486" y="166" font-size="10" fill="#a40000">demote</text>
+<text x="2" y="160" font-size="10" fill="#0a6b2d">blocked for I/O</text><text x="2" y="173" font-size="10" fill="#0a6b2d">early / aging</text><text x="2" y="186" font-size="10" fill="#0a6b2d">→ promote</text>
+<text x="295" y="245" text-anchor="middle" font-size="10">Higher queue preempts lower (fixed priority between queues); Q0 never moves.</text></svg>
+<ul>
+<li>A new process enters the <b>interactive</b> queue of its class (faculty → Q1, student → Q2), which uses a short quantum.</li>
+<li>If it <b>uses its whole quantum</b>, it is CPU-bound, so it is <b>demoted</b> to the batch queue of its class (Q1→Q3, Q2→Q4).</li>
+<li>If it <b>blocks for I/O before the quantum ends</b>, it is interactive, so it stays in or is <b>promoted</b> back to the interactive queue (Q3→Q1, Q4→Q2).</li>
+<li><b>Aging</b> promotes processes that wait too long, preventing starvation. System processes stay fixed in Q0.</li>
+</ul>
+<p>Defined by: number of queues, scheduling algorithm per queue, when to promote, when to demote, and which queue a new process enters.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2019</span><span class='qnum'>Q8</span> <span class='pts'>(10 pt)</span> A student is asked to write a program which will create a hundred POSIX threads. Each thread will print out the value of the parameter passed from <code>main()</code> which are 1, 2, 3, up to 100 respectively. Consider the following code fragment he wrote, please verify its correctness. If incorrect, please correct the error.<pre class="long">void *doSomething(void *y) {
+    ...
+    printf(&quot;%d\n&quot;, *y);
+    ...
+}
+
+int main() {
+    pthread_t t1[100];          /* declare a thread */
+    int param1, i;
+
+    param1 = 1;
+    for (i = 0; i &lt; 100; i++) {
+        param1++;
+        pthread_create(&amp;(t1[i]), NULL, doSomething, &amp;param1);
+    }
+    ...
+}</pre></div><div class='ans'><span class='lbl'>ANSWER</span>
+<p><b>Incorrect.</b> Problems:</p>
+<ol>
+<li><b>All 100 threads receive the same address <code>&amp;param1</code>.</b> main keeps incrementing param1 while the threads run, so each thread prints whatever value param1 holds when that thread happens to run. The output has duplicates and missing numbers (often many 100s), not 1…100.</li>
+<li>main never calls <b>pthread_join</b>, so it may return (ending the process and all its threads) before the threads print.</li>
+<li><code>*y</code> dereferences a <code>void *</code>, so it needs a cast to <code>int *</code>.</li>
+</ol>
+<p><b>Corrected:</b> give every thread its own argument and join all threads.</p><pre class="long">void *doSomething(void *y) {
+    ...
+    printf(&quot;%d\n&quot;, *(int *)y);
+    ...
+    pthread_exit(0);
+}
+
+int main() {
+    pthread_t t1[100];            /* declare threads */
+    int param[100], i;      /* one argument per thread */
+
+    for (i = 0; i &lt; 100; i++) {
+        param[i] = i + 1;         /* 1, 2, ..., 100 */
+        pthread_create(&amp;(t1[i]), NULL, doSomething, &amp;param[i]);
+    }
+    for (i = 0; i &lt; 100; i++)
+        pthread_join(t1[i], NULL);  /* wait for all */
+    return 0;
+}</pre><p>(If the numbers must also be printed <i>in order</i>, the threads must additionally be synchronized, e.g. by joining each thread right after creating it.)</p></div></div></section></body></html>

@@ -1,0 +1,166 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Past Exam Solutions</title><style>
+:root{ --acc:#0b4f8a; --rule:#bbb; --box:#f3f5f8; --qbg:#f6f7f9; }
+@page{ size: Letter; margin: 0.55in 0.6in; }
+*{ box-sizing:border-box; }
+html,body{ background:#fff; color:#111; }
+body{ font: 10pt/1.38 "Helvetica Neue", Arial, sans-serif; margin:0; padding:16px; max-width:8in; }
+@media print{ body{ padding:0; max-width:none; } }
+h1{ font-size:17pt; margin:0 0 4px; }
+.lead{ color:#444; margin-bottom:10px; }
+.toc td{ padding:2px 8px; }
+.exam{ break-before:page; }
+.exam h2{ font-size:14pt; color:#fff; background:var(--acc); padding:5px 8px; margin:0 0 4px; }
+.exam .meta{ font-size:9pt; color:#555; margin-bottom:8px; }
+.hdr{ font-weight:bold; margin:12px 0 4px; padding:4px 8px; border-left:4px solid var(--acc); background:var(--qbg); break-after:avoid; }
+.item{ margin:8px 0 12px; }
+.qbox{ background:var(--qbg); border:1px solid #d6dbe2; border-left:4px solid var(--acc); padding:6px 9px; break-inside:avoid; break-after:avoid; }
+.qnum{ font-weight:bold; color:var(--acc); margin-right:4px; }
+.pts{ font-size:8.5pt; color:#555; }
+.yr{ float:right; font-size:8pt; color:#fff; background:#555; padding:0 5px; border-radius:2px; }
+.ans{ padding:4px 2px 0 12px; border-left:2px solid #cfe0f2; margin-left:2px; }
+.ans .lbl{ font-weight:bold; color:#0a6b2d; font-size:9pt; letter-spacing:.03em; }
+p{ margin:3px 0 5px; } ul,ol{ margin:3px 0 5px; padding-left:20px; } li{ margin:1px 0 2px; }
+pre{ font: 8.4pt/1.3 "DejaVu Sans Mono", Menlo, Consolas, monospace; background:var(--box); border:1px solid #dde; padding:5px 7px; margin:4px 0 6px; white-space:pre-wrap; }
+code{ font: 8.8pt "DejaVu Sans Mono", Menlo, Consolas, monospace; background:var(--box); padding:0 2px; }
+.qbox pre{ background:#fff; }
+table{ border-collapse:collapse; margin:4px 0 6px; font-size:9pt; break-inside:avoid; }
+th,td{ border:1px solid var(--rule); padding:2px 6px; text-align:left; vertical-align:top; }
+th{ background:var(--box); }
+.gantt{ display:flex; width:100%; margin:6px 0 0; border:1px solid #333; font-size:8.5pt; break-inside:avoid; }
+.gantt div{ border-right:1px solid #333; text-align:center; padding:3px 0; overflow:hidden; white-space:nowrap; }
+.gantt div:last-child{ border-right:0; }
+.g1{ background:#cfe3ff; } .g2{ background:#ffd9b3; } .gi{ background:#eee; color:#777; } .gx{ background:#ffb3b3; }
+.ticks{ display:flex; width:100%; font-size:8pt; color:#444; margin-bottom:6px; }
+.ticks span{ white-space:nowrap; }
+.fig{ display:block; margin:6px auto; max-width:100%; height:auto; break-inside:avoid; }
+.scan{ display:block; width:70%; margin:6px auto 2px; border:1px solid #ccc; }
+.mlq{ margin:6px auto; width:60%; text-align:center; font-size:9pt; }
+.mlq div{ border:1px solid #888; margin:3px 0; padding:2px; background:#fff; }
+.mlq .box{ border:1px solid #888; padding:2px 5px; background:#fff; }
+.note{ color:#555; font-size:9pt; }
+
+@page{ size: Letter; margin: 0.38in 0.42in; }
+body{ font-size:8.6pt; line-height:1.27; }
+h1{ font-size:12pt; margin:0 0 2px; }
+.lead, .toc{ display:none; }
+.exam{ break-before:auto; }
+.exam h2{ font-size:10.5pt; padding:2px 6px; margin:0 0 2px; }
+.hdr{ margin:5px 0 2px; padding:2px 6px; }
+.item{ margin:4px 0 6px; }
+.qbox{ padding:3px 6px; }
+.ans{ padding:2px 0 0 8px; }
+p{ margin:1px 0 3px; } ul,ol{ margin:1px 0 3px; padding-left:16px; } li{ margin:0 0 1px; }
+pre{ font-size:7.1pt; line-height:1.17; padding:3px 5px; margin:2px 0 3px; }
+code{ font-size:7.6pt; }
+table{ font-size:7.8pt; margin:2px 0 3px; } th,td{ padding:1px 4px; }
+.fig{ max-height:2.3in; width:auto; margin:3px auto; }
+.scan{ width:52%; margin:3px auto 1px; }
+.mlq{ width:48%; margin:3px auto; font-size:7.8pt; } .mlq div{ margin:1px 0; padding:1px; }
+.gantt{ font-size:7.5pt; margin-top:3px; } .gantt div{ padding:1px 0; }
+.note{ font-size:7.8pt; }
+pre.long{ column-count:2; column-gap:12px; column-rule:1px solid #dde; font-size:6.9pt; }
+</style></head><body><h1>CS5730 Operating Systems: 2021 Midterm Solutions</h1><p class='lead'>The 2021 paper only, in order. Each entry gives the year, the full question as printed, then a model answer sized to fit the space on the exam paper (prose kept to about 250 words; code, tables and diagrams added where the question needs them). Repeated questions use the same answer every time.</p><table class='toc'><tr><th>Year</th><th>Paper</th><th>Questions</th></tr><tr><td>2021</td><td>CS5730 Operating Systems Midterm (2021/11/30)</td><td>16 answers</td></tr></table><section class='exam'><h2>2021 · CS5730 Operating Systems Midterm (2021/11/30)</h2><div class='meta'>Both 2021 PDFs ("Operating System Exam_2021" and "final-2021f") contain this same exam.</div><div class='hdr'>Essay Questions: Your answers should be as concise and clear as possible</div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q1</span> <span class='pts'>(5 pt)</span> Ordinarily the <code>exec()</code> system call follows the <code>fork()</code>. Explain what would happen if a programmer were to inadvertently place the call to <code>exec()</code> before the call to <code>fork()</code>.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>exec() <b>replaces the calling process's entire memory image</b> (code, data, heap, stack) with the program named in its parameters. On success, <b>it never returns</b>.</p>
+<p>So if exec() is placed before fork(), the new program starts running in place of the original one, under the <b>same process ID</b>. The rest of the original code, <b>including the fork() call, is gone and never executed</b>. <b>No child process is created</b>, and the original program's remaining work is not done.</p>
+<p>Only if exec() <b>fails</b> (returns −1) does execution continue to the fork().</p></div></div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q2</span> <span class='pts'>(5 pt)</span> Why does the socket communication use the port number instead of process id number to identify server or client process?</div><div class='ans'><span class='lbl'>ANSWER</span>
+<ul>
+<li>A <b>PID is assigned dynamically</b> by the local OS. It changes every time the server is restarted and is <b>unique only within one host</b>, so a client on another machine cannot know or rely on it.</li>
+<li>A <b>port number is fixed and well known</b>, tied to a <b>service</b> rather than to a particular process (e.g. HTTP = 80, SSH = 22; ports below 1024 are reserved). A client can find a service just from IP address and port. A socket is identified by <b>IP:port</b>, e.g. 161.25.19.8:1625.</li>
+<li>The process behind a service can change (restart, failover, a pool of worker processes or threads) and one process may offer several services. The port stays the same, and the network stack uses it to deliver packets to the right endpoint.</li>
+</ul></div></div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q3</span> <span class='pts'>(8 pt)</span> What is processor affinity? Explain why it needed to be considered during process scheduling on multiple CPU systems.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p><b>Processor affinity:</b> a process has an affinity for the processor it is currently running on. It is kept on (or restricted to) that same CPU rather than migrated to another one.</p>
+<p><b>Why it matters on multiple-CPU systems:</b> while a process runs, its recently used data fills that processor's <b>cache</b>. If the scheduler migrates it to another CPU, the old cache contents must be <b>invalidated</b> and the new processor's cache must be <b>repopulated</b>. That causes many cache misses and memory stalls, which is expensive. Keeping the process on the same CPU reuses the "warm" cache. On NUMA systems it also keeps the process close to its local memory.</p>
+<p><b>Soft affinity:</b> the OS tries to keep the process on the same CPU but may migrate it. <b>Hard affinity:</b> the process specifies the set of CPUs it may run on. The scheduler must balance affinity against <b>load balancing</b> (push/pull migration), which moves processes from busy to idle CPUs.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q4</span> <span class='pts'>(7 pt)</span> Explain why implementing synchronization primitives by disabling interrupts is not appropriate in a single-processor system if the synchronization primitives are to be used in user-level programs.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Disabling interrupts works on a uniprocessor only for <b>trusted kernel code</b>. It is the wrong tool for <b>user-level</b> synchronization because:</p>
+<ol>
+<li><b>It is a privileged instruction.</b> Letting user programs execute it breaks dual-mode protection; the hardware traps if user mode tries.</li>
+<li><b>The OS loses control of the CPU.</b> While interrupts are off, the <b>timer interrupt</b> cannot fire, so no preemption or context switch can happen. A buggy or malicious program could disable interrupts and never re-enable them (e.g. an infinite loop in its critical section). It would then <b>monopolize the CPU</b> and hang the whole system.</li>
+<li><b>Other events are delayed or lost.</b> I/O-completion interrupts and clock ticks are postponed, so devices sit idle, the system clock drifts and response time suffers. User critical sections can be long, which makes this worse.</li>
+</ol>
+<p>(It also does not scale: on a multiprocessor it only stops the local CPU.) User programs should instead use OS-provided semaphores/mutexes or atomic hardware instructions such as test_and_set or swap.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q5</span> <span class='pts'>(15 pt)</span> Discuss how the following pairs of scheduling criteria conflict in certain settings.</div></div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q5.1</span> CPU utilization and response time</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>CPU utilization vs. response time.</b> CPU utilization is highest when context switches are rare, as with FCFS or a long quantum, because each switch is pure overhead. Good response time for interactive users needs <b>frequent preemption</b> (a short RR quantum) so every user gets the CPU quickly. That causes many context switches, so the CPU spends more time switching and less doing useful work, which lowers utilization.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q5.2</span> Average turnaround time and maximum waiting time</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>Average turnaround time vs. maximum waiting time.</b> Average turnaround is minimized by running the <b>shortest jobs first</b> (SJF/SRTF). But a long job can be postponed again and again as short jobs keep arriving, so it may <b>starve</b>. Its waiting time, the <b>maximum</b> waiting time, becomes very large (unbounded). Bounding the maximum wait (e.g. with FCFS or aging) raises the average turnaround.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q5.3</span> I/O device utilization and CPU utilization</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>I/O device utilization vs. CPU utilization.</b> Keeping devices busy means running <b>I/O-bound</b> processes as soon as their I/O completes, so they can issue the next request quickly. This means frequently preempting CPU-bound processes, and the context-switch overhead lowers CPU utilization. Maximizing CPU utilization means letting CPU-bound jobs run long without switching, which leaves the I/O devices <b>idle</b> while I/O-bound jobs wait for the CPU.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q5.4</span> Deadline and fairness</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>Deadline vs. fairness.</b> To meet deadlines, the scheduler must always give the CPU to the most urgent process (earliest deadline or real-time priority), regardless of how much CPU it has already had. Other processes may wait a long time or <b>starve</b>, which is unfair. A <b>fair</b> scheduler gives everyone an equal share, so urgent tasks may not get enough CPU in time and <b>miss their deadlines</b>.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q5.5</span> Throughput and context switch overhead</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>Throughput vs. context-switch overhead.</b> Throughput (jobs completed per unit time) is improved by finishing short jobs quickly, which needs preemption: SJF/SRTF or a small RR quantum. Every preemption adds <b>context-switch overhead</b>, during which no useful work is done. Minimizing switches (FCFS, large quantum) traps short jobs behind long ones (<b>convoy effect</b>), so fewer jobs complete per unit time. If the quantum is too small, overhead itself eats the throughput.</p></div></div><div class='hdr'>6. Multilevel queue scheduling</div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q6.1</span> <span class='pts'>(5 pt)</span> List two possible scheduling among queues, which we discussed in class.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Two ways to schedule <b>among</b> the queues of a multilevel queue:</p>
+<ol>
+<li><b>Fixed-priority (preemptive) scheduling.</b> Serve all processes in a higher-priority queue (e.g. foreground/interactive) before any process in a lower queue (background/batch). A process arriving in a higher queue preempts a lower one. Lower queues may <b>starve</b>.</li>
+<li><b>Time slicing among queues.</b> Each queue gets a fixed share of CPU time, which it schedules among its own processes. Example: 80% to the foreground queue (RR) and 20% to the background queue (FCFS).</li>
+</ol></div></div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q6.2</span> <span class='pts'>(10 pt)</span> Modify the following multilevel queue scheduling system such that a new process will automatically enter the appropriate queue after a few runs.<div class="mlq"><div>system process</div><div>faculty interactive process</div><div>student interactive process</div><div>faculty batch process</div><div>student batch process</div></div></div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Turn it into a <b>multilevel feedback queue</b>: a process may <b>move between queues</b> according to its observed behaviour, so it reaches the right queue automatically after a few runs.</p><svg viewBox="0 0 600 250" width="560" class="fig" font-size="11" font-family="Arial"><defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#222"/></marker></defs>
+<g stroke="#222" fill="#eef3fa">
+<rect x="170" y="15"  width="250" height="28"/><rect x="170" y="60"  width="250" height="28"/>
+<rect x="170" y="105" width="250" height="28"/><rect x="170" y="150" width="250" height="28"/>
+<rect x="170" y="195" width="250" height="28"/></g>
+<g text-anchor="middle"><text x="295" y="33">Q0 system process (fixed, priority/FCFS)</text>
+<text x="295" y="78">Q1 faculty interactive  (RR q = 8 ms)</text><text x="295" y="123">Q2 student interactive (RR q = 8 ms)</text>
+<text x="295" y="168">Q3 faculty batch  (RR q = 16 ms)</text><text x="295" y="213">Q4 student batch  (FCFS)</text></g>
+<g stroke="#a40000" fill="none" marker-end="url(#ar)">
+<path d="M420,74 H450 V164 H422"/><path d="M420,119 H480 V209 H422"/></g>
+<g stroke="#0a6b2d" fill="none" marker-end="url(#ar)">
+<path d="M170,164 H140 V74 H168"/><path d="M170,209 H110 V119 H168"/></g>
+<g stroke="#222" fill="none" marker-end="url(#ar)"><path d="M20,68 H168"/><path d="M20,113 H168"/></g>
+<text x="2" y="60" font-size="10">new faculty</text><text x="2" y="105" font-size="10">new student</text>
+<text x="486" y="140" font-size="10" fill="#a40000">used whole</text><text x="486" y="153" font-size="10" fill="#a40000">quantum →</text><text x="486" y="166" font-size="10" fill="#a40000">demote</text>
+<text x="2" y="160" font-size="10" fill="#0a6b2d">blocked for I/O</text><text x="2" y="173" font-size="10" fill="#0a6b2d">early / aging</text><text x="2" y="186" font-size="10" fill="#0a6b2d">→ promote</text>
+<text x="295" y="245" text-anchor="middle" font-size="10">Higher queue preempts lower (fixed priority between queues); Q0 never moves.</text></svg>
+<ul>
+<li>A new process enters the <b>interactive</b> queue of its class (faculty → Q1, student → Q2), which uses a short quantum.</li>
+<li>If it <b>uses its whole quantum</b>, it is CPU-bound, so it is <b>demoted</b> to the batch queue of its class (Q1→Q3, Q2→Q4).</li>
+<li>If it <b>blocks for I/O before the quantum ends</b>, it is interactive, so it stays in or is <b>promoted</b> back to the interactive queue (Q3→Q1, Q4→Q2).</li>
+<li><b>Aging</b> promotes processes that wait too long, preventing starvation. System processes stay fixed in Q0.</li>
+</ul>
+<p>Defined by: number of queues, scheduling algorithm per queue, when to promote, when to demote, and which queue a new process enters.</p></div></div><div class='hdr'>7. Multilevel queue scheduling <span class='note'>(heading as printed; the questions are about synchronization)</span></div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q7.1</span> <span class='pts'>(5 pt)</span> What is <b>busy-waiting</b> in the discussion of critical section problem? Explain how <b>busy-waiting</b> may degrade the system performance.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p><b>Busy waiting</b> (spinning) means a process waiting to enter its critical section stays in a loop that keeps testing a condition until it can enter, e.g. <code>while (test_and_set(&amp;lock));</code> or <code>while (S &lt;= 0);</code>. It never gives up the CPU while waiting.</p>
+<p><b>Degraded performance:</b> the waiting process <b>wastes CPU cycles</b> doing no useful work, and other ready processes could have used them. On a single CPU, the spinner uses its entire time slice while the lock holder cannot run to release the lock, so everyone waits longer. If the spinner has higher priority than the lock holder, the holder may never run, and the system can even <b>deadlock</b> (priority inversion). Busy waiting is acceptable only for very short waits on multiprocessors, where it avoids a context switch.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q7.2</span> <span class='pts'>(10 pt)</span> How to implement semaphore without <b>busy-waiting</b> using <code>block</code> and <code>wakeup</code>? You need to write down the definition of data structure <code>semaphore</code> and <code>wait</code> and <code>signal</code> operations.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>Each semaphore has an integer value and a <b>queue of waiting processes</b>. Instead of spinning, a process that must wait is <b>blocked</b> (moved to the waiting state and placed on the semaphore's queue). <code>signal</code> <b>wakes up</b> one waiting process (moves it to the ready queue).</p><pre class="long">typedef struct {
+    int value;
+    struct process *list;  /* queue of waiting PCBs */
+} semaphore;
+
+void wait(semaphore *S) {
+    S-&gt;value--;
+    if (S-&gt;value &lt; 0) {
+        add this process to S-&gt;list;
+        block();               /* running -&gt; waiting */
+    }
+}
+
+void signal(semaphore *S) {
+    S-&gt;value++;
+    if (S-&gt;value &lt;= 0) {
+        remove a process P from S-&gt;list;
+        wakeup(P);             /* waiting -&gt; ready */
+    }
+}</pre><p>If value is negative, |value| is the number of waiting processes. block() and wakeup() are system calls. wait() and signal() must still be atomic: disable interrupts inside them on a uniprocessor, or use a spinlock on a multiprocessor. That busy wait is limited to these few instructions, so it is short and rare.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q8</span> <span class='pts'>(10 pt)</span> We have discussed the correct solution to the consumer-producer problem, which does not use any synchronization mechanism, as shown below. Please explain why it can only use <code>BUFFER_SIZE-1</code> elements of buffer.<pre class="long">Producer:
+    while (true) {
+        /* produce an item in next produced */
+        while (((in + 1) % BUFFER_SIZE) == out)
+            ; /* do nothing */
+        buffer[in] = next_produced;
+        in = (in + 1) % BUFFER_SIZE;
+    }
+
+Consumer:
+    while (true) {
+        while (in == out)
+            ; /* do nothing */
+        next_consumed = buffer[out];
+        out = (out + 1) % BUFFER_SIZE;
+        /* consume the item in next consumed */
+    }</pre></div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>The solution uses only <code>in</code> (next free slot) and <code>out</code> (next full slot) to describe the buffer state, and it defines <b>empty</b> as <code>in == out</code> (consumer waits).</p>
+<p>If the producer were allowed to fill <b>all</b> BUFFER_SIZE slots, then after the last insert <code>in</code> would wrap around and also equal <code>out</code>. <b>"Full" would look exactly like "empty"</b>, and the consumer could not tell them apart. To avoid this ambiguity, the producer treats the buffer as <b>full when <code>(in + 1) % BUFFER_SIZE == out</code></b>, so one slot is always left unused.</p>
+<p>Example with BUFFER_SIZE = 10: out = 0 and the producer has filled b0–b8, so in = 9. Now (9+1) % 10 = 0 = out, and the producer waits with only <b>9 items</b> stored. b9 stays empty; filling it would make in = 0 = out, which means "empty".</p>
+<p>To use all N slots, add a <code>counter</code> of items (which then needs synchronization because counter++/counter-- race) or a full/empty flag.</p></div></div><div class='hdr'>9. Consider two processes, P<sub>1</sub> and P<sub>2</sub>, where p<sub>1</sub> = d<sub>1</sub> = 50, t<sub>1</sub> = 25, p<sub>2</sub> = d<sub>2</sub> = 75, and t<sub>2</sub> = 30.</div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q9.1</span> <span class='pts'>(10 pt)</span> Can these two processes be scheduled using rate-monotonic scheduling (RMS)? Illustrate your answer using a Gantt chart such as the ones we did in class.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>CPU utilization U = 25/50 + 30/75 = 0.50 + 0.40 = <b>0.90</b>. The RMS guaranteed bound for N = 2 is 2(2<sup>1/2</sup> − 1) ≈ <b>0.83</b>. Since U &gt; 0.83, schedulability is not guaranteed, so draw the chart. RMS uses static priority by period: P1 (period 50) has <b>higher priority</b> than P2 (period 75).</p><div class="gantt"><div class="g1" style="width:25.000%">P1</div><div class="g2" style="width:25.000%">P2 (25 of 30)</div><div class="g1" style="width:25.000%">P1</div><div class="gx" style="width:25.000%">P2 misses deadline</div></div><div class="ticks"><span style="width:25.000%">0</span><span style="width:25.000%">25</span><span style="width:25.000%">50</span><span style="width:25.000%">75<b style="float:right">100</b></span></div>
+<ul><li>0–25: P1 runs (deadline 50 met).</li>
+<li>25–50: P2 runs, but at t = 50 P1's second period starts and, having higher priority, <b>preempts P2</b>. P2 has done only 25 of its 30 ms.</li>
+<li>50–75: P1 runs (deadline 100 met).</li>
+<li>t = 75: P2's deadline arrives with 5 ms still left, so <b>P2 misses its deadline</b>.</li></ul>
+<p><b>No, P1 and P2 cannot be scheduled with RMS.</b></p></div></div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q9.2</span> <span class='pts'>(10 pt)</span> Illustrate the scheduling of these two processes using earliest-deadline-first (EDF) scheduling.</div><div class='ans'><span class='lbl'>ANSWER</span>
+<p>EDF assigns priority dynamically: the job with the <b>earliest absolute deadline</b> runs (on a tie, the running job continues). U = 0.90 ≤ 1, so EDF can schedule them.</p><div class="gantt"><div class="g1" style="width:16.667%">P1</div><div class="g2" style="width:20.000%">P2</div><div class="g1" style="width:16.667%">P1</div><div class="g2" style="width:20.000%">P2</div><div class="g1" style="width:16.667%">P1</div><div class="gi" style="width:10.000%">idle</div></div><div class="ticks"><span style="width:16.667%">0</span><span style="width:20.000%">25</span><span style="width:16.667%">55</span><span style="width:20.000%">80</span><span style="width:16.667%">110</span><span style="width:10.000%">135<b style="float:right">150</b></span></div>
+<ul>
+<li>t=0: P1 (deadline 50) vs P2 (deadline 75), so P1 runs 0–25. Then P2 starts at 25.</li>
+<li>t=50: P1's 2nd job arrives (deadline 100). P2's deadline 75 is earlier, so <b>P2 is not preempted</b> and finishes at 55 (deadline 75 met). P1 runs from 55.</li>
+<li>t=75: P2's 2nd job arrives (deadline 150). P1's deadline 100 is earlier, so P1 finishes at 80 (met). P2 runs 80–110.</li>
+<li>t=100: P1's 3rd job (deadline 150) ties with P2, so no preemption. P2 finishes at 110 (met), and P1 runs 110–135 (met). Idle 135–150.</li>
+<li>At t = 150 (LCM of 50 and 75) both tasks restart, so the pattern repeats.</li>
+</ul>
+<p><b>All deadlines are met under EDF.</b></p></div></div></section></body></html>
