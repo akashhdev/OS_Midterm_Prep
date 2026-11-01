@@ -8,7 +8,9 @@ import html
 import textwrap
 
 def code(s):
-    return "<pre>" + html.escape(textwrap.dedent(s).strip("\n")) + "</pre>"
+    body = textwrap.dedent(s).strip("\n")
+    cls = ' class="long"' if body.count("\n") >= 16 else ""   # long blocks go 2-column in compact mode
+    return f"<pre{cls}>" + html.escape(body) + "</pre>"
 
 def gantt(segs, total):
     cells, ticks = [], []
@@ -387,9 +389,11 @@ A["hoare_sc"] = """
 A["sc_sem"] = """
 <p>In signal-and-wait the <b>signaler</b> blocks on <code>next</code>. For <b>signal-and-continue</b>, the signaler must <b>not</b> block. Instead, the <b>signaled</b> process waits on <code>next</code> to re-enter after the signaler leaves. Changed lines are marked NEW:</p>""" + code("""
 Variables
-    semaphore mutex;          // (initially = 1)
-    semaphore next;           // (initially = 0)  signaled procs waiting to re-enter
-    int next_count = 0;       // number of such procs
+    semaphore mutex;      // (initially = 1)
+    semaphore next;       // (initially = 0)
+                          // = signaled procs
+                          //   waiting to re-enter
+    int next_count = 0;
 
 Each procedure F (unchanged)
     wait(mutex);
@@ -397,12 +401,12 @@ Each procedure F (unchanged)
         // body of F;
         ...
     if (next_count > 0)
-        signal(next);         // hand monitor to a signaled process first
+        signal(next);     // signaled proc first
     else
         signal(mutex);
 
-For each condition variable x (unchanged)
-    semaphore x_sem;          // (initially = 0)
+For each condition variable x
+    semaphore x_sem;      // (initially = 0)
     int x_count = 0;
 
 x.wait
@@ -411,18 +415,20 @@ x.wait
         signal(next);
     else
         signal(mutex);
-    wait(x_sem);              // sleep until signaled
-    wait(next);               // NEW: wait until signaler leaves/waits
-    next_count--;             // NEW: back inside the monitor
-                              // (x_count-- moved into x.signal)
+    wait(x_sem);          // sleep until signaled
+    wait(next);           // NEW: wait until the
+                          //   signaler leaves/waits
+    next_count--;         // NEW: back in monitor
+                          // (x_count-- moved to
+                          //   x.signal)
 
-x.signal                      // signal-and-continue
+x.signal                  // signal-and-continue
     if (x_count > 0) {
-        x_count--;            // NEW: decremented by signaler
+        x_count--;        // NEW: done by signaler
         next_count++;
-        signal(x_sem);        // wake one waiter ...
-                              // REMOVED: wait(next); next_count--;
-    }                         // ... and the signaler simply continues
+        signal(x_sem);    // wake one waiter
+        // REMOVED: wait(next); next_count--;
+    }                     // signaler continues
 """) + """<p>Why: the signaler no longer suspends itself. The woken process must re-acquire the monitor, and it gets it through <code>next</code>, ahead of the entry queue, when the signaler exits or waits. x_count is decremented by the signaler, so two consecutive signals cannot wake the same single waiter twice. Callers should use <code>while (!B) x.wait();</code>.</p>"""
 
 A["dp_sc"] = """
@@ -915,16 +921,40 @@ th{ background:var(--box); }
 .note{ color:#555; font-size:9pt; }
 """
 
+
+COMPACT_CSS = """
+@page{ size: Letter; margin: 0.38in 0.42in; }
+body{ font-size:8.6pt; line-height:1.27; }
+h1{ font-size:12pt; margin:0 0 2px; }
+.lead, .toc{ display:none; }
+.exam{ break-before:auto; }
+.exam h2{ font-size:10.5pt; padding:2px 6px; margin:0 0 2px; }
+.hdr{ margin:5px 0 2px; padding:2px 6px; }
+.item{ margin:4px 0 6px; }
+.qbox{ padding:3px 6px; }
+.ans{ padding:2px 0 0 8px; }
+p{ margin:1px 0 3px; } ul,ol{ margin:1px 0 3px; padding-left:16px; } li{ margin:0 0 1px; }
+pre{ font-size:7.1pt; line-height:1.17; padding:3px 5px; margin:2px 0 3px; }
+code{ font-size:7.6pt; }
+table{ font-size:7.8pt; margin:2px 0 3px; } th,td{ padding:1px 4px; }
+.fig{ max-height:2.3in; width:auto; margin:3px auto; }
+.scan{ width:52%; margin:3px auto 1px; }
+.mlq{ width:48%; margin:3px auto; font-size:7.8pt; } .mlq div{ margin:1px 0; padding:1px; }
+.gantt{ font-size:7.5pt; margin-top:3px; } .gantt div{ padding:1px 0; }
+.note{ font-size:7.8pt; }
+pre.long{ column-count:2; column-gap:14px; column-rule:1px solid #dde; }
+"""
+
 def wc(h):
     import re
     t = re.sub(r"<pre>.*?</pre>|<svg.*?</svg>|<table.*?</table>", " ", h, flags=re.S)
     t = re.sub(r"<[^>]+>", " ", t)
     return len(t.split())
 
-def build(years=None):
+def build(years=None, compact=False):
     exams = [e for e in EXAMS if not years or e[0] in years]
     out = [f"<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'>"
-           f"<title>Past Exam Solutions</title><style>{CSS}</style></head><body>"]
+           f"<title>Past Exam Solutions</title><style>{CSS}{COMPACT_CSS if compact else ''}</style></head><body>"]
     out.append("<h1>CS5730 Operating Systems: " + (f"{exams[0][0]} Midterm Solutions" if years else "Past Exam Solutions") + "</h1>")
     out.append("<p class='lead'>All past papers in the repo (2011, 2013, 2019, 2020, 2021, 2022), in order. Each entry gives the year, "
                "the full question as printed, then a model answer sized to fit the space on the exam paper (prose kept to about 250 words; "
@@ -962,9 +992,13 @@ if __name__ == "__main__":
     import sys
     # usage: build_solutions.py            -> past_exam_solutions.html (all years)
     #        build_solutions.py 2022       -> solutions_2022.html (one paper)
-    years = sys.argv[1:]
-    page, long = build(years)
+    #        add --compact for a dense print layout (e.g. 2022 fits 4 pages)
+    compact = "--compact" in sys.argv
+    years = [a for a in sys.argv[1:] if a != "--compact"]
+    page, long = build(years, compact)
     name = f"solutions_{'_'.join(years)}.html" if years else "past_exam_solutions.html"
+    if compact:
+        name = name.replace(".html", "_compact.html")
     if years:
         page = page.replace("<p class='lead'>All past papers in the repo (2011, 2013, 2019, 2020, 2021, 2022), in order.",
                             "<p class='lead'>The " + ", ".join(years) + " paper only, in order.")

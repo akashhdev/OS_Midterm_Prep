@@ -88,7 +88,7 @@ while (TRUE) {
 <p>Pi enters its critical region only when <code>flag[j] == FALSE</code> or <code>turn == i</code>.</p>
 <p><b>1. Mutual exclusion.</b> Suppose P0 and P1 were both in their critical regions. Then flag[0] = flag[1] = TRUE, so each must have passed the while because turn equalled its own index. That would require turn == 0 and turn == 1 at the same time, which is impossible. More precisely, turn is a single shared variable holding the value written <b>last</b>. The process that wrote turn last set it to the other process's index, so it must wait while the other is interested. Hence at most one is inside.</p>
 <p><b>2. Progress.</b> If Pj is not trying to enter (flag[j] == FALSE, i.e. it is in its remainder region), Pi passes the while at once. If both are trying, turn is either i or j, so exactly one of them passes, and the decision is made in finite time. Only processes in their entry sections take part; a process in its remainder section cannot block anyone.</p>
-<p><b>3. Bounded waiting.</b> Suppose Pi is waiting (turn == j and flag[j] == TRUE). When Pj leaves, it sets flag[j] = FALSE, so Pi can enter. If Pj immediately tries again, it sets turn = i, so Pj now waits and Pi enters. Pi therefore waits for at most <b>one</b> entry of Pj into its critical region.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Q8</span> <span class='pts'>(Bonus: 20 pt)</span> Consider the code below as a variation of Peterson's solution above:<pre>shared int turn;              /* set to i or j */
+<p><b>3. Bounded waiting.</b> Suppose Pi is waiting (turn == j and flag[j] == TRUE). When Pj leaves, it sets flag[j] = FALSE, so Pi can enter. If Pj immediately tries again, it sets turn = i, so Pj now waits and Pi enters. Pi therefore waits for at most <b>one</b> entry of Pj into its critical region.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2011</span><span class='qnum'>Q8</span> <span class='pts'>(Bonus: 20 pt)</span> Consider the code below as a variation of Peterson's solution above:<pre class="long">shared int turn;              /* set to i or j */
 shared boolean flag[2];       /* set to T or F */
 
 while (TRUE) {
@@ -198,7 +198,7 @@ do {
 <tr><td>2</td><td><i>preempted</i></td><td>rv = lock → false</td><td>false</td></tr>
 <tr><td>3</td><td></td><td>lock = true; returns false → <b>enters CS</b></td><td>true</td></tr>
 <tr><td>4</td><td>lock = true; returns false → <b>enters CS</b></td><td></td><td>true</td></tr></table>
-<p>Both processes saw the lock as free, so <b>both are in the critical section: mutual exclusion is violated.</b></p></div></div><div class='item'><div class='qbox'><span class='yr'>2013</span><span class='qnum'>Q5.3</span> <span class='pts'>(5 pt)</span> Write to demonstrate how to use the atomic instruction Swap for critical section problem.</div><div class='ans'><span class='lbl'>ANSWER</span><pre>void swap(boolean *a, boolean *b) {   /* executed ATOMICALLY by hardware */
+<p>Both processes saw the lock as free, so <b>both are in the critical section: mutual exclusion is violated.</b></p></div></div><div class='item'><div class='qbox'><span class='yr'>2013</span><span class='qnum'>Q5.3</span> <span class='pts'>(5 pt)</span> Write to demonstrate how to use the atomic instruction Swap for critical section problem.</div><div class='ans'><span class='lbl'>ANSWER</span><pre class="long">void swap(boolean *a, boolean *b) {   /* executed ATOMICALLY by hardware */
     boolean temp = *a;
     *a = *b;
     *b = temp;
@@ -340,7 +340,7 @@ fork();</pre>a) How many unique processes are created?<br>b) How many unique thr
 <text x="400" y="253" fill="#0b4f8a">now holds the SIGNALED process, not</text>
 <text x="400" y="266" fill="#0b4f8a">the signaler; 8 steps instead of 9.</text></g></svg>
 <p>Compared with Hoare: in Hoare's version A runs immediately and the signaler B waits in the signal queue. In signal-and-continue, A may find the condition changed by the time it runs, so waiters should re-check it with <code>while (!cond) q.wait();</code>. There are fewer context switches, and this is what Java and Pthreads use.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2019</span><span class='qnum'>Q6</span> <span class='pts'>(20 pt)</span> In class, we have illustrated the solution for dining-philosopher problem using monitor. However, as I mentioned, the solution is conceptual only since there is no monitor mechanism. We also discussed how to implement a monitor mechanism with <b>signal and wait</b> via semaphores, and thus the dining-philosopher problem solution together with the monitor mechanism with <b>signal and wait</b> via semaphores is a complete solution. Please modify the monitor mechanism with <b>signal and wait</b> via semaphores to <b>signal and continue</b> and integrate them into dining-philosopher problem solution. That is, I would like you to present a complete code for dining-philosopher problem solution which uses a monitor mechanism with <b>signal and continue</b> via semaphores.</div><div class='ans'><span class='lbl'>ANSWER</span>
-<p>Combine the dining-philosopher monitor with the signal-and-continue implementation above. <code>self[i]</code> becomes semaphore <code>self_sem[i]</code> plus counter <code>self_count[i]</code>.</p><pre>enum {THINKING, HUNGRY, EATING} state[5];
+<p>Combine the dining-philosopher monitor with the signal-and-continue implementation above. <code>self[i]</code> becomes semaphore <code>self_sem[i]</code> plus counter <code>self_count[i]</code>.</p><pre class="long">enum {THINKING, HUNGRY, EATING} state[5];
 semaphore mutex = 1;             // monitor lock
 semaphore next  = 0;             // signaled philosophers waiting to re-enter
 int next_count  = 0;
@@ -420,7 +420,7 @@ void philosopher(int i) {
 <li>If it <b>blocks for I/O before the quantum ends</b>, it is interactive, so it stays in or is <b>promoted</b> back to the interactive queue (Q3→Q1, Q4→Q2).</li>
 <li><b>Aging</b> promotes processes that wait too long, preventing starvation. System processes stay fixed in Q0.</li>
 </ul>
-<p>Defined by: number of queues, scheduling algorithm per queue, when to promote, when to demote, and which queue a new process enters.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2019</span><span class='qnum'>Q8</span> <span class='pts'>(10 pt)</span> A student is asked to write a program which will create a hundred POSIX threads. Each thread will print out the value of the parameter passed from <code>main()</code> which are 1, 2, 3, up to 100 respectively. Consider the following code fragment he wrote, please verify its correctness. If incorrect, please correct the error.<pre>void *doSomething(void *y) {
+<p>Defined by: number of queues, scheduling algorithm per queue, when to promote, when to demote, and which queue a new process enters.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2019</span><span class='qnum'>Q8</span> <span class='pts'>(10 pt)</span> A student is asked to write a program which will create a hundred POSIX threads. Each thread will print out the value of the parameter passed from <code>main()</code> which are 1, 2, 3, up to 100 respectively. Consider the following code fragment he wrote, please verify its correctness. If incorrect, please correct the error.<pre class="long">void *doSomething(void *y) {
     ...
     printf(&quot;%d\n&quot;, *y);
     ...
@@ -443,7 +443,7 @@ int main() {
 <li>main never calls <b>pthread_join</b>, so it may return (ending the process and all its threads) before the threads print.</li>
 <li><code>*y</code> dereferences a <code>void *</code>, so it needs a cast to <code>int *</code>.</li>
 </ol>
-<p><b>Corrected:</b> give every thread its own argument and join all threads.</p><pre>void *doSomething(void *y) {
+<p><b>Corrected:</b> give every thread its own argument and join all threads.</p><pre class="long">void *doSomething(void *y) {
     ...
     printf(&quot;%d\n&quot;, *(int *)y);
     ...
@@ -505,7 +505,7 @@ fork();</pre>a) How many unique processes are created?<br>b) How many unique thr
 <text x="235" y="160" font-size="10">shaded = runs thread_create()</text>
 <text x="235" y="175" font-size="10">6 processes, 2 created threads</text></svg>
 <p><b>(a) 6 unique processes</b> (P0, C1–C5; 5 newly created if the original is not counted).<br>
-<b>(b) 2 unique threads</b> created by thread_create(), one in C1 and one in C2. The last fork() duplicates only the calling thread (POSIX), so it creates no extra threads.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q5</span> <span class='pts'>(15 pt)</span> Discuss how the following pairs of scheduling criteria conflict in certain settings.</div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q5.1</span> CPU utilization and response time</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>CPU utilization vs. response time.</b> CPU utilization is highest when context switches are rare, as with FCFS or a long quantum, because each switch is pure overhead. Good response time for interactive users needs <b>frequent preemption</b> (a short RR quantum) so every user gets the CPU quickly. That causes many context switches, so the CPU spends more time switching and less doing useful work, which lowers utilization.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q5.2</span> Average turnaround time and maximum waiting time</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>Average turnaround time vs. maximum waiting time.</b> Average turnaround is minimized by running the <b>shortest jobs first</b> (SJF/SRTF). But a long job can be postponed again and again as short jobs keep arriving, so it may <b>starve</b>. Its waiting time, the <b>maximum</b> waiting time, becomes very large (unbounded). Bounding the maximum wait (e.g. with FCFS or aging) raises the average turnaround.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q5.3</span> I/O device utilization and CPU utilization</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>I/O device utilization vs. CPU utilization.</b> Keeping devices busy means running <b>I/O-bound</b> processes as soon as their I/O completes, so they can issue the next request quickly. This means frequently preempting CPU-bound processes, and the context-switch overhead lowers CPU utilization. Maximizing CPU utilization means letting CPU-bound jobs run long without switching, which leaves the I/O devices <b>idle</b> while I/O-bound jobs wait for the CPU.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q5.4</span> Deadline and fairness</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>Deadline vs. fairness.</b> To meet deadlines, the scheduler must always give the CPU to the most urgent process (earliest deadline or real-time priority), regardless of how much CPU it has already had. Other processes may wait a long time or <b>starve</b>, which is unfair. A <b>fair</b> scheduler gives everyone an equal share, so urgent tasks may not get enough CPU in time and <b>miss their deadlines</b>.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q5.5</span> Throughput and context switch overhead</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>Throughput vs. context-switch overhead.</b> Throughput (jobs completed per unit time) is improved by finishing short jobs quickly, which needs preemption: SJF/SRTF or a small RR quantum. Every preemption adds <b>context-switch overhead</b>, during which no useful work is done. Minimizing switches (FCFS, large quantum) traps short jobs behind long ones (<b>convoy effect</b>), so fewer jobs complete per unit time. If the quantum is too small, overhead itself eats the throughput.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q6</span> <span class='pts'>(10 pt)</span> A student is asked to write a program which will create a hundred POSIX threads. Each thread will print out the value of the parameter passed from <code>main()</code> which are 1, 2, 3, up to 100 respectively. Consider the following code fragment he wrote, please verify its correctness. If incorrect, please correct the error.<pre>void *doSomething(void *y) {
+<b>(b) 2 unique threads</b> created by thread_create(), one in C1 and one in C2. The last fork() duplicates only the calling thread (POSIX), so it creates no extra threads.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q5</span> <span class='pts'>(15 pt)</span> Discuss how the following pairs of scheduling criteria conflict in certain settings.</div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q5.1</span> CPU utilization and response time</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>CPU utilization vs. response time.</b> CPU utilization is highest when context switches are rare, as with FCFS or a long quantum, because each switch is pure overhead. Good response time for interactive users needs <b>frequent preemption</b> (a short RR quantum) so every user gets the CPU quickly. That causes many context switches, so the CPU spends more time switching and less doing useful work, which lowers utilization.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q5.2</span> Average turnaround time and maximum waiting time</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>Average turnaround time vs. maximum waiting time.</b> Average turnaround is minimized by running the <b>shortest jobs first</b> (SJF/SRTF). But a long job can be postponed again and again as short jobs keep arriving, so it may <b>starve</b>. Its waiting time, the <b>maximum</b> waiting time, becomes very large (unbounded). Bounding the maximum wait (e.g. with FCFS or aging) raises the average turnaround.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q5.3</span> I/O device utilization and CPU utilization</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>I/O device utilization vs. CPU utilization.</b> Keeping devices busy means running <b>I/O-bound</b> processes as soon as their I/O completes, so they can issue the next request quickly. This means frequently preempting CPU-bound processes, and the context-switch overhead lowers CPU utilization. Maximizing CPU utilization means letting CPU-bound jobs run long without switching, which leaves the I/O devices <b>idle</b> while I/O-bound jobs wait for the CPU.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q5.4</span> Deadline and fairness</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>Deadline vs. fairness.</b> To meet deadlines, the scheduler must always give the CPU to the most urgent process (earliest deadline or real-time priority), regardless of how much CPU it has already had. Other processes may wait a long time or <b>starve</b>, which is unfair. A <b>fair</b> scheduler gives everyone an equal share, so urgent tasks may not get enough CPU in time and <b>miss their deadlines</b>.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q5.5</span> Throughput and context switch overhead</div><div class='ans'><span class='lbl'>ANSWER</span><p><b>Throughput vs. context-switch overhead.</b> Throughput (jobs completed per unit time) is improved by finishing short jobs quickly, which needs preemption: SJF/SRTF or a small RR quantum. Every preemption adds <b>context-switch overhead</b>, during which no useful work is done. Minimizing switches (FCFS, large quantum) traps short jobs behind long ones (<b>convoy effect</b>), so fewer jobs complete per unit time. If the quantum is too small, overhead itself eats the throughput.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2020</span><span class='qnum'>Q6</span> <span class='pts'>(10 pt)</span> A student is asked to write a program which will create a hundred POSIX threads. Each thread will print out the value of the parameter passed from <code>main()</code> which are 1, 2, 3, up to 100 respectively. Consider the following code fragment he wrote, please verify its correctness. If incorrect, please correct the error.<pre class="long">void *doSomething(void *y) {
     ...
     printf(&quot;%d\n&quot;, *y);
     ...
@@ -528,7 +528,7 @@ int main() {
 <li>main never calls <b>pthread_join</b>, so it may return (ending the process and all its threads) before the threads print.</li>
 <li><code>*y</code> dereferences a <code>void *</code>, so it needs a cast to <code>int *</code>.</li>
 </ol>
-<p><b>Corrected:</b> give every thread its own argument and join all threads.</p><pre>void *doSomething(void *y) {
+<p><b>Corrected:</b> give every thread its own argument and join all threads.</p><pre class="long">void *doSomething(void *y) {
     ...
     printf(&quot;%d\n&quot;, *(int *)y);
     ...
@@ -641,7 +641,7 @@ int main() {
 <p>Defined by: number of queues, scheduling algorithm per queue, when to promote, when to demote, and which queue a new process enters.</p></div></div><div class='hdr'>7. Multilevel queue scheduling <span class='note'>(heading as printed; the questions are about synchronization)</span></div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q7.1</span> <span class='pts'>(5 pt)</span> What is <b>busy-waiting</b> in the discussion of critical section problem? Explain how <b>busy-waiting</b> may degrade the system performance.</div><div class='ans'><span class='lbl'>ANSWER</span>
 <p><b>Busy waiting</b> (spinning) means a process waiting to enter its critical section stays in a loop that keeps testing a condition until it can enter, e.g. <code>while (test_and_set(&amp;lock));</code> or <code>while (S &lt;= 0);</code>. It never gives up the CPU while waiting.</p>
 <p><b>Degraded performance:</b> the waiting process <b>wastes CPU cycles</b> doing no useful work, and other ready processes could have used them. On a single CPU, the spinner uses its entire time slice while the lock holder cannot run to release the lock, so everyone waits longer. If the spinner has higher priority than the lock holder, the holder may never run, and the system can even <b>deadlock</b> (priority inversion). Busy waiting is acceptable only for very short waits on multiprocessors, where it avoids a context switch.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q7.2</span> <span class='pts'>(10 pt)</span> How to implement semaphore without <b>busy-waiting</b> using <code>block</code> and <code>wakeup</code>? You need to write down the definition of data structure <code>semaphore</code> and <code>wait</code> and <code>signal</code> operations.</div><div class='ans'><span class='lbl'>ANSWER</span>
-<p>Each semaphore has an integer value and a <b>queue of waiting processes</b>. Instead of spinning, a process that must wait is <b>blocked</b> (moved to the waiting state and placed on the semaphore's queue). <code>signal</code> <b>wakes up</b> one waiting process (moves it to the ready queue).</p><pre>typedef struct {
+<p>Each semaphore has an integer value and a <b>queue of waiting processes</b>. Instead of spinning, a process that must wait is <b>blocked</b> (moved to the waiting state and placed on the semaphore's queue). <code>signal</code> <b>wakes up</b> one waiting process (moves it to the ready queue).</p><pre class="long">typedef struct {
     int value;
     struct process *list;      /* queue of waiting PCBs */
 } semaphore;
@@ -660,7 +660,7 @@ void signal(semaphore *S) {
         remove a process P from S-&gt;list;
         wakeup(P);             /* waiting -&gt; ready */
     }
-}</pre><p>If value is negative, |value| is the number of waiting processes. block() and wakeup() are system calls. wait() and signal() must still be atomic: disable interrupts inside them on a uniprocessor, or use a spinlock on a multiprocessor. That busy wait is limited to these few instructions, so it is short and rare.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q8</span> <span class='pts'>(10 pt)</span> We have discussed the correct solution to the consumer-producer problem, which does not use any synchronization mechanism, as shown below. Please explain why it can only use <code>BUFFER_SIZE-1</code> elements of buffer.<pre>Producer:
+}</pre><p>If value is negative, |value| is the number of waiting processes. block() and wakeup() are system calls. wait() and signal() must still be atomic: disable interrupts inside them on a uniprocessor, or use a spinlock on a multiprocessor. That busy wait is limited to these few instructions, so it is short and rare.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2021</span><span class='qnum'>Q8</span> <span class='pts'>(10 pt)</span> We have discussed the correct solution to the consumer-producer problem, which does not use any synchronization mechanism, as shown below. Please explain why it can only use <code>BUFFER_SIZE-1</code> elements of buffer.<pre class="long">Producer:
     while (true) {
         /* produce an item in next produced */
         while (((in + 1) % BUFFER_SIZE) == out)
@@ -740,7 +740,7 @@ Consumer:
 <text x="400" y="240" fill="#0b4f8a">Difference from Hoare: signal queue</text>
 <text x="400" y="253" fill="#0b4f8a">now holds the SIGNALED process, not</text>
 <text x="400" y="266" fill="#0b4f8a">the signaler; 8 steps instead of 9.</text></g></svg>
-<p>Compared with Hoare: in Hoare's version A runs immediately and the signaler B waits in the signal queue. In signal-and-continue, A may find the condition changed by the time it runs, so waiters should re-check it with <code>while (!cond) q.wait();</code>. There are fewer context switches, and this is what Java and Pthreads use.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2022</span><span class='qnum'>Q3</span> <span class='pts'>(20 pt)</span> In class, we have discussed implementing monitor with <b>signal and wait</b> via semaphores as follows.<pre>Variables
+<p>Compared with Hoare: in Hoare's version A runs immediately and the signaler B waits in the signal queue. In signal-and-continue, A may find the condition changed by the time it runs, so waiters should re-check it with <code>while (!cond) q.wait();</code>. There are fewer context switches, and this is what Java and Pthreads use.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2022</span><span class='qnum'>Q3</span> <span class='pts'>(20 pt)</span> In class, we have discussed implementing monitor with <b>signal and wait</b> via semaphores as follows.<pre class="long">Variables
     semaphore mutex;    // (initially = 1)
     semaphore next;     // (initially = 0)
     int next-count = 0;
@@ -775,10 +775,12 @@ The operation x.signal can be implemented as:
         wait(next);
         next_count--;
     }</pre>Please modify the above code to implement <b>signal and continue</b>.</div><div class='ans'><span class='lbl'>ANSWER</span>
-<p>In signal-and-wait the <b>signaler</b> blocks on <code>next</code>. For <b>signal-and-continue</b>, the signaler must <b>not</b> block. Instead, the <b>signaled</b> process waits on <code>next</code> to re-enter after the signaler leaves. Changed lines are marked NEW:</p><pre>Variables
-    semaphore mutex;          // (initially = 1)
-    semaphore next;           // (initially = 0)  signaled procs waiting to re-enter
-    int next_count = 0;       // number of such procs
+<p>In signal-and-wait the <b>signaler</b> blocks on <code>next</code>. For <b>signal-and-continue</b>, the signaler must <b>not</b> block. Instead, the <b>signaled</b> process waits on <code>next</code> to re-enter after the signaler leaves. Changed lines are marked NEW:</p><pre class="long">Variables
+    semaphore mutex;      // (initially = 1)
+    semaphore next;       // (initially = 0)
+                          // = signaled procs
+                          //   waiting to re-enter
+    int next_count = 0;
 
 Each procedure F (unchanged)
     wait(mutex);
@@ -786,12 +788,12 @@ Each procedure F (unchanged)
         // body of F;
         ...
     if (next_count &gt; 0)
-        signal(next);         // hand monitor to a signaled process first
+        signal(next);     // signaled proc first
     else
         signal(mutex);
 
-For each condition variable x (unchanged)
-    semaphore x_sem;          // (initially = 0)
+For each condition variable x
+    semaphore x_sem;      // (initially = 0)
     int x_count = 0;
 
 x.wait
@@ -800,18 +802,20 @@ x.wait
         signal(next);
     else
         signal(mutex);
-    wait(x_sem);              // sleep until signaled
-    wait(next);               // NEW: wait until signaler leaves/waits
-    next_count--;             // NEW: back inside the monitor
-                              // (x_count-- moved into x.signal)
+    wait(x_sem);          // sleep until signaled
+    wait(next);           // NEW: wait until the
+                          //   signaler leaves/waits
+    next_count--;         // NEW: back in monitor
+                          // (x_count-- moved to
+                          //   x.signal)
 
-x.signal                      // signal-and-continue
+x.signal                  // signal-and-continue
     if (x_count &gt; 0) {
-        x_count--;            // NEW: decremented by signaler
+        x_count--;        // NEW: done by signaler
         next_count++;
-        signal(x_sem);        // wake one waiter ...
-                              // REMOVED: wait(next); next_count--;
-    }                         // ... and the signaler simply continues</pre><p>Why: the signaler no longer suspends itself. The woken process must re-acquire the monitor, and it gets it through <code>next</code>, ahead of the entry queue, when the signaler exits or waits. x_count is decremented by the signaler, so two consecutive signals cannot wake the same single waiter twice. Callers should use <code>while (!B) x.wait();</code>.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2022</span><span class='qnum'>Q4</span> <span class='pts'>(10 pt)</span> Suppose a architecture use 48-bit addressing with 4K paging on 64-processors. How much memory space a process may have? How many entries a page table may have? How should a page table be stored in memory?</div><div class='ans'><span class='lbl'>ANSWER</span>
+        signal(x_sem);    // wake one waiter
+        // REMOVED: wait(next); next_count--;
+    }                     // signaler continues</pre><p>Why: the signaler no longer suspends itself. The woken process must re-acquire the monitor, and it gets it through <code>next</code>, ahead of the entry queue, when the signaler exits or waits. x_count is decremented by the signaler, so two consecutive signals cannot wake the same single waiter twice. Callers should use <code>while (!B) x.wait();</code>.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2022</span><span class='qnum'>Q4</span> <span class='pts'>(10 pt)</span> Suppose a architecture use 48-bit addressing with 4K paging on 64-processors. How much memory space a process may have? How many entries a page table may have? How should a page table be stored in memory?</div><div class='ans'><span class='lbl'>ANSWER</span>
 <p><b>Memory space per process:</b> 48-bit addresses give 2<sup>48</sup> bytes = <b>256 TB</b> of logical address space.</p>
 <p><b>Page-table entries:</b> 4 KB = 2<sup>12</sup> gives a 12-bit offset, so the page number is 48 − 12 = 36 bits. That makes <b>2<sup>36</sup> ≈ 68.7 billion (64 G) entries</b>. On a 64-bit processor each entry is 8 bytes, so a single flat table would need 2<sup>36</sup> × 8 = 2<sup>39</sup> B = <b>512 GB per process</b>.</p>
 <p><b>How to store it:</b> a flat table is far too large to keep, let alone contiguously. <b>Page the page table</b> with a <b>multi-level (hierarchical) page table</b>. x86-64 uses <b>4 levels</b>:</p>
@@ -848,7 +852,7 @@ x.signal                      // signal-and-continue
 <p>Defined by: number of queues, scheduling algorithm per queue, when to promote, when to demote, and which queue a new process enters.</p></div></div><div class='hdr'>6. Multilevel queue scheduling <span class='note'>(heading as printed)</span></div><div class='item'><div class='qbox'><span class='yr'>2022</span><span class='qnum'>Q6.1</span> <span class='pts'>(5 pt)</span> What is <b>busy-waiting</b> in the discussion of critical section problem? Explain how <b>busy-waiting</b> may degrade the system performance.</div><div class='ans'><span class='lbl'>ANSWER</span>
 <p><b>Busy waiting</b> (spinning) means a process waiting to enter its critical section stays in a loop that keeps testing a condition until it can enter, e.g. <code>while (test_and_set(&amp;lock));</code> or <code>while (S &lt;= 0);</code>. It never gives up the CPU while waiting.</p>
 <p><b>Degraded performance:</b> the waiting process <b>wastes CPU cycles</b> doing no useful work, and other ready processes could have used them. On a single CPU, the spinner uses its entire time slice while the lock holder cannot run to release the lock, so everyone waits longer. If the spinner has higher priority than the lock holder, the holder may never run, and the system can even <b>deadlock</b> (priority inversion). Busy waiting is acceptable only for very short waits on multiprocessors, where it avoids a context switch.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2022</span><span class='qnum'>Q6.2</span> <span class='pts'>(5 pt)</span> How to implement semaphore without <b>busy-waiting</b> using <code>block</code> and <code>wakeup</code>? You need to write down the definition of data structure <code>semaphore</code> and <code>wait</code> and <code>signal</code> operations.</div><div class='ans'><span class='lbl'>ANSWER</span>
-<p>Each semaphore has an integer value and a <b>queue of waiting processes</b>. Instead of spinning, a process that must wait is <b>blocked</b> (moved to the waiting state and placed on the semaphore's queue). <code>signal</code> <b>wakes up</b> one waiting process (moves it to the ready queue).</p><pre>typedef struct {
+<p>Each semaphore has an integer value and a <b>queue of waiting processes</b>. Instead of spinning, a process that must wait is <b>blocked</b> (moved to the waiting state and placed on the semaphore's queue). <code>signal</code> <b>wakes up</b> one waiting process (moves it to the ready queue).</p><pre class="long">typedef struct {
     int value;
     struct process *list;      /* queue of waiting PCBs */
 } semaphore;
@@ -867,7 +871,7 @@ void signal(semaphore *S) {
         remove a process P from S-&gt;list;
         wakeup(P);             /* waiting -&gt; ready */
     }
-}</pre><p>If value is negative, |value| is the number of waiting processes. block() and wakeup() are system calls. wait() and signal() must still be atomic: disable interrupts inside them on a uniprocessor, or use a spinlock on a multiprocessor. That busy wait is limited to these few instructions, so it is short and rare.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2022</span><span class='qnum'>Q7</span> <span class='pts'>(10 pt)</span> We have discussed the correct solution to the consumer-producer problem, which does not use any synchronization mechanism, as shown below. Please explain why it can only use <code>BUFFER_SIZE-1</code> elements of buffer.<pre>Producer:
+}</pre><p>If value is negative, |value| is the number of waiting processes. block() and wakeup() are system calls. wait() and signal() must still be atomic: disable interrupts inside them on a uniprocessor, or use a spinlock on a multiprocessor. That busy wait is limited to these few instructions, so it is short and rare.</p></div></div><div class='item'><div class='qbox'><span class='yr'>2022</span><span class='qnum'>Q7</span> <span class='pts'>(10 pt)</span> We have discussed the correct solution to the consumer-producer problem, which does not use any synchronization mechanism, as shown below. Please explain why it can only use <code>BUFFER_SIZE-1</code> elements of buffer.<pre class="long">Producer:
     while (true) {
         /* produce an item in next produced */
         while (((in + 1) % BUFFER_SIZE) == out)
