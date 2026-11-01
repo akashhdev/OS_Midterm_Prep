@@ -921,20 +921,21 @@ def wc(h):
     t = re.sub(r"<[^>]+>", " ", t)
     return len(t.split())
 
-def build():
+def build(years=None):
+    exams = [e for e in EXAMS if not years or e[0] in years]
     out = [f"<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'>"
            f"<title>Past Exam Solutions</title><style>{CSS}</style></head><body>"]
-    out.append("<h1>CS5730 Operating Systems: Past Exam Solutions</h1>")
+    out.append("<h1>CS5730 Operating Systems: " + (f"{exams[0][0]} Midterm Solutions" if years else "Past Exam Solutions") + "</h1>")
     out.append("<p class='lead'>All past papers in the repo (2011, 2013, 2019, 2020, 2021, 2022), in order. Each entry gives the year, "
                "the full question as printed, then a model answer sized to fit the space on the exam paper (prose kept to about 250 words; "
                "code, tables and diagrams added where the question needs them). Repeated questions use the same answer every time.</p>")
     out.append("<table class='toc'><tr><th>Year</th><th>Paper</th><th>Questions</th></tr>")
-    for yr, title, note, items in EXAMS:
+    for yr, title, note, items in exams:
         n = sum(1 for it in items if it[0] == "q" and it[4])
         out.append(f"<tr><td>{yr}</td><td>{title}</td><td>{n} answers</td></tr>")
     out.append("</table>")
     long = []
-    for yr, title, note, items in EXAMS:
+    for yr, title, note, items in exams:
         out.append(f"<section class='exam'><h2>{yr} · {title}</h2>")
         if note:
             out.append(f"<div class='meta'>{note}</div>")
@@ -958,7 +959,15 @@ def build():
 if __name__ == "__main__":
     import os
     here = os.path.dirname(os.path.abspath(__file__))
-    page, long = build()
-    with open(os.path.join(here, "past_exam_solutions.html"), "w") as f:
+    import sys
+    # usage: build_solutions.py            -> past_exam_solutions.html (all years)
+    #        build_solutions.py 2022       -> solutions_2022.html (one paper)
+    years = sys.argv[1:]
+    page, long = build(years)
+    name = f"solutions_{'_'.join(years)}.html" if years else "past_exam_solutions.html"
+    if years:
+        page = page.replace("<p class='lead'>All past papers in the repo (2011, 2013, 2019, 2020, 2021, 2022), in order.",
+                            "<p class='lead'>The " + ", ".join(years) + " paper only, in order.")
+    with open(os.path.join(here, name), "w") as f:
         f.write(page)
-    print("prose > 300 words:", long or "none")
+    print(name, "| prose > 300 words:", long or "none")
