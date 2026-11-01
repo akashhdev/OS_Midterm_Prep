@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OS Midterm Cheat Sheet</title>
+<style>
+  :root{
+    --ink:#111; --mute:#555; --rule:#bbb; --hi:#fff3b0; --box:#f3f5f8; --acc:#0b4f8a; --bad:#a40000; --good:#0a6b2d;
+  }
+  @page{ size: Letter; margin: 0.35in; }
+  *{ box-sizing:border-box; }
+  html,body{ background:#fff; color:var(--ink); }
+  body{ font: 8.4pt/1.28 "Helvetica Neue", Arial, sans-serif; margin:0; padding:12px 16px; }
+  @media print{ body{ padding:0; } }
+  h1{ font-size:13pt; margin:0 0 2px; }
+  .sub{ color:var(--mute); margin-bottom:6px; }
+  .cols{ column-count:2; column-gap:14px; column-rule:1px solid var(--rule); }
+  @media (max-width:800px){ .cols{ column-count:1; } }
+  h2{ font-size:10pt; background:var(--acc); color:#fff; padding:2px 5px; margin:7px 0 4px; break-after:avoid; }
+  h3{ font-size:8.9pt; margin:6px 0 2px; color:var(--acc); border-bottom:1px solid var(--rule); break-after:avoid; }
+  p{ margin:2px 0 3px; }
+  ul,ol{ margin:2px 0 3px; padding-left:15px; }
+  li{ margin:0 0 1px; }
+  pre, code{ font-family: "DejaVu Sans Mono", Menlo, Consolas, monospace; }
+  pre{ font-size:6.3pt; line-height:1.2; background:var(--box); border:1px solid #dde; padding:3px 4px; margin:2px 0 4px; white-space:pre; overflow:hidden; break-inside:avoid; }
+  @media screen and (max-width:800px){ pre{ white-space:pre-wrap; } }
+  code{ font-size:7.6pt; background:var(--box); padding:0 2px; }
+  .q{ border:1px solid var(--rule); border-left:3px solid var(--acc); padding:3px 5px; margin:4px 0; }
+  .q .t{ font-weight:bold; }
+  .tag{ display:inline-block; font-size:6.8pt; font-weight:bold; background:var(--hi); border:1px solid #d9c55a; padding:0 3px; margin-left:3px; border-radius:2px; }
+  .bad{ color:var(--bad); font-weight:bold; } .good{ color:var(--good); font-weight:bold; }
+  table{ border-collapse:collapse; width:100%; margin:2px 0 4px; font-size:7.6pt; break-inside:avoid; }
+  th,td{ border:1px solid var(--rule); padding:1px 3px; text-align:left; vertical-align:top; }
+  th{ background:var(--box); }
+  .gantt{ display:flex; width:100%; margin:2px 0 0; border:1px solid #333; font-size:7pt; break-inside:avoid; }
+  .gantt div{ border-right:1px solid #333; text-align:center; padding:1px 0; overflow:hidden; white-space:nowrap; }
+  .gantt div:last-child{ border-right:0; }
+  .g1{ background:#cfe3ff; } .g2{ background:#ffd9b3; } .gi{ background:#eee; color:#777; } .gx{ background:#ffb3b3; }
+  .ticks{ display:flex; width:100%; font-size:6.5pt; color:var(--mute); margin-bottom:3px; }
+  .ticks span{ text-align:left; overflow:visible; white-space:nowrap; }
+  .note{ font-size:7.6pt; color:var(--mute); }
+  .hi{ background:var(--hi); }
+  .avoid{ break-inside:avoid; }
+</style>
+</head>
+<body>
+<h1>CS5730 Operating Systems — Midterm Cheat Sheet</h1>
+<div class="sub">Built from past exams 2011, 2013, 2019, 2020, 2021, 2022 plus lecture topics 01–08. The professor repeats questions <b>almost word for word</b> (2021 and 2022 are nearly identical). Read the question, find it in §1, write the model answer. Section numbers: §1 repeated questions · §2 sync code · §3 scheduling · §4 process/thread · §5 memory · §6 deadlock · §7 basics.</div>
+
+<div class="cols">
+
+<h2>§0 Exam intel: what gets tested</h2>
+<p><b>Format:</b> about 8–9 essay questions, 100 pts, "answer concisely (3–4 sentences)". Sub-parts are worth 5–20 pts. Code questions ask you to <i>write or modify</i> pseudo-C. Gantt charts are expected for real-time scheduling.</p>
+<table>
+<tr><th>Topic (count of exams it appeared in, out of 6)</th><th>Years</th><th>§</th></tr>
+<tr class="hi"><td>Multilevel queue: list 2 inter-queue schemes + modify so a process moves queues (MLFQ) ×5</td><td>11,13,19,21,22</td><td>1.6</td></tr>
+<tr class="hi"><td>Why disabling interrupts is bad for user-level sync ×4</td><td>11,13,21,22</td><td>1.1</td></tr>
+<tr class="hi"><td>Scheduling-criteria conflicts (5 pairs) ×4</td><td>11,13,20,21</td><td>1.5</td></tr>
+<tr class="hi"><td>Monitors: Hoare vs signal-and-continue, queues, semaphore impl, dining philosophers ×4</td><td>11,19,22(×2)</td><td>1.12–1.14</td></tr>
+<tr class="hi"><td>Busy waiting + semaphore with block/wakeup ×3</td><td>13,21,22</td><td>1.2</td></tr>
+<tr><td>fork()/thread_create counting ×3</td><td>13,19,20</td><td>1.8</td></tr>
+<tr><td>exec() before fork() ×3; fork/exec in a multithreaded process ×3</td><td>19,20,21 / 13,19,20</td><td>1.7</td></tr>
+<tr><td>Processor affinity ×3</td><td>19,20,21</td><td>1.9</td></tr>
+<tr><td>Regressive round-robin (favors CPU-bound) ×3</td><td>13,19,20</td><td>1.10</td></tr>
+<tr><td>Bounded buffer: BUFFER_SIZE−1 ×2; empty/full semaphores ×1</td><td>21,22 / 13</td><td>1.3</td></tr>
+<tr><td>RMS vs EDF Gantt (p1=50,t1=25,p2=75,t2=30) ×2</td><td>21,22</td><td>1.4</td></tr>
+<tr><td>Fix the 100-pthreads program ×2; lottery scheduling ×2</td><td>19,20</td><td>1.11, 1.10</td></tr>
+<tr><td>Paging address-bit math ×2; Intel IA-32 translation; demand-paging EAT</td><td>11,22; 20; 20</td><td>1.16–1.18</td></tr>
+<tr><td>Peterson proof + variant; TestAndSet/Swap (+ fails if not atomic); wait/signal must be atomic</td><td>11; 13; 11</td><td>1.15</td></tr>
+<tr><td>Thread models (many-to-one on MP; many-to-many with k kernel threads); socket ports; race condition (bank)</td><td>11,13; 21; 13</td><td>1.19–1.21</td></tr>
+</table>
+<p class="note">Not seen in past midterms but in the slides: deadlock / banker's (topic 07). A short reference is in §6, just in case.</p>
+
+<h2>§1 Repeated questions with model answers</h2>
+
+<div class="q"><span class="t">1.1 Why is disabling interrupts NOT appropriate for user-level synchronization (even on 1 CPU)?</span><span class="tag">×4</span>
+<ul>
+<li>Disabling interrupts is a <b>privileged instruction</b>. Letting user code run it breaks dual-mode protection.</li>
+<li>A buggy or malicious program could disable interrupts and <b>never re-enable them</b>. Then the <b>timer interrupt</b> can't fire, the OS never regains control, there is no preemption or context switch, and one process <b>monopolizes the CPU</b> (system hangs).</li>
+<li>While interrupts are off, I/O completions and clock ticks are delayed or lost (time-of-day drifts, devices sit idle) and responsiveness suffers.</li>
+<li>It also doesn't scale: on a multiprocessor it only affects the local CPU, so it gives no mutual exclusion there anyway.</li>
+</ul>
+<i>Use hardware atomic instructions (test_and_set/swap) or OS-provided semaphores/mutexes instead.</i></div>
+
+<div class="q"><span class="t">1.2 (a) What is busy-waiting? How does it hurt performance (or deadlock)? (b) Semaphore without busy waiting (block/wakeup)</span><span class="tag">×3</span>
+<p><b>(a)</b> Busy waiting (a <b>spinlock</b>) means a process waiting to enter its critical section loops continuously testing a condition, e.g. <code>while(test_and_set(&amp;lock));</code> or <code>while(S&lt;=0);</code>. It <b>wastes CPU cycles</b> that other processes could use. On a uniprocessor the spinner burns its whole time slice, and the lock holder can't run to release the lock in the meantime. <b>Deadlock:</b> with priority scheduling, if a high-priority process spins waiting for a lock held by a low-priority process, the low one never gets scheduled to release it, so both wait forever (priority-inversion style). Spinning is fine only when expected waits are shorter than a context switch (on multiprocessors).</p>
+<p><b>(b)</b></p>
+<pre>typedef struct {
+    int value;
+    struct process *list;   /* waiting queue (PCBs) */
+} semaphore;
+
+wait(semaphore *S) {
+    S->value--;
+    if (S->value &lt; 0) {
+        add this process to S->list;
+        block();            /* suspend: running -&gt; waiting */
+    }
+}
+signal(semaphore *S) {
+    S->value++;
+    if (S->value &lt;= 0) {
+        remove a process P from S->list;
+        wakeup(P);          /* waiting -&gt; ready queue */
+    }
+}</pre>
+<p>A negative value means |value| processes are waiting. block() and wakeup() are basic system calls. wait() and signal() must themselves be atomic (a CS). On a uniprocessor, disable interrupts inside them; on a multiprocessor, use a spinlock inside them. Busy waiting is <b>not fully eliminated</b>, but it is limited to the very short wait/signal code, so it is rare and brief.</p></div>
+
+<div class="q"><span class="t">1.3 Bounded buffer: why only BUFFER_SIZE−1 slots? / What do <code>empty</code> and <code>full</code> do?</span><span class="tag">×3</span>
+<p><b>N−1:</b> the only shared state is <code>in</code> and <code>out</code>, and <b>empty is defined as <code>in == out</code></b>. If the producer were allowed to fill all N slots, <code>in</code> would wrap around to equal <code>out</code>, and "full" would look exactly like "empty". So the producer stops when <code>(in+1)%N == out</code>, leaving one slot always unused to tell full from empty. (E.g. N=10: in=9, out=0 → (9+1)%10==0 → full with only 9 items.) Fix: add a <code>counter</code> of items (which then needs synchronization because <code>counter++</code>/<code>--</code> race) or a full/empty flag.</p>
+<p><b>Semaphores:</b> <code>mutex=1</code> gives mutual exclusion on buffer access. <code>empty=n</code> counts empty slots: the producer does <code>wait(empty)</code> before inserting (it blocks when the buffer is full) and the consumer does <code>signal(empty)</code> after removing. <code>full=0</code> counts filled slots: the consumer does <code>wait(full)</code> (it blocks when empty) and the producer does <code>signal(full)</code>. They replace busy-wait loops and let all n slots be used.</p>
+<pre>Producer:                     Consumer:
+do { produce item;            do { wait(full);
+  wait(empty);                       wait(mutex);
+  wait(mutex);                       remove item from buffer;
+  add item to buffer;                signal(mutex);
+  signal(mutex);                     signal(empty);
+  signal(full);                      consume item;
+} while(1);                   } while(1);</pre>
+<p class="note">The order matters: doing wait(mutex) before wait(empty) can deadlock when the buffer is full.</p></div>
+
+<div class="q avoid"><span class="t">1.4 P1: p=d=50, t=25; P2: p=d=75, t=30. (a) RMS? (b) EDF?</span><span class="tag">×2 (20 pts)</span>
+<p>U = 25/50 + 30/75 = 0.50 + 0.40 = <b>0.90</b>. The RMS bound for N=2 is 2(2<sup>1/2</sup>−1) = <b>0.828</b>. U &gt; bound, so RMS is not guaranteed; check with a chart. (U ≤ 1, so EDF works.)</p>
+<p><b>(a) RMS</b>: priority is static and the shorter period wins, so <b>P1 &gt; P2</b>.</p>
+<div class="gantt"><div class="g1" style="width:20%">P1</div><div class="g2" style="width:20%">P2 (25 of 30)</div><div class="g1" style="width:20%">P1</div><div class="gx" style="width:40%">✗ P2 misses dl @75</div></div>
+<div class="ticks"><span style="width:20%">0</span><span style="width:20%">25</span><span style="width:20%">50</span><span style="width:40%">75</span></div>
+<p>At t=50, P1's 2nd instance preempts P2, which has only had 25 of its 30 ms. P1 runs 50–75, and at t=75 P2 has missed its deadline. <span class="bad">Not schedulable by RMS.</span></p>
+<p><b>(b) EDF</b>: dynamic priority, the earliest absolute deadline runs (ties: don't preempt).</p>
+<div class="gantt"><div class="g1" style="width:16.67%">P1</div><div class="g2" style="width:20%">P2</div><div class="g1" style="width:16.67%">P1</div><div class="g2" style="width:20%">P2</div><div class="g1" style="width:16.67%">P1</div><div class="gi" style="width:10%">idle</div></div>
+<div class="ticks"><span style="width:16.67%">0</span><span style="width:20%">25</span><span style="width:16.67%">55</span><span style="width:20%">80</span><span style="width:16.67%">110</span><span style="width:10%">135 &nbsp;&nbsp;&nbsp;150</span></div>
+<ul>
+<li>0: P1(dl 50) vs P2(dl 75): P1 runs 0–25. Then P2 runs from 25.</li>
+<li>50: P1#2 arrives (dl 100), but P2's dl 75 is earlier, so <b>P2 keeps running</b> and finishes at 55. P1 runs 55–80.</li>
+<li>75: P2#2 arrives (dl 150). P1's dl 100 is earlier, so P1 finishes at 80. P2 runs 80–110.</li>
+<li>100: P1#3 arrives (dl 150), tied with P2, so no preemption. P1 runs 110–135, then idle 135–150.</li>
+<li>LCM = 150, so the pattern repeats. <span class="good">All deadlines met.</span></li>
+</ul></div>
+
+<div class="q"><span class="t">1.5 How do these scheduling criteria conflict?</span><span class="tag">×4 (15 pts)</span>
+<ul>
+<li><b>CPU utilization vs response time:</b> utilization is highest when context switches are rare (FCFS, long quanta). Good response time needs frequent preemption (short RR quanta), and each switch is overhead that lowers useful CPU utilization.</li>
+<li><b>Avg turnaround vs max waiting time:</b> SJF/SRTF minimizes <i>average</i> turnaround by always running short jobs first, but long jobs can <b>starve</b>, so the <i>maximum</i> waiting time becomes very large (unbounded).</li>
+<li><b>I/O device utilization vs CPU utilization:</b> to keep devices busy you must run I/O-bound jobs as soon as their I/O completes (preempting CPU-bound jobs), which causes many context switches. Maximizing CPU use means letting CPU-bound jobs run without switching, which leaves devices idle.</li>
+<li><b>Deadline vs fairness:</b> meeting deadlines means always giving the CPU to the most urgent (real-time / earliest-deadline) task, possibly starving others, which is unfair. Fair (equal-share) scheduling can make urgent tasks miss deadlines.</li>
+<li><b>Throughput vs context-switch overhead:</b> high throughput often means preempting to finish many short jobs (SJF, small quantum), and every preemption adds context-switch overhead. Minimizing switches (FCFS) leaves short jobs stuck behind long ones (convoy effect), which lowers throughput.</li>
+<li><i>(2013)</i> <b>CPU utilization vs throughput:</b> running long CPU-bound jobs keeps the CPU 100% busy but completes few jobs per unit time. Favoring many short or I/O-bound jobs completes more jobs but adds switches and idle I/O waits, which lowers utilization.</li>
+</ul></div>
+
+<div class="q"><span class="t">1.6 Multilevel queue (MLQ): (a) list 2 ways to schedule among queues; (b) modify so a new process automatically lands in the right queue after a few runs</span><span class="tag">×5</span>
+<p><b>(a)</b> (1) <b>Fixed-priority preemptive</b>: serve all of the higher queue (e.g. foreground) before any of the lower one (background), which can cause starvation. (2) <b>Time slice among queues</b>: each queue gets a fixed share of CPU time, e.g. 80% foreground with RR and 20% background with FCFS.</p>
+<p><b>(b)</b> Turn it into a <b>multilevel FEEDBACK queue</b>: let processes <b>move between queues</b> based on observed CPU-burst behavior.</p>
+<pre>             new system proc
+                    v
+ Q0 system process        (highest, fixed, FCFS/priority)
+  new faculty proc v
+ Q1 faculty interactive   RR q=8   --used full q--&gt; demote to Q3
+                    ^-------- blocks for I/O early: promote ----+
+  new student proc v                                            |
+ Q2 student interactive   RR q=8   --used full q--&gt; demote to Q4|
+                    ^-------- blocks for I/O early: promote ----+
+ Q3 faculty batch         RR q=16 (or FCFS)
+ Q4 student batch         FCFS      (lowest)
+ + aging: a process waiting too long in Q3/Q4 moves up</pre>
+<ul>
+<li>A new process enters the <b>interactive</b> queue for its class (faculty or student) with a small quantum.</li>
+<li>If it <b>uses its whole quantum</b>, it looks CPU-bound and is <b>demoted</b> to the batch queue (bigger quantum, lower priority).</li>
+<li>If it <b>blocks for I/O before the quantum expires</b>, it looks interactive or I/O-bound and stays or is <b>promoted</b>.</li>
+<li><b>Aging</b> promotes processes that wait too long, which prevents starvation. System processes stay fixed at the top.</li>
+<li>The MLFQ is defined by 5 parameters: number of queues; the algorithm for each queue; when to <b>upgrade</b>; when to <b>demote</b>; which queue a new process enters.</li>
+</ul>
+<p><b>Why distinguish I/O-bound from CPU-bound (2013)?</b> I/O-bound processes have short CPU bursts. Giving them priority keeps I/O devices busy and interactive response fast, while CPU-bound jobs fill the CPU gaps. That gives better overall CPU <i>and</i> device utilization, and the long-term scheduler wants a good mix.</p>
+<p><b>Linux support for both inter-queue schemes (2011):</b> fixed priority between classes: <b>real-time</b> priorities 0–99 (SCHED_FIFO / SCHED_RR) always run before <b>normal</b> tasks (nice −20..+19 maps to 100–139). Time slicing: the O(1) scheduler gives each task a quantum (higher priority gets a longer one) using <b>active/expired arrays</b>, and swaps them when all slices are used. CFS (2.6.23+) gives each task a <b>proportion</b> of CPU by <b>vruntime</b> within a target latency.</p></div>
+
+<div class="q"><span class="t">1.7 exec() before fork()? / fork() and exec() in a multithreaded process</span><span class="tag">×3 each</span>
+<p><b>exec before fork:</b> exec() <b>replaces the calling process's memory image</b> (code, data, stack) with the new program and <b>does not return</b> on success. So the fork() after it is never reached: no child is created, and the original program is gone, replaced by the exec'd program running under the same PID. (fork() only runs if exec fails and returns −1.)</p>
+<p><b>One thread calls fork():</b> it depends on the system. Some UNIXes have two versions: one duplicates <b>all threads</b>, the other (POSIX default) duplicates <b>only the calling thread</b>. If exec() is called right after fork(), duplicating only the caller is enough (the other threads would be thrown away anyway). If the child doesn't exec, duplicating all threads may be needed.<br>
+<b>One thread calls exec():</b> the program in exec's parameter <b>replaces the entire process, including ALL threads</b>.</p></div>
+
+<div class="q avoid"><span class="t">1.8 How many unique processes / threads?</span><span class="tag">×3</span>
+<pre>pid = fork();            /* (1) P0 -&gt; C1                      */
+if (pid == 0) {          /* only C1                           */
+    fork();              /* (2) C1 -&gt; C2                      */
+    thread_create(...);  /* C1 and C2 each create 1 thread    */
+}
+fork();                  /* (3) P0,C1,C2 each fork -&gt; +3      */</pre>
+<p><b>(a) 6 processes</b> (P0, C1, C2 + 3 from the last fork; that's 5 new if you exclude the original, so state which you mean). <b>(b) 2 threads</b> created by thread_create (one in C1, one in C2). The final fork copies only the calling thread, so no extra threads. This is the textbook answer and got full credit (graded 10/10 in 2020).</p>
+<p class="note">Rule of thumb: n unconditional sequential forks give 2<sup>n</sup> processes. Draw the tree and label each fork.</p></div>
+
+<div class="q"><span class="t">1.9 Processor affinity: what is it and why consider it on multi-CPU systems?</span><span class="tag">×3</span>
+<p>Processor affinity means a process prefers to keep running on the <b>processor it is currently running on</b>. While it runs, its data fills that CPU's <b>cache</b>. If it migrates, the old cache contents must be <b>invalidated</b> and the new CPU's cache <b>repopulated</b>, which is expensive (cache misses, memory stalls). So SMP schedulers try to avoid migration. <b>Soft affinity:</b> the OS tries to keep the process on the same CPU but doesn't guarantee it. <b>Hard affinity:</b> the process specifies the set of CPUs it may run on (processor sets). On <b>NUMA</b> machines, affinity also keeps the process near its local memory. Trade-off: affinity works against <b>load balancing</b> (push/pull migration).</p></div>
+
+<div class="q"><span class="t">1.10 Regressive round-robin: which type of process does it favor? / Lottery scheduling: how do you favor high priority?</span><span class="tag">×3 / ×2</span>
+<p><b>Regressive RR favors CPU-bound (batch) processes.</b> A process that uses its <b>entire quantum</b> (CPU-bound) is rewarded with +10 ms of quantum (up to 100 ms) <b>and a priority boost</b>. A process that <b>blocks before its quantum ends</b> (I/O-bound / interactive) is penalized with −5 ms and <b>gets no priority boost</b>. Over time CPU-bound processes get longer slices and higher priority.</p>
+<p><b>Lottery (BTV OS):</b> give <b>more lottery tickets to higher-priority threads</b>. A thread's chance of winning each 20 ms draw is (its tickets)/(total tickets), so a thread holding k of T tickets gets about k/T of the CPU over time (proportional share). Priority can also be adjusted dynamically by giving or taking tickets.</p></div>
+
+<div class="q avoid"><span class="t">1.11 Program that should create 100 pthreads printing 1..100. Correct? Fix it.</span><span class="tag">×2</span>
+<p><span class="bad">Incorrect.</span> (1) Every thread is passed <b>the same address <code>&amp;param1</code></b>, and main keeps changing param1 in the loop. Threads read it whenever they get scheduled, so they print duplicates or wrong values (often lots of 100s), not 1..100. (2) main never <b>pthread_join</b>s, so it can return or exit before the threads run, which kills them. (3) <code>*y</code> dereferences a <code>void*</code> and needs a cast.</p>
+<pre>void *doSomething(void *y) {
+    printf("%d\n", *(int *)y);
+    pthread_exit(0);
+}
+int main() {
+    pthread_t t1[100];
+    int param[100], i;               /* one slot per thread */
+    for (i = 0; i &lt; 100; i++) {
+        param[i] = i + 1;
+        pthread_create(&amp;t1[i], NULL, doSomething, &amp;param[i]);
+    }
+    for (i = 0; i &lt; 100; i++)
+        pthread_join(t1[i], NULL);   /* wait for all */
+    return 0;
+}</pre>
+<p class="note">Answers that only added join scored 7/10, so the shared-address bug is the main point. If they must print <i>in order</i>, the threads also need synchronization, or each thread can be joined right after it's created (which serializes them).</p></div>
+
+<div class="q"><span class="t">1.12 Monitors: Hoare (signal-and-wait) diagram → depict signal-and-continue</span><span class="tag">2019, 2022 (10–15 pts)</span>
+<p>Only one process is active in the monitor. P (=B) calls <code>q.signal()</code> while Q (=A) is in <code>q.wait()</code>.<br>
+<b>Signal-and-wait (Hoare):</b> A resumes <b>immediately</b>, and B blocks in the <b>signal queue</b> until A leaves or waits. <b>Signal-and-continue (Mesa):</b> B <b>keeps running</b>, and A moves to a ready/re-entry queue until B leaves or waits.</p>
+<table>
+<tr><th>#</th><th>Hoare (given)</th><th>Signal &amp; continue (answer)</th></tr>
+<tr><td>1</td><td>A enters monitor</td><td>A enters monitor</td></tr>
+<tr><td>2</td><td>A waits on q → wait queue</td><td>A waits on q → q's wait queue (releases monitor)</td></tr>
+<tr><td>3</td><td>B enters monitor</td><td>B enters monitor</td></tr>
+<tr><td>4</td><td>B signals; <b>B</b> enters signal queue</td><td>B signals; <b>A</b> moves from wait queue → signal (re-entry) queue; <b>B continues</b></td></tr>
+<tr><td>5</td><td>A re-enters monitor</td><td>B leaves monitor</td></tr>
+<tr><td>6</td><td>A leaves monitor</td><td>A re-enters monitor (signal queue has priority over entry queue)</td></tr>
+<tr><td>7</td><td>B re-enters monitor</td><td>A leaves monitor</td></tr>
+<tr><td>8</td><td>B leaves monitor</td><td>Another process admitted from entry queue</td></tr>
+<tr><td>9</td><td>Another admitted from entry queue</td><td>—</td></tr>
+</table>
+<pre>Signal & continue picture:
+  Entry Queue --1(A),3(B)--&gt; [ MONITOR ] --5: B exits, 7: A exits--&gt;
+  2: A calls q.wait  : A -&gt; Wait Queue(q), monitor released
+  4: B calls q.signal: A  Wait Queue(q) -&gt; Signal Queue; B keeps running
+  6: monitor free    : A  Signal Queue  -&gt; back in monitor (before entry q)</pre>
+<p><b>Comparison:</b> Hoare guarantees the condition still holds when A resumes, so <code>if(...) x.wait()</code> is enough, but it costs extra context switches. With S&amp;C the state may change before A runs, so use <b><code>while(!cond) x.wait()</code></b>. S&amp;C is simpler and cheaper, and it's what Java and pthreads use.</p></div>
+
+<div class="q"><span class="t">1.13 Monitor queue states (2011): entry: P1,P2; signal queue: P3; active P0; x: P4,P5; y: P6. Signal-and-wait. Each event is independent.</span>
+<table>
+<tr><th>Event</th><th>Active</th><th>Entry</th><th>Signal q</th><th>x</th><th>y</th></tr>
+<tr><td>P7 accesses M</td><td>P0</td><td>P1,P2,<b>P7</b></td><td>P3</td><td>P4,P5</td><td>P6</td></tr>
+<tr><td>P0: x.signal()</td><td><b>P4</b></td><td>P1,P2</td><td>P3,<b>P0</b></td><td>P5</td><td>P6</td></tr>
+<tr><td>P0: y.wait()</td><td><b>P3</b></td><td>P1,P2</td><td>—</td><td>P4,P5</td><td>P6,<b>P0</b></td></tr>
+</table>
+<p class="note">When the monitor frees up, the signal queue has priority over the entry queue. (Under signal-and-continue, x.signal would leave P0 active, move P4 to the signal/ready queue → P3,P4, and leave x: P5.)</p></div>
+
+<div class="q"><span class="t">1.14 Implement the monitor with SIGNAL-AND-CONTINUE via semaphores (modify the given signal-and-wait code)</span><span class="tag">2022 (20 pts), 2019 (20 pts)</span>
+<p><b>Given (signal-and-wait):</b> mutex=1, next=0, next_count=0. Each procedure F: <code>wait(mutex); body; if(next_count&gt;0) signal(next); else signal(mutex);</code>. In this version, <code>next</code> holds suspended <i>signalers</i>.<br>
+x.wait: <code>x_count++; if(next_count&gt;0) signal(next); else signal(mutex); wait(x_sem); x_count--;</code><br>
+x.signal: <code>if(x_count&gt;0){ next_count++; signal(x_sem); wait(next); next_count--; }</code></p>
+<p><b>Answer: the signaler must NOT block.</b> Now <code>next</code> / <code>next_count</code> hold <i>signaled processes waiting to re-enter</i> (the signal queue).</p>
+<pre>semaphore mutex = 1;    // monitor lock
+semaphore next  = 0;    // signaled procs waiting to RE-ENTER
+int next_count  = 0;
+/* per condition x */
+semaphore x_sem = 0;  int x_count = 0;
+
+Each procedure F:                 (UNCHANGED)
+  wait(mutex);
+  ... body of F ...
+  if (next_count &gt; 0) signal(next); // pass monitor to signaled proc
+  else                signal(mutex);
+
+x.wait:
+  x_count++;
+  if (next_count &gt; 0) signal(next);   // release monitor
+  else                signal(mutex);
+  wait(x_sem);        // sleep until someone signals x
+  wait(next);         // NEW: wait till signaler leaves/waits
+  next_count--;       // NEW: back inside the monitor
+
+x.signal:              // signal-and-continue
+  if (x_count &gt; 0) {
+      x_count--;      // NEW: signaler decrements (no double wake)
+      next_count++;   // the woken proc will wait on next
+      signal(x_sem);  // wake it; NO wait(next): keep running
+  }</pre>
+<p>Key changes: (1) removed <code>wait(next)</code> from x.signal, so the signaler continues. (2) The waiter, after being woken, does <code>wait(next)</code> to re-acquire the monitor when the signaler exits or waits, which gives it priority over the entry queue. (3) x_count is decremented by the signaler, so two signals in a row can't wake the same waiter twice. Simpler acceptable variant (no priority): <code>x.signal: if(x_count&gt;0){x_count--; signal(x_sem);}</code>; <code>x.wait: x_count++; signal(mutex); wait(x_sem); wait(mutex);</code>. Callers must use <code>while(!cond) x.wait();</code>.</p>
+<p><b>2019: Complete dining philosophers using the monitor with S&amp;C via semaphores:</b></p>
+<pre>enum {THINKING, HUNGRY, EATING} state[5];
+semaphore mutex = 1, next = 0;  int next_count = 0;
+semaphore self_sem[5] = {0};    int self_count[5] = {0};
+
+void enter() { wait(mutex); }
+void leave() { if (next_count &gt; 0) signal(next); else signal(mutex); }
+void cwait(int i) {                    /* self[i].wait()   */
+    self_count[i]++;
+    leave();                           /* release monitor  */
+    wait(self_sem[i]);
+    wait(next);  next_count--;         /* re-enter          */
+}
+void csignal(int i) {                  /* self[i].signal() */
+    if (self_count[i] &gt; 0) {
+        self_count[i]--; next_count++;
+        signal(self_sem[i]);           /* continue running */
+    }
+}
+void test(int i) {                     /* called inside monitor */
+    if (state[(i+4)%5] != EATING &amp;&amp; state[i] == HUNGRY &amp;&amp;
+        state[(i+1)%5] != EATING) {
+        state[i] = EATING;
+        csignal(i);
+    }
+}
+void pickup(int i) {
+    enter();
+    state[i] = HUNGRY;
+    test(i);
+    while (state[i] != EATING) cwait(i);   /* while: S&amp;C-safe */
+    leave();
+}
+void putdown(int i) {
+    enter();
+    state[i] = THINKING;
+    test((i+4)%5);  test((i+1)%5);         /* wake neighbors */
+    leave();
+}
+void init() { for (int i=0;i&lt;5;i++) state[i]=THINKING; }
+philosopher(i): while(1){ think(); pickup(i); eat(); putdown(i); }</pre>
+<p class="note">This works with S&amp;C because test() sets state[i]=EATING <i>before</i> signaling, and only philosopher i can change it back, so the condition still holds when i resumes. No deadlock; starvation is still possible.</p></div>
+
+<div class="q"><span class="t">1.15 Peterson proof; variant; TestAndSet / Swap; non-atomic wait/signal</span>
+<pre>flag[i] = TRUE;  turn = j;
+while (turn == j &amp;&amp; flag[j]) ;   /* busy wait */
+   /* critical section */
+flag[i] = FALSE;</pre>
+<ul>
+<li><b>Mutual exclusion:</b> Pi enters only if <code>flag[j]==F</code> or <code>turn==i</code>. If both were in the CS, both flags would be TRUE, so turn would have to equal both i and j at once, which is impossible. turn holds the <i>last</i> value written, and the process that wrote last waits.</li>
+<li><b>Progress:</b> if Pj isn't trying (flag[j]=F), Pi enters immediately. If both try, turn picks one in finite time. Only processes in their entry sections affect the decision, never those in the remainder section.</li>
+<li><b>Bounded waiting:</b> when Pj exits it sets flag[j]=F, so Pi enters. If Pj immediately re-requests, it sets turn=i, so Pi goes first. Pi waits for <b>at most one</b> entry of Pj.</li>
+</ul>
+<p><b>Variant</b> (entry <code>turn = i</code>, exit <code>turn = j</code>): <span class="bad">mutual exclusion is violated.</span> Trace: P0 sets flag0=T, turn=0, tests (turn==1?) false, and <b>enters</b>. Then P1 sets flag1=T, turn=1, tests (turn==0?) false, and <b>enters</b>. Both are in the CS. (A process that writes turn last never waits.)</p>
+<pre>/* test_and_set: atomic */             /* swap: atomic */
+bool TAS(bool *t){bool rv=*t;          void swap(bool *a,bool *b){
+  *t=true; return rv;}                   bool tmp=*a; *a=*b; *b=tmp;}
+lock = false;                          lock = false;  /* shared */
+do { while (TAS(&amp;lock)) ;              do { key = true;  /* local */
+     /* CS */                               while (key == true)
+     lock = false;                              swap(&amp;lock, &amp;key);
+     /* remainder */                            /* CS */
+} while (1);                                lock = false;
+                                       } while (1);</pre>
+<p><b>If TAS or Swap is not atomic:</b> with lock=false, P0 reads lock (false), gets preempted, then P1 reads lock (false) and sets it true and enters the CS. P0 resumes, sets lock=true, and returns its earlier read value false, so it <b>also enters</b>. ME is violated. Swap fails the same way: both read lock=false into their keys before either writes true.</p>
+<p><b>Non-atomic wait()/signal() (2011):</b> S=1. P0 tests S&lt;=0 (false), is preempted. P1 tests S&lt;=0 (false), does S-- → 0 and enters the CS. P0 resumes, does S-- → −1 and enters too. ME is violated. (Similarly, two concurrent S++ can lose an update.)</p>
+<p>Bounded-waiting TAS (n procs): <code>waiting[i]=T; key=T; while(waiting[i]&amp;&amp;key) key=TAS(&amp;lock); waiting[i]=F; CS; j=(i+1)%n; while(j!=i &amp;&amp; !waiting[j]) j=(j+1)%n; if(j==i) lock=F; else waiting[j]=F;</code></p></div>
+
+<div class="q"><span class="t">1.16 Paging: 48-bit addressing, 4K pages, 64-bit CPU: max process memory? # of page-table entries? How to store the page table?</span><span class="tag">2022</span>
+<ul>
+<li>Max logical space = 2<sup>48</sup> B = <b>256 TB</b>.</li>
+<li>Offset = 12 bits (4 KB = 2<sup>12</sup>), so the page number has 48−12 = 36 bits, giving <b>2<sup>36</sup> ≈ 68.7 billion (64 G) entries</b>.</li>
+<li>With 8-byte PTEs (64-bit), a flat table would be 2<sup>36</sup>×8 = 2<sup>39</sup> B = <b>512 GB per process</b>, which is impossible to keep contiguous in memory.</li>
+<li><b>Store it hierarchically</b> ("page the page table"): x86-64 uses <b>4-level</b> paging with 9+9+9+9+12 bits. Each level's table has 2<sup>9</sup>=512 entries × 8 B = 4 KB = exactly one page, and only the parts that are actually used get allocated. Alternatives: <b>hashed</b> page tables (common for &gt;32-bit, sparse spaces) or an <b>inverted</b> page table (one entry per physical frame). Use a <b>TLB</b> to avoid the extra memory accesses.</li>
+</ul>
+<p><b>2011:</b> 64 pages × 1024 words, 32 frames. Logical address = log2(64)+log2(1024) = 6+10 = <b>16 bits</b>. Physical address = log2(32)+10 = 5+10 = <b>15 bits</b>.</p>
+<p><b>Recipe:</b> offset bits = log2(page size). Page # bits = logical bits − offset. # PTEs = 2<sup>page# bits</sup>. Frame # bits = physical bits − offset. Table size = #PTE × PTE size. Two-level 32-bit/4 KB: 10|10|12. 32-bit/1 KB: p1=12, p2=10, d=10.</p></div>
+
+<div class="q"><span class="t">1.17 Intel 80386 (IA-32): CPU → logical addr → segmentation unit → linear addr → paging unit → physical addr</span><span class="tag">2020</span>
+<p><b>Steps:</b></p>
+<ol>
+<li>The CPU generates a <b>logical address = (selector, offset)</b>. The 16-bit selector has <b>s</b> = 13-bit segment index, <b>g</b> = 1 bit for GDT/LDT, and <b>p</b> = 2 bits for protection (privilege level).</li>
+<li>The <b>segmentation unit</b> uses the selector to fetch the 8-byte <b>segment descriptor</b> from the LDT (private, up to 8K segments) or GDT (shared, 8K segments). Descriptors are cached in the segment registers. It checks offset ≤ limit and access rights (otherwise it traps), then computes <b>linear address = base + offset</b> (32-bit).</li>
+<li>The <b>paging unit</b> splits the 32-bit linear address into <b>p1 (10) | p2 (10) | d (12)</b>. <b>CR3</b> points to the page directory. p1 indexes the page directory to get a page-table address. p2 indexes the page table to get the frame #. Then <b>physical = frame + d</b>. (For 4 MB pages the directory entry points straight at the frame: 10 | 22 offset.) The TLB caches translations; PAE adds a 3rd level for 36-bit physical addresses.</li>
+</ol>
+<p><b>Advantages:</b> segmentation gives the <b>user's logical view</b> (code, data, stack segments) with <b>per-segment protection and sharing</b>. Paging removes <b>external fragmentation</b>, allows noncontiguous allocation, and makes swapping and virtual memory easy. You get both protection levels and flexibility.</p>
+<p><b>Disadvantages:</b> <b>complexity</b> in hardware and OS. <b>Slower</b> translation: a segment lookup plus 2 page-table memory accesses per reference without TLB hits. More memory for tables (descriptor tables plus page tables). Paging still has internal fragmentation. Higher cost and power. That's why many architectures (RISC, ARM, x86-64 in practice with a flat model) use <b>paging only</b>.</p></div>
+
+<div class="q"><span class="t">1.18 Demand paging: fault service 8 ms (clean) / 20 ms (dirty, 70%), memory 100 ns. Max fault rate for EAT ≤ 200 ns?</span><span class="tag">2020</span>
+<p>Avg service = 0.3×8 + 0.7×20 = 16.4 ms = 16,400,000 ns.<br>
+EAT = (1−p)(100) + p(16,400,000) ≤ 200 → 100 + 16,399,900·p ≤ 200 → <b>p ≤ 6.1×10<sup>−6</sup></b> (about 1 fault per 164,000 accesses).<br>
+<span class="note">General: EAT = (1−p)·ma + p·(fault overhead + [swap out] + swap in + restart). The 2020 student scored 2/10 by mixing up ms and ns. <b>Convert units!</b></span></p>
+<p><b>TLB EAT:</b> EAT = α(ε+m) + (1−α)(ε+2m). The slides ignore ε: α=80%, m=100 gives 0.8×100 + 0.2×200 = <b>120 ns</b>; α=99% gives <b>101 ns</b>. Including ε=20: 0.8×120 + 0.2×220 = 140 ns.</p></div>
+
+<div class="q"><span class="t">1.19 Thread models on multiprocessors</span>
+<p><b>Many-to-one on a multiprocessor vs a uniprocessor (2013): No real gain.</b> All user threads map to <b>one kernel thread</b>, and the kernel schedules only that one, so only one user thread can run at a time on one CPU. There's no parallelism, and one blocking system call blocks all threads. (The other CPUs can only run other processes.)</p>
+<p><b>Many-to-many, user threads &gt; processors (2011):</b></p>
+<ul>
+<li><b>Kernel threads &lt; # processors:</b> some processors sit idle for this program because only that many threads can run in parallel. The hardware is under-used.</li>
+<li><b>= # processors:</b> all CPUs can be used at once, but when a kernel thread blocks (I/O, page fault) its CPU goes idle, because there's no spare kernel thread to swap in.</li>
+<li><b>&gt; # processors but &lt; # user threads:</b> best utilization. When one kernel thread blocks, another ready kernel thread runs on that CPU. The cost is some extra kernel-thread switching overhead.</li>
+</ul>
+<p><b>Multithreading doesn't help (2011):</b> a strictly <b>sequential</b> program where each step depends on the previous one (e.g. computing a tax return or a recurrence), or a CPU-bound single task on a uniprocessor. Threads add creation, switching, and synchronization overhead with no overlap to gain. Another example: a shell or program that only waits on one user.</p></div>
+
+<div class="q"><span class="t">1.20 Sockets: why port number instead of process ID?</span><span class="tag">2021</span>
+<p>A <b>PID is assigned dynamically</b> and is only meaningful <b>within one host</b>. It changes every time the server restarts, and a remote client can't know it. A <b>port is a fixed, well-known number tied to a service</b> (HTTP 80, SSH 22; ports below 1024 are well-known), so clients can find the service without knowing which process provides it. The process behind a port can change (restart, failover, a pool of worker processes or threads), and one process can serve several ports. The socket = <b>IP:port</b> (e.g. 161.25.19.8:1625) identifies the endpoint independently of the OS's internal process numbering, and the network stack demultiplexes packets by port.</p></div>
+
+<div class="q"><span class="t">1.21 Race condition: shared account, husband withdraw() || wife deposit()</span><span class="tag">2013</span>
+<p><code>balance += amt</code> and <code>balance -= amt</code> are each load / modify / store. Example: balance=100. H reads 100 (withdraw 50). W reads 100 (deposit 50). H writes 50. W writes 150. <b>Final 150 instead of 100</b> (the other order gives 50): a lost update. The outcome depends on interleaving, which is a <b>race condition</b>. Fix: make both methods critical sections, e.g. <code>wait(mutex); balance ±= amt; signal(mutex);</code> (or a monitor / synchronized methods).<br>
+Same idea as the slide's counter++ / counter−− example: with counter=5, the interleaving S0–S5 can leave 4 or 6.</p></div>
+
+<h2>§2 Synchronization reference</h2>
+<h3>Critical-section requirements</h3>
+<p>(1) <b>Mutual exclusion</b>: at most one process in its CS. (2) <b>Progress</b>: if no one is in the CS, the choice of who enters next involves only processes that want to enter and can't be postponed indefinitely. (3) <b>Bounded waiting</b>: there's a bound on how many times others can enter after a process has requested entry. Assume nonzero speed and nothing about relative speeds. Structure: entry section → CS → exit section → remainder.</p>
+<p><b>Preemptive kernel</b>: a process can be preempted in kernel mode (needs sync, more responsive). <b>Non-preemptive</b>: a process runs until it exits kernel mode, blocks, or yields, so the kernel is essentially race-free.</p>
+<h3>Semaphores</h3>
+<p>Busy-wait definition: <code>wait(S){while(S&lt;=0); S--;}</code> <code>signal(S){S++;}</code> (P/V, atomic). <b>Counting</b> semaphores have an unrestricted range. <b>Binary</b> semaphores (0/1) are mutex locks. Binary from TAS: <code>wait(S){while(TAS(&amp;S));} signal(S){S=0;}</code>. Mutual exclusion: <code>mutex=1; wait(mutex); CS; signal(mutex);</code>. Ordering (S1 before S2): <code>synch=0</code>; P1: <code>S1; signal(synch);</code> P2: <code>wait(synch); S2;</code>.</p>
+<p><b>Deadlock</b> with S=Q=1: P0 does wait(S), wait(Q); P1 does wait(Q), wait(S). <b>Starvation</b>: a process is never removed from the semaphore queue (e.g. LIFO). <b>Priority inversion</b>: low-priority P3 holds a lock that high-priority P1 needs, while medium-priority P2 preempts P3, so P1 waits on P2. Fix: <b>priority inheritance</b> (temporarily raise P3 to P1's priority).</p>
+<p><b>Misuse:</b> signal before wait breaks ME. wait, wait deadlocks. Omitting wait or signal breaks things. These bugs are hard to reproduce, which motivates monitors.</p>
+<h3>Readers–writers (1st variation: readers have priority, writers may starve)</h3>
+<pre>semaphore rw_mutex = 1, mutex = 1;  int read_count = 0;
+Writer: do { wait(rw_mutex); /*write*/ signal(rw_mutex); } while(1);
+Reader: do { wait(mutex); read_count++;
+             if (read_count == 1) wait(rw_mutex);  /* 1st locks */
+             signal(mutex);
+             /* read */
+             wait(mutex); read_count--;
+             if (read_count == 0) signal(rw_mutex);/* last unlocks */
+             signal(mutex);
+        } while(1);</pre>
+<p>2nd variation: once a writer is ready, it writes ASAP (readers may starve). Some kernels provide reader-writer locks.</p>
+<h3>Dining philosophers (semaphores)</h3>
+<pre>semaphore chopstick[5] = {1,1,1,1,1};
+do { wait(chopstick[i]); wait(chopstick[(i+1)%5]);
+     /* eat */
+     signal(chopstick[i]); signal(chopstick[(i+1)%5]);
+     /* think */ } while(1);</pre>
+<p><b>Problem: deadlock</b> if all 5 pick up their left chopstick at once. Remedies: (1) allow at most 4 philosophers at the table; (2) pick up both chopsticks only if both are free, inside a CS (the monitor solution); (3) asymmetric: odd philosophers take left then right, even ones take right then left.</p>
+<h3>Monitor basics</h3>
+<p>An ADT where only one process is active inside at a time. <code>condition x; x.wait()</code> suspends until <code>x.signal()</code>. <code>x.signal()</code> resumes exactly one waiter and <b>has no effect if nobody is waiting</b> (unlike a semaphore's signal, which is remembered). <code>x.wait(c)</code> is a conditional wait where the lowest c (priority number) is resumed first. The monitor DP solution (pickup/test/putdown) is in §1.14. It has <b>no deadlock, but starvation is possible</b>.</p>
+
+<h2>§3 CPU scheduling reference</h2>
+<p><b>Decisions happen when a process:</b> (1) running→waiting, (2) running→ready, (3) waiting→ready, (4) terminates. Only (1) and (4) means <b>nonpreemptive</b>; otherwise it's <b>preemptive</b>. <b>Dispatcher:</b> context switch, switch to user mode, jump to the PC. Its delay is the <b>dispatch latency</b>.</p>
+<p><b>Criteria:</b> maximize CPU utilization and throughput (# completed per unit time). Minimize turnaround (submit→complete), waiting time (time in the ready queue), and response time (submit→first response).</p>
+<table>
+<tr><th>Algorithm</th><th>Key points</th></tr>
+<tr><td>FCFS</td><td>Nonpreemptive. Convoy effect (short jobs stuck behind long ones).</td></tr>
+<tr><td>SJF / SRTF</td><td>Optimal minimum average waiting time. Needs burst prediction τ<sub>n+1</sub> = α·t<sub>n</sub> + (1−α)·τ<sub>n</sub>. Long jobs can starve.</td></tr>
+<tr><td>Priority</td><td>Starvation, fixed by <b>aging</b>. SJF is priority = predicted burst.</td></tr>
+<tr><td>RR</td><td>Quantum q. Large q behaves like FCFS. Small q means high switch overhead. Rule of thumb: about 80% of bursts &lt; q. Better response, often worse turnaround than SJF.</td></tr>
+<tr><td>MLQ</td><td>Fixed queues (foreground RR, background FCFS). Between queues: fixed priority or time slice (80/20).</td></tr>
+<tr><td>MLFQ</td><td>Processes move between queues. Ex: Q0 RR q=8 → Q1 RR q=16 → Q2 FCFS. A new job enters Q0 and is demoted if it doesn't finish its quantum.</td></tr>
+<tr><td>Lottery / proportional share</td><td>T shares; an app with N shares gets N/T of the CPU.</td></tr>
+</table>
+<p><b>Deterministic example (slides):</b> P1=10, P2=29, P3=3, P4=7, P5=12, all arriving at 0. Avg wait: FCFS = (0+10+39+42+49)/5 = <b>28</b>. SJF (3,7,10,12,29) = (0+3+10+20+32)/5 = <b>13</b>. RR q=10 = <b>23</b>. Waiting = turnaround − burst; turnaround = completion − arrival.</p>
+<p><b>Multiprocessor:</b> asymmetric (one master CPU touches kernel data) vs <b>SMP</b> (each CPU self-schedules, with a common or private ready queue; most common). <b>Affinity</b> soft/hard (§1.9). <b>Load balancing</b>: <b>push</b> migration (a periodic task moves work off overloaded CPUs) and <b>pull</b> migration (an idle CPU pulls a waiting task). These work against affinity. Multicore with multiple hardware threads per core hides <b>memory stalls</b>. Virtualization: guests schedule without knowing they don't own the CPU, which hurts response time and clocks.</p>
+<p><b>Real-time:</b> soft (no guarantee) vs hard (must meet the deadline). <b>Interrupt latency</b> = interrupt arrival → ISR start. <b>Dispatch latency</b> = time to stop one process and start another; its conflict phase covers preempting kernel-mode processes and low-priority processes releasing resources that high-priority ones need. Periodic tasks have t (processing) ≤ d (deadline) ≤ p (period), and rate = 1/p. <b>RMS</b>: static priority by 1/period (shorter period = higher priority); it's optimal among static schemes; schedulable if U = Σ t<sub>i</sub>/p<sub>i</sub> ≤ N(2<sup>1/N</sup>−1) (N=1: 1, N=2: 0.828, N→∞: 0.69). Above that bound it might still be schedulable, so check a chart. <b>EDF</b>: dynamic priority by earliest deadline; feasible iff U ≤ 1 (theoretically); doesn't need periodic tasks. POSIX: <b>SCHED_FIFO</b> (FCFS, no time slicing among equal priorities) and <b>SCHED_RR</b> (time-sliced), via <code>pthread_attr_set/getsched_policy</code>.</p>
+<p><b>RMS textbook example:</b> P1(p=50,t=20), P2(p=100,t=35): U = 0.75, schedulable. P1(50,25), P2(80,35): U = 0.94, P2 misses its deadline at 80, but EDF meets all deadlines.</p>
+<p><b>Linux:</b> before 2.5, traditional UNIX. 2.5 introduced <b>O(1)</b>: preemptive priority, real-time 0–99 and nice 100–140, lower number = higher priority, <b>higher priority gets a larger quantum</b>, active/expired arrays per CPU runqueue. 2.6.23+ uses <b>CFS</b>: scheduling classes (real-time beats default), nice −20..+19, proportion of CPU via a <b>target latency</b> and per-task <b>vruntime</b> (the lowest vruntime runs next, kept in a red-black tree).<br>
+<b>Windows:</b> 32 priority levels: variable 1–15, real-time 16–31, 0 = memory-management thread. A thread runs until it blocks, its quantum expires, or a higher-priority thread preempts it. Quantum expiry lowers priority (never below the base). A wait boosts priority. The foreground window gets 3× the quantum.<br>
+<b>Solaris:</b> 6 classes (TS, IA, RT, SYS, FSS, FP). TS is an MLFQ with a dispatch table where a higher priority gets a smaller quantum.</p>
+<p><b>Evaluation:</b> deterministic modeling, queueing models (<b>Little's law n = λ·W</b>, e.g. λ=7/s and n=14 give W=2 s), simulation (trace tapes), implementation. <b>Amdahl:</b> speedup ≤ 1 / (S + (1−S)/N). With 25% serial on 2 cores: 1/(0.25+0.375) = 1.6×. As N→∞, the limit is 1/S.</p>
+
+<h2>§4 Processes, IPC, threads</h2>
+<p><b>Process</b> = a program in execution (active). A program is passive (a file on disk). Memory layout: text, data (globals), heap (dynamic), stack (parameters, return addresses, locals). <b>States:</b> new → (admitted) ready → (dispatch) running → (interrupt) ready | (I/O or event wait) waiting → (completion) ready | (exit) terminated. <b>PCB:</b> state, PC, CPU registers, scheduling info, memory-management info, I/O status (open files), accounting. Linux uses <code>task_struct</code>.</p>
+<p><b>Context switch</b>: save state into PCB<sub>old</sub> and load from PCB<sub>new</sub>. It's pure overhead, and multiple register sets in hardware reduce it. <b>Queues:</b> job queue (all processes), ready queue (in memory), device queues. <b>Long-term</b> (job) scheduler: infrequent, controls the <b>degree of multiprogramming</b>, aims for a good mix of I/O-bound (many short bursts) and CPU-bound (few long bursts) processes. <b>Short-term</b> (CPU) scheduler: runs every few milliseconds and must be fast. (Medium-term: swapping.)</p>
+<p><b>fork()</b> creates a child that copies the parent (new PID). It returns <b>0 in the child</b>, the <b>child's PID in the parent</b>, and −1 on error. <b>exec()</b> (execl, execlp uses PATH) replaces the memory image and doesn't return. <b>wait(&amp;status)</b> blocks until a child ends and returns the child PID. <b>exit()</b>. A <b>zombie</b> has terminated but its parent hasn't called wait. An <b>orphan</b>'s parent terminated (it gets re-parented to init). <b>Cascading termination</b>: some OSes kill all children when the parent exits. The parent may <b>abort()</b> a child that exceeds its resources or is no longer needed. The shell does fork → exec → wait.</p>
+<p><b>IPC:</b> cooperating processes (reasons: information sharing, speedup, modularity, convenience). <b>Shared memory</b> (fast, the user handles sync) vs <b>message passing</b> (the kernel is involved; good for small data or distributed systems). Direct: send(P,msg)/receive(Q,msg), one link per pair, automatic. Indirect: mailboxes/ports, links can have more than 2 processes. Blocking = synchronous. Blocking send + blocking receive = <b>rendezvous</b>. Buffering: zero capacity (sender waits), bounded (wait if full), unbounded (never waits). POSIX shm: <code>shm_open, ftruncate, mmap</code>.</p>
+<p><b>Client-server:</b> sockets (IP:port; 127.0.0.1 is loopback; server: socket → bind → listen → accept → read/write; client: socket → connect → write/read), RPC, RMI, pipes. <b>Ordinary pipe</b>: unidirectional, needs a parent-child relationship, fd[0] = read end, fd[1] = write end (Windows calls these anonymous pipes). <b>Named pipe</b> (FIFO): bidirectional, no parent-child needed, several processes can use it.</p>
+<p><b>Threads</b> share code, data, files. Each thread has its own registers, stack, PC. Benefits: <b>responsiveness, resource sharing, economy, scalability</b>. <b>Concurrency</b> means more than one task makes progress (possible on one core). <b>Parallelism</b> means tasks run simultaneously (needs multiple cores). Data parallelism vs task parallelism. Multicore challenges: dividing activities, balance, data splitting, data dependency, testing.</p>
+<table>
+<tr><th>Model</th><th>Mapping</th><th>Pros / cons, examples</th></tr>
+<tr><td>Many-to-one</td><td>N user → 1 kernel</td><td>Thread management in user space (fast). One block blocks all. No parallelism on multicore. Solaris Green Threads, GNU Portable Threads.</td></tr>
+<tr><td>One-to-one</td><td>1 user → 1 kernel</td><td>More concurrency. Creating a user thread creates a kernel thread, so the number of threads may be limited. Windows, Linux, Solaris 9+.</td></tr>
+<tr><td>Many-to-many</td><td>N user → M kernel (M ≤ N)</td><td>Best of both. Solaris before 9, Windows ThreadFiber.</td></tr>
+<tr><td>Two-level</td><td>M:M + bound threads</td><td>IRIX, HP-UX, Tru64, Solaris 8 and earlier.</td></tr>
+</table>
+<p><b>Libraries:</b> Pthreads (a POSIX <i>specification</i>, user or kernel level), Win32, Java (extend Thread or implement Runnable; managed by the JVM). <b>Implicit threading:</b> thread pools (faster than creating a thread per request, bounds the thread count), OpenMP (<code>#pragma omp parallel for</code>), Grand Central Dispatch (^{ } blocks with serial and concurrent dispatch queues).</p>
+<p><b>Threading issues:</b> fork/exec semantics (§1.7). <b>Signals</b>: synchronous or asynchronous, default or user handler. For a multithreaded process, deliver to the thread the signal applies to, to all threads, to certain threads, or to a designated signal thread. <b>Cancellation</b>: asynchronous (immediate) vs <b>deferred</b> (the default; the target checks at cancellation points like <code>pthread_testcancel()</code>, then runs a cleanup handler). <b>TLS</b>: each thread's own copy of data that persists across function calls (unlike locals). <b>Scheduler activations</b>: <b>LWP</b>s act as virtual processors between user and kernel threads, and the kernel makes <b>upcalls</b> to the thread library so it can keep the right number of kernel threads. Linux uses <code>clone()</code> with flags CLONE_FS/VM/SIGHAND/FILES, and calls threads "tasks". Windows uses ETHREAD, KTHREAD (kernel space) and TEB (user space).</p>
+<pre>pthread_t tid; pthread_attr_t attr;
+pthread_attr_init(&amp;attr);
+pthread_create(&amp;tid, &amp;attr, runner, arg); /* void *runner(void*) */
+pthread_join(tid, NULL);   pthread_exit(0);
+pthread_mutex_lock(&amp;m); ... pthread_mutex_unlock(&amp;m);</pre>
+
+<h2>§5 Main memory reference</h2>
+<p><b>Address binding:</b> at <b>compile time</b> (absolute code; recompile if the start location changes), <b>load time</b> (relocatable code bound by the loader), or <b>execution time</b> (the process can move during execution; needs an MMU with relocation and limit registers). Logical and physical addresses are the same for compile-time and load-time binding and <b>differ for execution-time binding</b>. <b>MMU:</b> physical = logical + relocation register. Protection: trap if logical ≥ limit.</p>
+<p><b>Dynamic loading:</b> a routine isn't loaded until it's called. No OS support is required. <b>Dynamic linking:</b> a stub locates the shared library at run time (shared libraries, versioning). <b>Swapping:</b> roll out, roll in (backing store). Most of the cost is transfer time: a 100 MB process at 50 MB/s takes 2 s out + 2 s in = 4 s. You can't swap a process with pending I/O (or use double buffering). Mobile systems don't swap (flash).</p>
+<p><b>Contiguous allocation:</b> variable partitions and holes. <b>First-fit</b>, <b>best-fit</b> (smallest leftover; must search the whole list), <b>worst-fit</b> (largest leftover). First-fit and best-fit beat worst-fit in speed and storage use. <b>External fragmentation:</b> enough total free memory, but not contiguous. <b>50-percent rule</b>: with N blocks allocated, 0.5N are lost, so 1/3 of memory may be unusable. Fixes: <b>compaction</b> (needs dynamic relocation) or paging. <b>Internal fragmentation:</b> unused space inside an allocated block.</p>
+<p><b>Segmentation:</b> the user's view. Logical address = &lt;segment#, offset&gt;. The segment table holds base and limit. STBR gives the table location, and STLR gives the number of segments (s legal if s &lt; STLR). Check offset &lt; limit, else trap. Protection and sharing happen per segment, but it suffers external fragmentation.</p>
+<p><b>Paging:</b> frames (physical) and pages (logical) of the same power-of-two size. No external fragmentation. Internal fragmentation averages ½ page; the worst case is 1 frame − 1 byte. Example: page 2048 B, process 72,766 B = 35 pages + 1,086 B, so 36 frames and 2048−1086 = <b>962 B</b> internal fragmentation. Logical address with 2<sup>m</sup> space and 2<sup>n</sup> pages: page# = high m−n bits, offset = low n bits. The page table is in memory (PTBR, PTLR), so each access takes <b>2 memory accesses</b>. <b>TLB</b> (associative, 64–1024 entries, ASIDs avoid flushing on context switch, entries can be wired down) fixes that. A <b>valid–invalid bit</b> plus protection bits (r/w/x) give protection. <b>Shared pages</b>: reentrant code (one copy of the editor; private data per process).</p>
+<p><b>Page-table structure:</b> 32-bit with 4 KB pages gives 2<sup>20</sup> entries × 4 B = 4 MB per process. <b>Hierarchical</b> (forward-mapped): 32-bit with 1 KB pages splits as p1=12, p2=10, d=10. For 64-bit, 2 levels aren't enough (outer table 2<sup>42</sup> entries); a 3rd level still leaves 2<sup>34</sup> B and up to 4 memory accesses. <b>Hashed</b>: hash the VPN into a chain of (VPN, frame, next). Clustered tables are good for sparse spaces. <b>Inverted</b>: one entry per physical frame, holding (pid, page). It saves memory but searching is slow (use a hash table and TLB), and shared memory is hard (only one mapping per frame). <b>x86-64:</b> 48-bit virtual addresses in practice, 4-level paging, pages of 4 KB, 2 MB, or 1 GB, up to 52-bit physical with PAE. <b>ARM:</b> 4/16 KB pages and 1/16 MB sections. Two TLB levels: inner (main) first, then outer micro TLBs, then a page walk. <b>IA-32 PAE:</b> 3 levels (2-bit pointer table | 9 | 9 | 12), 64-bit entries, 36-bit (64 GB) physical.</p>
+
+<h2>§6 Deadlock reference (topic 07)</h2>
+<p><b>4 necessary conditions</b> (all must hold at once): <b>mutual exclusion</b>, <b>hold and wait</b>, <b>no preemption</b>, <b>circular wait</b>. <b>Resource-allocation graph:</b> request edge Pi→Rj, assignment edge Rj→Pi. No cycle means no deadlock. A cycle with single instances means deadlock. A cycle with multiple instances means deadlock is <i>possible</i>.</p>
+<p><b>Handling:</b> ignore it (most OSes) / prevent or avoid it / detect and recover. <b>Prevention</b> (break one condition): ME can't be broken for non-sharable resources. Hold-and-wait: request everything up front, or only when holding nothing (low utilization, starvation). No preemption: release held resources if a request can't be granted. Circular wait: impose a <b>total order</b> on resources and request in increasing order (e.g. lock accounts in a fixed order).</p>
+<p><b>Avoidance:</b> needs each process's max claim in advance. <b>Safe state</b>: there is a sequence &lt;P1..Pn&gt; where each Pi's remaining need ≤ Available + resources held by all Pj with j&lt;i. Safe means no deadlock. Unsafe means deadlock is possible. Single instance: RAG with claim edges (dashed); grant a request only if it creates no cycle. Multiple instances: <b>Banker's</b> algorithm.</p>
+<pre>Need = Max - Allocation
+Safety: Work=Available; Finish[i]=false
+  find i: !Finish[i] &amp;&amp; Need_i &lt;= Work
+      -&gt; Work += Alloc_i; Finish[i]=true; repeat
+  all Finish true  -&gt; SAFE
+Request_i: if Req_i &gt; Need_i -&gt; error;  if Req_i &gt; Avail -&gt; wait
+  pretend: Avail-=Req; Alloc_i+=Req; Need_i-=Req;
+  safe ? grant : restore old state &amp; wait
+Example: A=10, B=5, C=7 instances; Avail=(3,3,2)
+      Alloc  Max    Need
+  P0  010    753    743
+  P1  200    322    122
+  P2  302    902    600
+  P3  211    222    011
+  P4  002    433    431     safe seq: &lt;P1, P3, P4, P2, P0&gt;
+  P1 req (1,0,2): &lt;=Need, &lt;=Avail -&gt; Avail=(2,3,0) -&gt; safe -&gt; grant</pre>
+<p><b>Detection:</b> wait-for graph (single instance) or a Banker-like algorithm using the current Request. <b>Recovery:</b> abort all or one at a time; preempt resources (choose a victim, roll back, avoid starvation).</p>
+
+<h2>§7 Basics (topics 01–02)</h2>
+<p><b>Interrupt-driven OS:</b> an interrupt transfers control to the ISR via the <b>interrupt vector</b>, saving the address of the interrupted instruction. A <b>trap/exception</b> is a software interrupt caused by an error or a system call. <b>DMA:</b> the device controller moves a whole block to memory and raises one interrupt per block. <b>Dual mode</b>: a hardware <b>mode bit</b> (kernel=0 / user=1). <b>Privileged instructions</b> run only in kernel mode (I/O, timer, interrupt disable). A system call switches to kernel mode, and return resets to user mode. A <b>timer</b> interrupt prevents infinite loops and processes hogging the CPU. Multiprocessors need <b>cache coherency</b>. UMA vs NUMA. Asymmetric vs symmetric multiprocessing.</p>
+<p><b>System calls</b> are usually reached via an API (Win32, POSIX, Java): portability and simplicity. Each call has a number indexed in a table. Parameters are passed in registers, in a block/table pointed to by a register, or on the stack. Types: process control, file management, device management, information maintenance, communications, protection. printf() → write(). <b>OS structures:</b> simple (MS-DOS), monolithic (UNIX), layered, microkernel (Mach; small kernel, message passing, more reliable but slower), loadable modules, hybrid.</p>
+
+</div>
+</body>
+</html>
